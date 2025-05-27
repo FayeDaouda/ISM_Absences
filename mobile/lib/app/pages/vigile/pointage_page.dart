@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -12,13 +13,13 @@ class DashboardVigilePage extends StatefulWidget {
 
 class _DashboardVigilePageState extends State<DashboardVigilePage> {
   final AuthController authController = Get.find();
-
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
 
   String? scannedData;
+  String selectedMode = 'scanner';
+  final TextEditingController idController = TextEditingController();
 
-  // Simulation des étudiants avec statuts de scolarité (true = à jour)
   final Map<String, Map<String, dynamic>> studentsData = {
     '123456': {
       'name': 'Mamadou Ndiaye',
@@ -32,9 +33,17 @@ class _DashboardVigilePageState extends State<DashboardVigilePage> {
     },
   };
 
+  @override
+  void initState() {
+    super.initState();
+    // Forcer le mode manuel sur le web
+    if (kIsWeb) {
+      selectedMode = 'manual';
+    }
+  }
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-
     controller.scannedDataStream.listen((scanData) {
       controller.pauseCamera();
       setState(() {
@@ -46,6 +55,7 @@ class _DashboardVigilePageState extends State<DashboardVigilePage> {
   @override
   void dispose() {
     controller?.dispose();
+    idController.dispose();
     super.dispose();
   }
 
@@ -53,6 +63,7 @@ class _DashboardVigilePageState extends State<DashboardVigilePage> {
     Get.snackbar('Validation', 'Entrée validée pour l\'étudiant.');
     setState(() {
       scannedData = null;
+      idController.clear();
     });
     controller?.resumeCamera();
   }
@@ -61,8 +72,20 @@ class _DashboardVigilePageState extends State<DashboardVigilePage> {
     Get.snackbar('Refus', 'Entrée refusée pour l\'étudiant.');
     setState(() {
       scannedData = null;
+      idController.clear();
     });
     controller?.resumeCamera();
+  }
+
+  void _validerIdManuel() {
+    final input = idController.text.trim();
+    if (studentsData.containsKey(input)) {
+      setState(() {
+        scannedData = input;
+      });
+    } else {
+      Get.snackbar("Erreur", "ID étudiant non reconnu.");
+    }
   }
 
   @override
@@ -83,55 +106,74 @@ class _DashboardVigilePageState extends State<DashboardVigilePage> {
       ),
       body: Column(
         children: [
-          // Zone QR Scanner ou affichage des infos
+          SizedBox(height: 10),
+          // Boutons de sélection de mode
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: kIsWeb
+                    ? null
+                    : () {
+                        setState(() {
+                          selectedMode = 'scanner';
+                          scannedData = null;
+                          idController.clear();
+                          controller?.resumeCamera();
+                        });
+                      },
+                child: Text("Scanner le QR code"),
+              ),
+              SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    selectedMode = 'manual';
+                    scannedData = null;
+                    controller?.pauseCamera();
+                  });
+                },
+                child: Text("Saisir ID"),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+
           Expanded(
             flex: 3,
-            child: scannedData == null
-                ? QRView(
-                    key: qrKey,
-                    onQRViewCreated: _onQRViewCreated,
-                  )
-                : Container(
-                    color: Colors.grey[200],
-                    padding: EdgeInsets.all(16),
-                    child: student == null
-                        ? Center(child: Text('Étudiant non reconnu.'))
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Nom: ${student['name']}',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 8),
-                              Text('Filière: ${student['filiere']}'),
-                              SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    color: student['scolariteAJour'] ? Colors.green : Colors.red,
-                                    size: 20,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    student['scolariteAJour']
-                                        ? 'Scolarité à jour'
-                                        : 'Scolarité non à jour',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: student['scolariteAJour'] ? Colors.green : Colors.red,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+            child: selectedMode == 'scanner'
+                ? kIsWeb
+                    ? Center(child: Text('Le scan QR n’est pas disponible sur le Web.'))
+                    : scannedData == null
+                        ? QRView(
+                            key: qrKey,
+                            onQRViewCreated: _onQRViewCreated,
+                          )
+                        : _studentInfoWidget(student)
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextField(
+                          controller: idController,
+                          decoration: InputDecoration(
+                            labelText: 'Entrer l\'ID étudiant',
+                            border: OutlineInputBorder(),
                           ),
+                          keyboardType: TextInputType.number,
+                        ),
+                        SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: _validerIdManuel,
+                          child: Text("Valider l'ID"),
+                        ),
+                        if (scannedData != null) _studentInfoWidget(student),
+                      ],
+                    ),
                   ),
           ),
 
-          // Boutons Valider / Refuser visibles seulement si étudiant reconnu
           if (student != null)
             Padding(
               padding: EdgeInsets.all(16),
@@ -153,20 +195,47 @@ class _DashboardVigilePageState extends State<DashboardVigilePage> {
                 ],
               ),
             ),
+        ],
+      ),
+    );
+  }
 
-          if (scannedData != null && student == null)
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    scannedData = null;
-                  });
-                  controller?.resumeCamera();
-                },
-                child: Text('Scanner un autre QR'),
+  Widget _studentInfoWidget(Map<String, dynamic>? student) {
+    if (student == null) {
+      return Center(child: Text('Étudiant non reconnu.'));
+    }
+
+    return Container(
+      color: Colors.grey[200],
+      padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Nom: ${student['name']}',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Text('Filière: ${student['filiere']}'),
+          SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.circle,
+                color: student['scolariteAJour'] ? Colors.green : Colors.red,
+                size: 20,
               ),
-            )
+              SizedBox(width: 8),
+              Text(
+                student['scolariteAJour'] ? 'Scolarité à jour' : 'Scolarité non à jour',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: student['scolariteAJour'] ? Colors.green : Colors.red,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
