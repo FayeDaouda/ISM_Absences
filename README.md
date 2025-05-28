@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 # ISM Absences
 #  Projet Hackathon ISM 2025 - Gestion des Absences
 
 ##  Applications
+=======
+# 🎓 Projet Hackathon ISM 2025 - Gestion des Absences
+
+## 📱 Applications
+>>>>>>> dev/daouda_faye
 - **Backend (Spring Boot)** – API REST
 - **Frontend Admin (Angular)** – Interface pour administrateurs ISM
 - **Mobile (Flutter)** – App Étudiants et Vigiles
@@ -30,4 +36,8 @@ HACKATHON_ISM_2025/
 - Mobile : Android/iOS (via APK ou store)
 
 ## 🛠️ Gestion de projet
+<<<<<<< HEAD
 Organisation via Trello : https://trello.com/b/72uyrkiB/hackathon-ism-2025
+=======
+Organisation via Trello : [Lien Trello]
+>>>>>>> dev/daouda_faye
