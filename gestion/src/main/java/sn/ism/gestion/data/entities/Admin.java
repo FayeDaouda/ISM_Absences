@@ -10,6 +10,8 @@ import lombok.Setter;
 @Document(collection = "admin")
 public class Admin extends AbstractEntity {
 
+    private String nom;
+    private String prenom;
     private String utilisateurId ;
 
 }

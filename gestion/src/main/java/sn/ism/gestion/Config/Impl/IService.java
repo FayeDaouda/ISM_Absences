@@ -10,6 +10,7 @@ import sn.ism.gestion.Config.Service;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import lombok.AllArgsConstructor;
 
+
 @AllArgsConstructor
 public abstract class IService<T, R extends MongoRepository<T, String>> implements Service<T> {
 

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 public class Etudiant extends AbstractEntity {
+    private String matricule;
     private String nom;
     private String prenom;
     private String email;
