@@ -1,12 +1,13 @@
 package sn.ism.gestion.data.services;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import sn.ism.gestion.Config.Service;
 import sn.ism.gestion.data.entities.Absence;
 
 public interface IAbsenceService extends Service<Absence> {
     
-    List<Absence> findAbsencesByEtudiant(String matricule);
+    Page<Absence> findAbsencesByEtudiant(String matricule,Pageable pageable);
     
 }

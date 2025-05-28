@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @Setter 
 @Document(collection = "pointage")
-public class Pointage {
+public class Pointage extends AbstractEntity {
    
     private String etudiantId;
     private String vigileId;
