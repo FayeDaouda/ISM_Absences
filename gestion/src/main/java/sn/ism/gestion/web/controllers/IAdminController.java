@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Admin;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
-import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 
 import java.util.Map;
 public interface IAdminController extends Controller<Admin> {

@@ -17,10 +17,9 @@ import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IAdminService;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.AdminMapper;
-import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
-import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
+import sn.ism.gestion.web.dto.Response.AdminAllResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -108,4 +107,42 @@ public class AdminServiceImpl implements IAdminService {
     public Justification traiterJustification(Justification justification) {
         return justificationRepository.save(justification);
     }
+    
+    @Override
+    public Page<AdminAllResponse> getAllAdmins(Pageable pageable) {
+        Page<Admin> admins = adminRepository.findAll(pageable);
+
+        return admins.map(e -> {
+            AdminAllResponse dto = new AdminAllResponse();
+            dto.setId(e.getId());
+
+            utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
+                dto.setUtilisateurId(u.getId());
+                dto.setLogin(u.getLogin());
+                dto.setNom(u.getNom());
+                dto.setPrenom(u.getPrenom());
+            });
+
+            return dto;
+        });
+    }
+    
+    @Override
+    public AdminAllResponse getOne(String id) {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Aucun admin trouvé"));
+
+        Utilisateur utilisateur = utilisateurRepository.findById(admin.getUtilisateurId())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        AdminAllResponse dto = new AdminAllResponse();
+        dto.setId(admin.getId());
+        dto.setUtilisateurId(utilisateur.getId());
+        dto.setLogin(utilisateur.getLogin());
+        dto.setNom(utilisateur.getNom());
+        dto.setPrenom(utilisateur.getPrenom());
+
+        return dto;
+    }
+
 }

@@ -1,7 +1,6 @@
 package sn.ism.gestion.data.services.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +12,7 @@ import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.entities.Utilisateur;
+import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
@@ -22,7 +22,8 @@ import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
-import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
+import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
+import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 
 
 @Service
@@ -39,8 +40,7 @@ public class EtudiantServiceImpl implements IEtudiantService {
     private UtilisateurMapper utilisateurMapper;
     @Autowired
     private EtudiantMapper etudiantMapper;
-
-    private EtudiantSimpleRequest etudiantSimpleRequest;
+   
 
     public Etudiant createEtudiant(EtudiantSimpleRequest etudiantSimpleRequest) {
         var existingEtudiant = etudiantRepository.findByMatricule(etudiantSimpleRequest.getMatricule());
@@ -111,34 +111,68 @@ public class EtudiantServiceImpl implements IEtudiantService {
     }
 
     @Override
-    public Page<Absence> getMylistAbsences(String etudiantId, Pageable pageable) {
+    public Page<Absence> getMylistAbsencesPageable(String etudiantId, Pageable pageable) {
         return absenceRepository.findByEtudiantId(etudiantId, pageable);
     }
+    @Override
+    public Page<EtudiantAllResponse> getAllEtudiants(Pageable pageable) {
+        Page<Etudiant> etudiants = etudiantRepository.findAll(pageable);
+
+        return etudiants.map(e -> {
+            EtudiantAllResponse dto = new EtudiantAllResponse();
+            dto.setMatricule(e.getMatricule());
+            dto.setTelephone(e.getTelephone());
+
+            utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
+                dto.setUtilisateurId(u.getId());
+                dto.setLogin(u.getLogin());
+                dto.setNom(u.getNom());
+                dto.setPrenom(u.getPrenom());
+            });
+
+            return dto;
+        });
+    }
+
+     @Override
+     public EtudiantAllResponse getOne(String id) {
+         Etudiant etudiant = etudiantRepository.findById(id)
+                 .orElseThrow(() -> new RuntimeException("Aucun Etudiant trouvé"));
+
+         Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
+                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+         EtudiantAllResponse dto = new EtudiantAllResponse();
+         dto.setId(etudiant.getId());
+         dto.setMatricule(etudiant.getMatricule());
+         dto.setTelephone(etudiant.getTelephone());
+         dto.setUtilisateurId(utilisateur.getId());
+         dto.setLogin(utilisateur.getLogin());
+         dto.setNom(utilisateur.getNom());
+         dto.setPrenom(utilisateur.getPrenom());
+
+         return dto;
+     }
 
 
+    @Override
+    public EtudiantAllResponse findByMat(String matricule) {
+        Etudiant etudiant = etudiantRepository.findByMatricule(matricule)
+                .orElseThrow(() -> new RuntimeException("Aucun Etudiant trouvé"));
 
-//     public EtudiantAllResponse getEtudiantWithAbsences(String id, Pageable pageable) {
-//     Etudiant etudiant = etudiantRepository.findById(id)
-//         .orElseThrow(() -> new EntityNotFoundExecption("Étudiant non trouvé"));
+        Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-//     // Récupérer une page d'absences liées à l'étudiant
-//     Page<Absence> absencesPage = absenceRepository.findByEtudiantId(etudiant.getId(), pageable);
+        EtudiantAllResponse dto = new EtudiantAllResponse();
+        dto.setId(etudiant.getId());
+        dto.setMatricule(etudiant.getMatricule());
+        dto.setTelephone(etudiant.getTelephone());
 
-//     // Mapper les absences vers DTO
-//     List<AbsenceSimpleResponse> absenceDtos = absencesPage.getContent().stream()
-//         .map(absenceMapper::toDto)
-//         .collect(Collectors.toList());
+        dto.setUtilisateurId(utilisateur.getId());
+        dto.setLogin(utilisateur.getLogin());
+        dto.setNom(utilisateur.getNom());
+        dto.setPrenom(utilisateur.getPrenom());
 
-//     EtudiantAllResponse response = etudiantMapper.toDtoListeAbsence(etudiant, absenceDtos);
-
-//     return response;
-// }
-
-//     public EtudiantSimpleResponse getEtudiantResponse(Etudiant etudiant) {
-//         Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
-//             .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-//         return new EtudiantSimpleResponse(etudiant, utilisateur.getLogin());
-//     }
-
+        return dto;
+    }
 }

@@ -1,11 +1,9 @@
 package sn.ism.gestion.utils.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
@@ -18,6 +16,8 @@ public interface EtudiantMapper {
     EtudiantAllResponse toDtoListeAbsence(Etudiant etudiant, List<AbsenceEtudiantResponse> absences, String login);
 
     EtudiantSimpleResponse toDto(Etudiant etudiant);
+
+    EtudiantAllResponse toDtoAll(EtudiantAllResponse etudiant);
 
     Etudiant toEntity(Etudiant request);
 

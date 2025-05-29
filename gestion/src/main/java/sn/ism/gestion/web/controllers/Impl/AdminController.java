@@ -17,6 +17,7 @@ import sn.ism.gestion.data.services.IAdminService;
 import sn.ism.gestion.utils.mapper.AdminMapper;
 import sn.ism.gestion.web.controllers.IAdminController;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
+import sn.ism.gestion.web.dto.Response.AdminAllResponse;
 import sn.ism.gestion.web.dto.Response.AdminSimpleResponse;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 
@@ -49,8 +50,8 @@ public class AdminController implements IAdminController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Admin> admins = adminService.findAll(pageable);
-        Page<AdminSimpleResponse> response = admins.map(adminMapper::toDto);
+        Page<AdminAllResponse> admins = adminService.getAllAdmins(pageable);
+        Page<AdminAllResponse> response = admins.map(adminMapper::toDtoAll);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -60,19 +61,19 @@ public class AdminController implements IAdminController {
                         response.getTotalElements(),
                         response.isFirst(),
                         response.isLast(),
-                        "AdminsimpleResponses"),
+                        "adminAllResponse"),
                 HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
-        var admin = adminService.findById(id);
-        var adminDto = adminMapper.toDto(admin);
+        var admin = adminService.getOne(id);
+        var adminDto = adminMapper.toDtoAll(admin);
         return new ResponseEntity<>(
                 new RestResponse().response(
                         HttpStatus.OK,adminDto,
-                        "adminSimpleResponse"),
+                        "adminAllResponse"),
                 HttpStatus.OK);
     }
 

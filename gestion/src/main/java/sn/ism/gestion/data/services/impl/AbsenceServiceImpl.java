@@ -11,8 +11,7 @@ import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
 import sn.ism.gestion.data.services.IAbsenceService;
-import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
-import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
+
 
 
 @Service
@@ -68,14 +67,4 @@ public class AbsenceServiceImpl implements IAbsenceService {
         return absenceRepository.findAll(pageable);
     }
 
-
-//     public AbsenceAllResponse toDto(Absence absence) {
-//        Etudiant etudiant = etudiantRepository.findById(absence.getEtudiantId())
-//            .orElseThrow(() -> new EntityNotFoundExecption("Étudiant non trouvé"));
-//
-//        AbsenceAllResponse dto = new AbsenceAllResponse(absence);
-//        dto.setEtudiantFullName(etudiant.getNom(), etudiant.getPrenom());
-//
-//        return dto;
-//    }
 }

@@ -27,6 +27,7 @@ public interface IEtudiantController extends Controller<Etudiant> {
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody EtudiantSimpleRequest request,
                 BindingResult bindingResult);
 
+
     @GetMapping("/absences/{id}")
     ResponseEntity<Map<String,Object>> getMyListAbsences(@PathVariable String id, 
                         @RequestParam(defaultValue = "0") int page,

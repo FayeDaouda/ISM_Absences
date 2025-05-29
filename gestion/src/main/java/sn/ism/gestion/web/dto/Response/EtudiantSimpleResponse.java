@@ -4,14 +4,14 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.entities.Utilisateur;
 
 @Getter
 @Setter
 public class EtudiantSimpleResponse {
 
     private UtilisateurSimpleResponse utilisateur;
+    private String id;
+    private String utulisateurId;
     private String matricule;
     private String telephone;
     List<String> absenceIds ;

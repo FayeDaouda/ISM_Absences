@@ -19,6 +19,7 @@ import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.web.controllers.IEtudiantController;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
+import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 
@@ -53,8 +54,8 @@ public class EtudiantControllerImpl implements IEtudiantController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Etudiant> etudiants = etudiantService.findAll(pageable);
-        Page<EtudiantSimpleResponse> response = etudiants.map(etudiantMapper::toDto);
+        Page<EtudiantAllResponse> etudiants = etudiantService.getAllEtudiants(pageable);
+        Page<EtudiantAllResponse> response = etudiants.map(etudiantMapper::toDtoAll);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -71,8 +72,8 @@ public class EtudiantControllerImpl implements IEtudiantController {
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
-        var etudiant = etudiantService.findById(id);
-        var etudiantDto = etudiantMapper.toDto(etudiant);
+        var etudiant = etudiantService.getOne(id);
+        var etudiantDto = etudiantMapper.toDtoAll(etudiant);
         return new ResponseEntity<>(
                 new RestResponse().response(
                         HttpStatus.OK,etudiantDto,
@@ -80,6 +81,22 @@ public class EtudiantControllerImpl implements IEtudiantController {
                 HttpStatus.OK);
     }
 
+    
+    @Override
+    public ResponseEntity<Map<String, Object>> findByMatricule(String matricule) {
+        var etudiant = etudiantService.findByMat(matricule);
+        var etudiantDto = etudiantMapper.toDtoAll(etudiant);
+        return new ResponseEntity<>(
+                new RestResponse().response(
+                        HttpStatus.OK,etudiantDto,
+                        "etudiantSimpleResponse"),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> Update(String id, Etudiant request) {
+        return null;
+    }
 
     @Override
     public ResponseEntity<Map<String, Object>> Update(String id, EtudiantSimpleRequest request) {
@@ -108,23 +125,13 @@ public class EtudiantControllerImpl implements IEtudiantController {
                 HttpStatus.ACCEPTED);
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> findByMatricule(String matricule) {
-        var etudiant = etudiantService.getByMatricule(matricule);
-        var etudiantDto = etudiantMapper.toDto(etudiant);
-        return new ResponseEntity<>(
-                new RestResponse().response(
-                        HttpStatus.OK,etudiantDto,
-                        "etudiantSimpleResponse"),
-                HttpStatus.OK);
-    }
 
     @Override
     public ResponseEntity<Map<String, Object>> getMyListAbsences(String id,
                                                                  @RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<?> absences = etudiantService.getMylistAbsences(id, pageable);
+        Page<?> absences = etudiantService.getMylistAbsencesPageable(id, pageable);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -138,10 +145,6 @@ public class EtudiantControllerImpl implements IEtudiantController {
                 HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> Update(String id, Etudiant request) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'Update'");
-    }
+
    
 }

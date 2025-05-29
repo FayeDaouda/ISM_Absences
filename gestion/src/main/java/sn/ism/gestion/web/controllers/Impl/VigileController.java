@@ -17,6 +17,7 @@ import sn.ism.gestion.data.services.IVigileService;
 import sn.ism.gestion.utils.mapper.VigileMapper;
 import sn.ism.gestion.web.controllers.IVigileController;
 import sn.ism.gestion.web.dto.Request.VigileSimpleRequest;
+import sn.ism.gestion.web.dto.Response.VigileAllResponse;
 import sn.ism.gestion.web.dto.Response.VigileSimpleResponse;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 
@@ -54,8 +55,8 @@ public class VigileController implements IVigileController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Vigile> vigiles = vigileService.findAll(pageable);
-        Page<VigileSimpleResponse> response = vigiles.map(vigileMapper::toDto);
+        Page<VigileAllResponse> vigiles = vigileService.getAllVigiles(pageable);
+        Page<VigileAllResponse> response = vigiles.map(vigileMapper::toDtoAll);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -65,7 +66,7 @@ public class VigileController implements IVigileController {
                         response.getTotalElements(),
                         response.isFirst(),
                         response.isLast(),
-                        "VigilesimpleResponses"),
+                        "vigileAllResponse"),
                 HttpStatus.OK);
     }
 
@@ -77,7 +78,7 @@ public class VigileController implements IVigileController {
         return new ResponseEntity<>(
                 new RestResponse().response(
                         HttpStatus.OK,vigileDto,
-                        "vigileSimpleResponse"),
+                        "vigileAllResponse"),
                 HttpStatus.OK);
     }
 

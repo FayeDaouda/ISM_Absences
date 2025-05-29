@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import sn.ism.gestion.data.entities.Vigile;
 import sn.ism.gestion.data.entities.Pointage;
 import sn.ism.gestion.data.entities.Utilisateur;
-import sn.ism.gestion.data.entities.Vigile;
 import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.repositories.VigileRepository;
@@ -20,9 +19,8 @@ import sn.ism.gestion.data.services.IVigileService;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.VigileMapper;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
-import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
 import sn.ism.gestion.web.dto.Request.VigileSimpleRequest;
-import sn.ism.gestion.web.dto.Response.VigileSimpleResponse;
+import sn.ism.gestion.web.dto.Response.VigileAllResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -106,11 +104,39 @@ public class VigileServiceImpl implements IVigileService {
         throw new UnsupportedOperationException("Méthode pointerEtudiant non implémentée");
     }
 
-//    public VigileSimpleResponse getVigileResponse(Vigile vigile) {
-//        Utilisateur utilisateur = utilisateurRepository.findById(vigile.getUtilisateurId())
-//            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-//
-//        return new VigileSimpleResponse(vigile);
-//    }
-    
+   @Override
+    public Page<VigileAllResponse> getAllVigiles(Pageable pageable) {
+        Page<Vigile> Vigiles = vigileRepository.findAll(pageable);
+
+        return Vigiles.map(e -> {
+            VigileAllResponse dto = new VigileAllResponse();
+            dto.setId(e.getId());
+
+            utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
+                dto.setUtilisateurId(u.getId());
+                dto.setLogin(u.getLogin());
+                dto.setNom(u.getNom());
+                dto.setPrenom(u.getPrenom());
+            });
+
+            return dto;
+        });
+    }
+    @Override
+    public VigileAllResponse getOne(String id) {
+        Vigile vigile = vigileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Aucun Vigile trouvé"));
+
+        Utilisateur utilisateur = utilisateurRepository.findById(vigile.getUtilisateurId())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        VigileAllResponse dto = new VigileAllResponse();
+        dto.setId(vigile.getId());
+        dto.setUtilisateurId(utilisateur.getId());
+        dto.setLogin(utilisateur.getLogin());
+        dto.setNom(utilisateur.getNom());
+        dto.setPrenom(utilisateur.getPrenom());
+
+        return dto;
+    }
 }

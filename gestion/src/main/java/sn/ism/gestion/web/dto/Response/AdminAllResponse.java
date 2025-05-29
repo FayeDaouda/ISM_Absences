@@ -5,14 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EtudiantAllResponse {
-
+public class AdminAllResponse {
     private String id;
     private String nom;
     private String prenom;
     private String login;
-    private String matricule;
-    private String telephone;
     private String utilisateurId;
 
 }
