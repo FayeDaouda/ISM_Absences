@@ -1,20 +1,29 @@
 package sn.ism.gestion.data.services.impl;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import sn.ism.gestion.data.entities.Absence;
-import sn.ism.gestion.data.entities.Admin;
-import sn.ism.gestion.data.entities.Justification;
+import sn.ism.gestion.data.entities.*;
+import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.repositories.AdminRepository;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.repositories.JustificationRepository;
+import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IAdminService;
+import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
+import sn.ism.gestion.utils.mapper.AdminMapper;
+import sn.ism.gestion.utils.mapper.EtudiantMapper;
+import sn.ism.gestion.utils.mapper.UtilisateurMapper;
+import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
+import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements IAdminService {
 
     @Autowired
@@ -23,10 +32,34 @@ public class AdminServiceImpl implements IAdminService {
     private AbsenceRepository absenceRepository;
     @Autowired
     private JustificationRepository justificationRepository;
+    @Autowired
+    private UtilisateurMapper utilisateurMapper;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+    @Autowired
+    private AdminMapper adminMapper;
 
     @Override
     public Admin create(Admin object) {
         return adminRepository.save(object);
+    }
+
+    public Admin createAdmin(AdminSimpleRequest adminSimpleRequest) {
+        if (adminSimpleRequest.getUtilisateurcreate() == null) {
+            throw new IllegalArgumentException("Les informations de l'utilisateur sont requises.");
+        }
+        var login = adminSimpleRequest.getUtilisateurcreate().getLogin();
+        var existingUser = utilisateurRepository.findByLogin(login);
+        if (existingUser.isPresent()) {
+            throw new EntityNotFoundExecption("Un utilisateur avec ce login existe déjà");
+        }
+        Utilisateur utilisateur = utilisateurMapper.toEntity(adminSimpleRequest.getUtilisateurcreate());
+        utilisateur.setRole(Role.ADMIN);
+        utilisateur = utilisateurRepository.save(utilisateur);
+        Admin adminCreate = adminMapper.toEntityR(adminSimpleRequest);
+        adminCreate.setUtilisateurId(utilisateur.getId());
+
+        return adminRepository.save(adminCreate);
     }
 
     @Override

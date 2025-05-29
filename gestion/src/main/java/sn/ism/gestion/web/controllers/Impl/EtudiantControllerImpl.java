@@ -71,16 +71,12 @@ public class EtudiantControllerImpl implements IEtudiantController {
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
-        Etudiant etudiant = etudiantService.findById(id);
-        if (etudiant == null) {
-            return new ResponseEntity<>(
-                    RestResponse.response(HttpStatus.NOT_FOUND, null, "Étudiant introuvable avec l'ID " + id),
-                    HttpStatus.NOT_FOUND
-            );
-        }
-        EtudiantSimpleResponse dto = etudiantMapper.toDto(etudiant);
+        var etudiant = etudiantService.findById(id);
+        var etudiantDto = etudiantMapper.toDto(etudiant);
         return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.OK, dto, "EtudiantSimpleResponse"),
+                new RestResponse().response(
+                        HttpStatus.OK,etudiantDto,
+                        "etudiantSimpleResponse"),
                 HttpStatus.OK);
     }
 
@@ -114,10 +110,12 @@ public class EtudiantControllerImpl implements IEtudiantController {
 
     @Override
     public ResponseEntity<Map<String, Object>> findByMatricule(String matricule) {
-        Etudiant etudiant = etudiantService.getByMatricule(matricule);
-        EtudiantSimpleResponse dto = etudiantMapper.toDto(etudiant);
+        var etudiant = etudiantService.getByMatricule(matricule);
+        var etudiantDto = etudiantMapper.toDto(etudiant);
         return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.OK, dto, "EtudiantSimpleResponse"),
+                new RestResponse().response(
+                        HttpStatus.OK,etudiantDto,
+                        "etudiantSimpleResponse"),
                 HttpStatus.OK);
     }
 

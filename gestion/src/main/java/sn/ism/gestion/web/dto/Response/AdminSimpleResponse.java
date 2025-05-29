@@ -7,15 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdminSimpleResponse {
-    
-    private String utilisateurId ;
-    private String nom;
-    private String prenom;
-    
-    public AdminSimpleResponse(Admin admin) {
 
-        this.utilisateurId = admin.getUtilisateurId();
-        
-    }
+    private String utilisateurId;
+
+    private UtilisateurSimpleResponse utilisateur;
+
 
 }

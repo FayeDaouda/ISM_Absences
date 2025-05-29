@@ -3,32 +3,65 @@ package sn.ism.gestion.data.services.impl;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import sn.ism.gestion.data.entities.Vigile;
 import sn.ism.gestion.data.entities.Pointage;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.entities.Vigile;
+import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.repositories.VigileRepository;
 import sn.ism.gestion.data.services.IVigileService;
+import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
+import sn.ism.gestion.utils.mapper.VigileMapper;
+import sn.ism.gestion.utils.mapper.UtilisateurMapper;
+import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
+import sn.ism.gestion.web.dto.Request.VigileSimpleRequest;
 import sn.ism.gestion.web.dto.Response.VigileSimpleResponse;
 
 @Service
+@RequiredArgsConstructor
 public class VigileServiceImpl implements IVigileService {
 
     @Autowired
     private VigileRepository vigileRepository;
-
+    @Autowired
+    private UtilisateurMapper utilisateurMapper;
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    private final VigileMapper vigileMapper;
+
 
     @Override
     public Vigile create(Vigile vigile) {
         return vigileRepository.save(vigile);
     }
+
+    public Vigile createVigile(VigileSimpleRequest vigileSimpleRequest) {
+        if (vigileSimpleRequest.getUtilisateurcreate() == null) {
+            throw new IllegalArgumentException("Les informations de l'utilisateur sont requises.");
+        }
+        var login = vigileSimpleRequest.getUtilisateurcreate().getLogin();
+        var existingUser = utilisateurRepository.findByLogin(login);
+        if (existingUser.isPresent()) {
+            throw new EntityNotFoundExecption("Un utilisateur avec ce login existe déjà");
+        }
+        Utilisateur utilisateur = utilisateurMapper.toEntity(vigileSimpleRequest.getUtilisateurcreate());
+        utilisateur.setRole(Role.VIGILE);
+        utilisateur = utilisateurRepository.save(utilisateur);
+        Vigile vigileCreate = vigileMapper.toEntityR(vigileSimpleRequest);
+        vigileCreate.setUtilisateurId(utilisateur.getId());
+
+        return vigileRepository.save(vigileCreate);
+    }
+
+
 
     @Override
     public Vigile update(String id, Vigile vigile) {
@@ -73,11 +106,11 @@ public class VigileServiceImpl implements IVigileService {
         throw new UnsupportedOperationException("Méthode pointerEtudiant non implémentée");
     }
 
-    public VigileSimpleResponse getVigileResponse(Vigile vigile) {
-        Utilisateur utilisateur = utilisateurRepository.findById(vigile.getUtilisateurId())
-            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-        return new VigileSimpleResponse(vigile, utilisateur.getLogin());
-    }
+//    public VigileSimpleResponse getVigileResponse(Vigile vigile) {
+//        Utilisateur utilisateur = utilisateurRepository.findById(vigile.getUtilisateurId())
+//            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+//
+//        return new VigileSimpleResponse(vigile);
+//    }
     
 }

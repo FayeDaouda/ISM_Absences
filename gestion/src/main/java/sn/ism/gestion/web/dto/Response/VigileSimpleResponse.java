@@ -5,14 +5,11 @@ import sn.ism.gestion.data.entities.Vigile;
 @Getter
 @Setter
 public class VigileSimpleResponse {
-    
-    private String nom;
-    private String prenom;
-    private String login;
 
-    public VigileSimpleResponse(Vigile vigile, String login) {
+    private String utilisateurId ;
 
-        this.login = login;
-    }
+    private UtilisateurSimpleResponse utilisateur;
+
+
 }
 
