@@ -1,9 +1,11 @@
+// login.component.ts (version mise à jour)
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -11,7 +13,7 @@ import { isPlatformBrowser } from '@angular/common';
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush // Optimisation des performances
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
   loginData = {
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   isLoading = false;
   showPassword = false;
-  isComponentReady = false; // Nouveau flag
+  isComponentReady = false;
 
   // Propriétés pour la compatibilité avec les tests
   get email(): string {
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -52,11 +55,9 @@ export class LoginComponent implements OnInit {
       this.isComponentReady = true;
     }, 50);
 
-    if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        this.router.navigate(['/dashboard']);
-      }
+    // Vérifier si l'utilisateur est déjà connecté
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -65,21 +66,41 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.onLogin();
-  }
+  this.isLoading = true;
+  this.errorMessage = '';
 
-  onLogin(): void {
+  this.authService.login(this.loginData.email, this.loginData.password)
+    .then(success => {
+      this.isLoading = false;
+
+      if (success) {
+        console.log('✅ Connexion réussie');
+        this.router.navigate(['/dashboard']);
+      } else {
+        console.log('❌ Identifiants invalides');
+        this.errorMessage = 'Email ou mot de passe invalide';
+      }
+    })
+    .catch(error => {
+      this.isLoading = false;
+      console.error('Erreur lors de la connexion', error);
+      this.errorMessage = 'Une erreur est survenue';
+    });
+
+    console.log('Tentative de connexion avec', this.loginData);
+
+}
+
+
+
+  async onLogin(): Promise<void> {
     this.isLoading = true;
     this.errorMessage = '';
 
-    setTimeout(() => {
-      if (
-        this.loginData.email === 'admin@ism.sn' &&
-        this.loginData.password === 'admin'
-      ) {
-        if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem('token', 'fake-jwt-token');
-        }
+    try {
+      const success = await this.authService.login(this.loginData.email, this.loginData.password);
+      
+      if (success) {
         this.router.navigate(['/dashboard']);
       } else {
         if (isPlatformBrowser(this.platformId)) {
@@ -89,106 +110,11 @@ export class LoginComponent implements OnInit {
         }
         this.errorMessage = 'Email ou mot de passe invalide';
       }
-
+    } catch (error) {
+      this.errorMessage = 'Une erreur est survenue lors de la connexion';
+      console.error('Erreur de connexion:', error);
+    } finally {
       this.isLoading = false;
-    }, 1000);
+    }
   }
 }
-
-
-
-
-
-
-
-
-
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { Router, RouterModule } from '@angular/router';
-// import { Inject, PLATFORM_ID } from '@angular/core';
-// import { isPlatformBrowser } from '@angular/common';
-
-// @Component({
-//   standalone: true,
-//   selector: 'app-login',
-//   imports: [CommonModule, FormsModule, RouterModule],
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css']
-// })
-// export class LoginComponent {
-//   loginData = {
-//     email: '',
-//     password: ''
-//   };
-
-//   errorMessage = '';
-//   isLoading = false;
-//   showPassword = false;
-
-//   // Propriétés pour la compatibilité avec les tests
-//   get email(): string {
-//     return this.loginData.email;
-//   }
-
-//   set email(value: string) {
-//     this.loginData.email = value;
-//   }
-
-//   get password(): string {
-//     return this.loginData.password;
-//   }
-
-//   set password(value: string) {
-//     this.loginData.password = value;
-//   }
-
-//   constructor(
-//     private router: Router,
-//     @Inject(PLATFORM_ID) private platformId: Object
-//   ) {
-//     if (isPlatformBrowser(this.platformId)) {
-//       const token = localStorage.getItem('token');
-//       if (token) {
-//         this.router.navigate(['/dashboard']);
-//       }
-//     }
-//   }
-
-//   togglePasswordVisibility() {
-//     this.showPassword = !this.showPassword;
-//   }
-
-//   onSubmit(): void {
-//     this.onLogin();
-//   }
-
-//   // Méthode pour la compatibilité avec les tests
-//   onLogin(): void {
-//     this.isLoading = true;
-//     this.errorMessage = '';
-
-//     setTimeout(() => {
-//       if (
-//         this.loginData.email === 'admin@ism.sn' &&
-//         this.loginData.password === 'admin'
-//       ) {
-//         if (isPlatformBrowser(this.platformId)) {
-//           localStorage.setItem('token', 'fake-jwt-token');
-//         }
-//         this.router.navigate(['/dashboard']);
-//       } else {
-//         if (isPlatformBrowser(this.platformId)) {
-//           // Pour les tests qui utilisent window.alert
-//           if (typeof window !== 'undefined' && window.alert) {
-//             window.alert('Identifiants invalides');
-//           }
-//         }
-//         this.errorMessage = 'Email ou mot de passe invalide';
-//       }
-
-//       this.isLoading = false;
-//     }, 1000);
-//   }
-// }
