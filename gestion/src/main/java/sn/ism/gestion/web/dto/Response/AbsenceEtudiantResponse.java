@@ -7,7 +7,7 @@ import sn.ism.gestion.data.enums.Situation;
 
 @Getter
 @Setter
-public class AbsenceSimpleResponse {
+public class AbsenceEtudiantResponse {
 
     private String etudiant;
     private String sessionId;
@@ -15,7 +15,7 @@ public class AbsenceSimpleResponse {
     private boolean justifiee;
     private String justificationId;
 
-    public AbsenceSimpleResponse(Absence absence) {
+    public AbsenceEtudiantResponse(Absence absence) {
         this.etudiant = absence.getEtudiantId();
         this.sessionId = absence.getSessionId();
         this.type = absence.getType();
