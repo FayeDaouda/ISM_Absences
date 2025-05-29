@@ -2,17 +2,32 @@ package sn.ism.gestion.web.controllers;
 
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Etudiant;
+import sn.ism.gestion.data.entities.Justification;
+import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
+import sn.ism.gestion.web.dto.Request.JustificationRequest;
+import sn.ism.gestion.web.dto.Response.AbsenceEtudiantResponse;
 
 @RestController
 @RequestMapping("/api/etudiants")
 public interface IEtudiantController extends Controller<Etudiant> {
+
+    @PostMapping("")
+    ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody EtudiantSimpleRequest request,
+                BindingResult bindingResult);
 
     @GetMapping("/absences/{id}")
     ResponseEntity<Map<String,Object>> getMyListAbsences(@PathVariable String id, 
@@ -22,6 +37,12 @@ public interface IEtudiantController extends Controller<Etudiant> {
     @GetMapping("/matricule/{matricule}")
     ResponseEntity<Map<String,Object>> findByMatricule(@PathVariable String matricule);
 
-    // @PostMapping("/absences/{absenceId}/justifier")
-    // ResponseEntity<Map<String,Object>> justifierAbsence(@PathVariable String absenceId, @RequestBody Justification justification);
+    @PutMapping("/updateSimple/{id}")
+    @ApiResponse(responseCode = "200")
+    ResponseEntity<Map<String, Object>> Update(@PathVariable String id, @RequestBody EtudiantSimpleRequest request);
+
+     @PostMapping("/{Id}/justicationAsence/")
+     ResponseEntity<Map<String,Object>> justifierAbsence(
+             @PathVariable String id ,
+             @RequestBody JustificationRequest justification);
 }

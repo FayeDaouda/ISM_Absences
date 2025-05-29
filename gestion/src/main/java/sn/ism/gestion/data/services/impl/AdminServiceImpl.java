@@ -32,8 +32,6 @@ public class AdminServiceImpl implements IAdminService {
     @Override
     public Admin update(String id, Admin object) {
         return adminRepository.findById(id).map(admin -> {
-            admin.setNom(object.getNom());
-            admin.setPrenom(object.getPrenom());
             admin.setUtilisateurId(object.getUtilisateurId());
             return adminRepository.save(admin);
         }).orElse(null);

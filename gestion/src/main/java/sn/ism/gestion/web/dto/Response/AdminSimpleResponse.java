@@ -8,8 +8,10 @@ import lombok.Setter;
 @Setter
 public class AdminSimpleResponse {
     
-     private String utilisateurId ;
-
+    private String utilisateurId ;
+    private String nom;
+    private String prenom;
+    
     public AdminSimpleResponse(Admin admin) {
 
         this.utilisateurId = admin.getUtilisateurId();

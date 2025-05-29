@@ -2,6 +2,7 @@ package sn.ism.gestion.data.entities;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
@@ -12,6 +13,7 @@ import sn.ism.gestion.data.enums.ModeCours;
 @Setter
 @Document(collection = "sessions")
 public class SessionCours extends AbstractEntity {
+
     private String coursId;
     private LocalDateTime heureDebut;
     private LocalDateTime heureFin;
@@ -19,4 +21,6 @@ public class SessionCours extends AbstractEntity {
     private ModeCours mode;
     private String salleId;
     private boolean valide;
+    private LocalDate date;
+
 }

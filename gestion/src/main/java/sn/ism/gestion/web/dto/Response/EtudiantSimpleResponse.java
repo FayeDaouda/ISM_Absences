@@ -10,13 +10,19 @@ public class EtudiantSimpleResponse {
 
     private String nom;
     private String prenom;
-    private String email;
+    private String login;
     private String utilisateurId;
 
+    // public EtudiantSimpleResponse(Etudiant etudiant,String login) {
+    //     this.nom = etudiant.getNom();
+    //     this.prenom = etudiant.getPrenom();
+    //     this.login = login;
+    //     this.utilisateurId = etudiant.getUtilisateurId();
+    // }
     public EtudiantSimpleResponse(Etudiant etudiant) {
-        this.nom = etudiant.getNom();
-        this.prenom = etudiant.getPrenom();
-        this.email = etudiant.getEmail();
+        if (etudiant == null) {
+            throw new IllegalArgumentException("Etudiant ne peut pas être null");
+        }
         this.utilisateurId = etudiant.getUtilisateurId();
     }
 

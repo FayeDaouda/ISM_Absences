@@ -69,13 +69,13 @@ public class AbsenceServiceImpl implements IAbsenceService {
     }
 
 
-     public AbsenceAllResponse toDto(Absence absence) {
-        Etudiant etudiant = etudiantRepository.findById(absence.getEtudiantId())
-            .orElseThrow(() -> new EntityNotFoundExecption("Étudiant non trouvé"));
-
-        AbsenceAllResponse dto = new AbsenceAllResponse(absence);
-        dto.setEtudiantFullName(etudiant.getNom(), etudiant.getPrenom());
-
-        return dto;
-    }
+//     public AbsenceAllResponse toDto(Absence absence) {
+//        Etudiant etudiant = etudiantRepository.findById(absence.getEtudiantId())
+//            .orElseThrow(() -> new EntityNotFoundExecption("Étudiant non trouvé"));
+//
+//        AbsenceAllResponse dto = new AbsenceAllResponse(absence);
+//        dto.setEtudiantFullName(etudiant.getNom(), etudiant.getPrenom());
+//
+//        return dto;
+//    }
 }

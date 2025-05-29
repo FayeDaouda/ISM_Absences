@@ -1,5 +1,6 @@
 package sn.ism.gestion.data.services.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -7,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sn.ism.gestion.data.repositories.SessionsCoursRepository;
 import sn.ism.gestion.data.entities.SessionCours;
-import sn.ism.gestion.data.services.ISessionCoursServices;
+import sn.ism.gestion.data.services.ISessionCoursService;
 
 @Service
-public class SessionCoursServiceImpl implements ISessionCoursServices {
+public class SessionCoursServiceImpl implements ISessionCoursService {
 
     @Autowired
     private SessionsCoursRepository sessionCoursRepository;
@@ -52,9 +53,9 @@ public class SessionCoursServiceImpl implements ISessionCoursServices {
     }
 
     @Override
-    public List<SessionCours> getSessionsDuJour() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSessionsDuJour'");
+    public Page<SessionCours> getSessionsDuJour(LocalDate date, Pageable pageable) {
+        return sessionCoursRepository.findByDate(LocalDate.now(), pageable);
     }
+
 
 }

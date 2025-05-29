@@ -12,7 +12,7 @@ import java.util.Map;
 @RequestMapping("/api/Utilisateurs")
 public interface IUtilisateurController extends Controller<Utilisateur> {
 
-    @GetMapping("/{id}")
+    @GetMapping("/login")
     ResponseEntity<Map<String,Object>> findByLogin(@PathVariable String login);
 
 

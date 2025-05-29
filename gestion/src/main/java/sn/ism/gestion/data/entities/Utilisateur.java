@@ -11,7 +11,9 @@ import lombok.Setter;
 @Setter
 @Document(collection = "utilisateurs")
 public class Utilisateur extends AbstractEntity {
-   
+
+    private String nom;
+    private String prenom;
     private String login;
     private String motDePasse;
     private Role role;

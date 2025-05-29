@@ -9,14 +9,14 @@ import sn.ism.gestion.data.enums.Situation;
 @Setter
 public class AbsenceEtudiantResponse {
 
-    private String etudiant;
+    private String etudiantId;
     private String sessionId;
     private Situation type;
     private boolean justifiee;
     private String justificationId;
 
     public AbsenceEtudiantResponse(Absence absence) {
-        this.etudiant = absence.getEtudiantId();
+        this.etudiantId = absence.getEtudiantId();
         this.sessionId = absence.getSessionId();
         this.type = absence.getType();
         this.justifiee = absence.isJustifiee();

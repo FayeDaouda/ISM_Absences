@@ -1,13 +1,34 @@
 package sn.ism.gestion.web.controllers.Impl;
 
 import java.util.Map;
+import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.entities.Utilisateur;
+import sn.ism.gestion.data.services.IUtilisateurService;
+import sn.ism.gestion.data.services.impl.UtilisateurServiceImpl;
+import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.controllers.IUtilisateurController;
+import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
+import sn.ism.gestion.web.dto.Response.RestResponse;
+import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("api/utilisateurs")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UtilisateurController implements IUtilisateurController {
+
+    private final IUtilisateurService utilisateurService;
+    private final UtilisateurMapper utilisateurMapper;
+
 
     @Override
     public ResponseEntity<Map<String, Object>> SelectAll(int page, int size) {
@@ -35,8 +56,11 @@ public class UtilisateurController implements IUtilisateurController {
 
     @Override
     public ResponseEntity<Map<String, Object>> findByLogin(String login) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByLogin'");
+        Optional<Utilisateur> utilisateur = utilisateurService.findByLogin(login);
+        UtilisateurSimpleResponse dto = utilisateurMapper.toDto(utilisateur);
+        return new ResponseEntity<>(
+                RestResponse.response(HttpStatus.OK, dto, "UtilisateurSimpleResponse"),
+                HttpStatus.OK);
     }
     
 }

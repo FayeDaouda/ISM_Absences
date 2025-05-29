@@ -16,15 +16,13 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        // Supprimer les anciens (facultatif)
         etudiantRepository.deleteAll();
 
-        // Créer un étudiant
         Etudiant etu = new Etudiant();
-        etu.setNom("Fall");
-        etu.setPrenom("Awa");
-        etu.setEmail("awa.fall@exemple.com");
+        etu.setId("6837bbc8608b37000cb3f82d"); // FORCÉ L’ID
+        etu.setMatricule("ET1234");
         etu.setUtilisateurId("u001");
+        etu.setTelephone("777123456");
         etu.setAbsenceIds(List.of("a001", "a002"));
 
         etudiantRepository.save(etu);

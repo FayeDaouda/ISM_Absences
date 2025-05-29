@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "absences")
 
 public class Absence extends AbstractEntity {
+
     private String etudiantId;
     private String sessionId;
     private Situation type;

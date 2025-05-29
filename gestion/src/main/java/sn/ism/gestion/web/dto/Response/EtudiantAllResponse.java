@@ -10,19 +10,14 @@ public class EtudiantAllResponse {
 
     private String nom;
     private String prenom;
-    private String email;
+    private String login;
     private String utilisateurId;
-    private List<AbsenceSimpleResponse> absences;
 
-    public EtudiantAllResponse(Etudiant etudiant) {
-        this.nom = etudiant.getNom();
-        this.prenom = etudiant.getPrenom();
-        this.email = etudiant.getEmail();
+    private List<AbsenceSimpleResponse> listAbsences;
+
+    public EtudiantAllResponse(Etudiant etudiant, List<AbsenceSimpleResponse> absences,String login) {
+        this.login = login;
         this.utilisateurId = etudiant.getUtilisateurId();
-    }
-
-    public EtudiantAllResponse(Etudiant etudiant, List<AbsenceSimpleResponse> absences) {
-        this(etudiant); 
-        this.absences = absences;
+        this.listAbsences = absences;
     }
 }

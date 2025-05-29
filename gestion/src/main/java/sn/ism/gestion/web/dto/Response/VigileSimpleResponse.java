@@ -6,12 +6,13 @@ import sn.ism.gestion.data.entities.Vigile;
 @Setter
 public class VigileSimpleResponse {
     
-    private String utilisateurId ;
+    private String nom;
+    private String prenom;
+    private String login;
 
-    public VigileSimpleResponse(Vigile vigile) {
+    public VigileSimpleResponse(Vigile vigile, String login) {
 
-        this.utilisateurId = vigile.getUtilisateurId();
-        
+        this.login = login;
     }
-
 }
+
