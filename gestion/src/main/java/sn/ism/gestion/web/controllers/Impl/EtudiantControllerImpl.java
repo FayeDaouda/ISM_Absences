@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IEtudiantService;
-import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.web.controllers.IEtudiantController;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
-import sn.ism.gestion.web.dto.Response.AbsenceEtudiantResponse;
-import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 
@@ -102,7 +98,9 @@ public class EtudiantControllerImpl implements IEtudiantController {
     public ResponseEntity<Map<String, Object>> justifierAbsence(String id, JustificationRequest justification) {
 
          Absence justificationAbsence = etudiantService.justifierAbsence(id, justification.toEntity());
-
+        return new ResponseEntity<>(
+                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "jusificationEtudiant"),
+                HttpStatus.ACCEPTED);
     }
 
     @Override

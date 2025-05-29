@@ -8,8 +8,7 @@ import sn.ism.gestion.data.entities.Etudiant;
 @Setter
 public class EtudiantSimpleResponse {
 
-    private String nom;
-    private String prenom;
+
     private String login;
     private String utilisateurId;
 

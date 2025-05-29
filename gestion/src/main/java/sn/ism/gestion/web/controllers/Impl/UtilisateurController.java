@@ -10,13 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.services.IUtilisateurService;
-import sn.ism.gestion.data.services.impl.UtilisateurServiceImpl;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.controllers.IUtilisateurController;
-import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 

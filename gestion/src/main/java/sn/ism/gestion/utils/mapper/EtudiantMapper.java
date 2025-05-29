@@ -9,14 +9,14 @@ import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
-import sn.ism.gestion.web.dto.Response.AbsenceSimpleResponse;
+import sn.ism.gestion.web.dto.Response.AbsenceEtudiantResponse;
 
 @Mapper(componentModel = "spring", uses = AbsenceMapper.class)
 public interface EtudiantMapper {
 
     // On mappe la liste d'absences déjà récupérée vers listAbsences dans le DTO
     //@Mapping(target = "listAbsences", source = "absences")
-    EtudiantAllResponse toDtoListeAbsence(Etudiant etudiant, List<AbsenceSimpleResponse> absences, String login);
+    EtudiantAllResponse toDtoListeAbsence(Etudiant etudiant, List<AbsenceEtudiantResponse> absences, String login);
     //EtudiantAllResponse toDtoListeAbsence(Etudiant etudiant, List<AbsenceSimpleResponse> absences);
 
     // Transformation simple sans les absences
@@ -27,7 +27,7 @@ public interface EtudiantMapper {
 
     // Cette méthode doit être gérée en dehors de MapStruct (dans ton service)
     @Named("mapAbsenceIdsToResponses")
-    default List<AbsenceSimpleResponse> mapAbsenceIdsToResponses(List<String> absenceIds) {
+    default List<AbsenceEtudiantResponse> mapAbsenceIdsToResponses(List<String> absenceIds) {
         throw new UnsupportedOperationException(
             "Le mapping des absences à partir des IDs doit être effectué dans le service");
     }

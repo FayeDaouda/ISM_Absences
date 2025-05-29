@@ -8,14 +8,12 @@ import lombok.Setter;
 @Setter
 public class EtudiantAllResponse {
 
-    private String nom;
-    private String prenom;
     private String login;
     private String utilisateurId;
 
-    private List<AbsenceSimpleResponse> listAbsences;
+    private List<AbsenceEtudiantResponse> listAbsences;
 
-    public EtudiantAllResponse(Etudiant etudiant, List<AbsenceSimpleResponse> absences,String login) {
+    public EtudiantAllResponse(Etudiant etudiant, List<AbsenceEtudiantResponse> absences,String login) {
         this.login = login;
         this.utilisateurId = etudiant.getUtilisateurId();
         this.listAbsences = absences;
