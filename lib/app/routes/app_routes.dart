@@ -4,5 +4,8 @@ class AppRoutes {
   static const dashboardEtudiant = '/dashboard-etudiant';
   static const dashboardVigile = '/dashboard-vigile';
   static const justificationEtudiant = '/justification-etudiant';
+  static const dashboardAbsences = '/dashboardabsences';
+
+  
 
 }
