@@ -42,19 +42,19 @@ public class EtudiantControllerImpl implements IEtudiantController {
             }
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
+        Etudiant etudiant = etudiantService.createEtudiant(request);
+        Etudiant entityEtudiant = etudiantMapper.toEntity(etudiant);
 
-        Etudiant etudiant = etudiantService.create(etudiantMapper.toEntity(request));
-        EtudiantSimpleResponse dto = etudiantMapper.toDto(etudiant);
-        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, dto, "Etudiant"), HttpStatus.CREATED);
+        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityEtudiant, "Etudiant"), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> SelectAll(@RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "5") int size) {
+    public ResponseEntity<Map<String, Object>> SelectAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Etudiant> etudiants = etudiantService.findAll(pageable);
         Page<EtudiantSimpleResponse> response = etudiants.map(etudiantMapper::toDto);
-
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -87,7 +87,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
 
     @Override
     public ResponseEntity<Map<String, Object>> Update(String id, EtudiantSimpleRequest request) {
-        Etudiant updated = etudiantService.update(id, etudiantMapper.toEntity(request));
+        Etudiant updated = etudiantService.update(id, etudiantMapper.toEntityR(request));
         EtudiantSimpleResponse dto = etudiantMapper.toDto(updated);
         return new ResponseEntity<>(
                 RestResponse.response(HttpStatus.ACCEPTED, dto, "EtudiantSimpleResponse"),

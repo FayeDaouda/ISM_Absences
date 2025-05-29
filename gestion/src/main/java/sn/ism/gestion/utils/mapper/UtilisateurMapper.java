@@ -12,9 +12,6 @@ public interface UtilisateurMapper {
 
 
     UtilisateurSimpleResponse toDto(Optional<Utilisateur> utilisateur);
-
-
-    // Conversion requête vers entité
     Utilisateur toEntity(UtilisateurCreateRequest request);
 
 }

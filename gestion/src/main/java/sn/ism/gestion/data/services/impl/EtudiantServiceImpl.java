@@ -13,15 +13,17 @@ import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.entities.Utilisateur;
+import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
-import sn.ism.gestion.utils.mapper.AbsenceMapper;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
-import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
+import sn.ism.gestion.utils.mapper.UtilisateurMapper;
+import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
+
 
 @Service
 @RequiredArgsConstructor
@@ -34,13 +36,28 @@ public class EtudiantServiceImpl implements IEtudiantService {
     @Autowired
     private AbsenceRepository absenceRepository;
     @Autowired
-    private AbsenceMapper absenceMapper;
+    private UtilisateurMapper utilisateurMapper;
     @Autowired
     private EtudiantMapper etudiantMapper;
 
+    private EtudiantSimpleRequest etudiantSimpleRequest;
+
+    public Etudiant createEtudiant(EtudiantSimpleRequest etudiantSimpleRequest) {
+        var existingEtudiant = etudiantRepository.findByMatricule(etudiantSimpleRequest.getMatricule());
+        if (existingEtudiant.isPresent()) {
+            throw new EntityNotFoundExecption("Un étudiant avec ce matricule existe déjà");
+        }
+        Utilisateur utilisateur = utilisateurMapper.toEntity(etudiantSimpleRequest.getUtilisateurcreate());
+        utilisateur.setRole(Role.ETUDIANT);
+        utilisateur = utilisateurRepository.save(utilisateur);
+        Etudiant etudiantCreate = etudiantMapper.toEntityR(etudiantSimpleRequest);
+        etudiantCreate.setUtilisateurId(utilisateur.getId());
+        return etudiantRepository.save(etudiantCreate);
+       }
+
     @Override
-    public Etudiant create(Etudiant etudiant) {
-        return etudiantRepository.save(etudiant);
+    public Etudiant create(Etudiant object) {
+        return null;
     }
 
     @Override
@@ -75,7 +92,6 @@ public class EtudiantServiceImpl implements IEtudiantService {
 
     @Override
     public Page<Etudiant> findAll(Pageable pageable) {
-
         return etudiantRepository.findAll(pageable);
     }
 
@@ -98,6 +114,8 @@ public class EtudiantServiceImpl implements IEtudiantService {
     public Page<Absence> getMylistAbsences(String etudiantId, Pageable pageable) {
         return absenceRepository.findByEtudiantId(etudiantId, pageable);
     }
+
+
 
 //     public EtudiantAllResponse getEtudiantWithAbsences(String id, Pageable pageable) {
 //     Etudiant etudiant = etudiantRepository.findById(id)

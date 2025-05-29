@@ -16,10 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
-import sn.ism.gestion.web.dto.Response.AbsenceEtudiantResponse;
 
 @RestController
 @RequestMapping("/api/etudiants")
