@@ -1,0 +1,37 @@
+<div class="flex h-screen font-sans">
+  <app-sidebar class="w-[250px]"></app-sidebar>
+
+  <div class="flex-1 flex flex-col bg-[#F5F5F5]">
+    <app-navebar></app-navebar>
+
+    <main class="flex-1 p-8">
+      <section class="bg-white rounded-lg p-6 border">
+        <h2 class="text-xl font-bold mb-4">Justification</h2>
+        <p class="mb-6 text-gray-500">Veuillez valider ou invalider la justification</p>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <p><span class="font-bold">Nom:</span> {{ absence?.nom }}</p>
+            <p><span class="font-bold">Prénom:</span> {{ absence?.prenom }}</p>
+            <p><span class="font-bold">Classe:</span> L3CSDD</p>
+            <p><span class="font-bold">Mail:</span> {{ (absence?.prenom?.toLowerCase() || '') }}.{{ (absence?.nom?.toLowerCase() || '') }}ism.edu.sn</p>
+            <p><span class="font-bold">Matricule:</span> MAT0962</p>
+            <p><span class="font-bold">Motif:</span> Absence</p>
+
+            <label class="block mt-4 font-semibold">Description détaillée du motif :</label>
+            <textarea class="w-full h-28 border p-2 rounded" readonly>{{ absence?.description }}</textarea>
+
+            <div class="mt-4 flex space-x-4">
+              <button class="bg-green-600 text-white px-4 py-2 rounded">Valider</button>
+              <button class="bg-red-600 text-white px-4 py-2 rounded">Invalider</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center">
+            <img src="/assets/justification-doc.png" alt="Justification" class="w-[200px] h-auto" />
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
