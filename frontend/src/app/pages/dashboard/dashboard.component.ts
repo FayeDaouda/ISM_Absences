@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
-
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 interface Absence {
   nom: string;
   prenom: string;

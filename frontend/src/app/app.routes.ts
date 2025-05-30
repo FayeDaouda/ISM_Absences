@@ -29,13 +29,13 @@ export const routes: Routes = [
     data: { preload: true }
   },
   
-  // {
-  //   path: 'etudiants',
-  //   loadComponent: () =>
-  //     import('./pages/etudiants/etudiants.component').then(m => m.EtudiantsComponent),
-  //   canActivate: [authGuard],
-  //   data: { preload: true }
-  // },
+  {
+    path: 'etudiants',
+    loadComponent: () =>
+      import('./pages/etudiants/etudiant.component').then(m => m.EtudiantsComponent),
+    canActivate: [authGuard],
+    data: { preload: true }
+  },
 
   {
     path: '**',

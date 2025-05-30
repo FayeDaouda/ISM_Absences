@@ -1,1 +1,36 @@
-<p>sidebar works!</p>
+<!-- sidebar.component.html -->
+<div class="sidebar">
+  <!-- Logo Section -->
+  <div class="sidebar-header">
+    <div class="sidebar-logo logo-container">
+      <div class="logo-icon">
+        <img src="assets/Logo_Ism.png" alt="Logo ISM" class="ism-logo-img" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Accueil</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/absences" routerLinkActive="active" class="nav-link">Absences</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/etudiants" routerLinkActive="active" class="nav-link">Étudiants</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Déconnexion -->
+  <div class="sidebar-logout">
+    <button (click)="logout()" class="nav-button">
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"></path>
+      </svg>
+      Déconnexion
+    </button>
+  </div>
+</div>
