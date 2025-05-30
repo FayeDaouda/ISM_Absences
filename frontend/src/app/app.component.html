@@ -1,1 +1,7 @@
-<h1>Hello World</h1>
+<div class="flex">
+  <app-nav></app-nav>
+  <div class="flex-1 p-4 bg-[#fdf6f0] min-h-screen">
+    <app-header [pageTitle]="currentTitle"></app-header>
+    <router-outlet></router-outlet>
+  </div>
+</div>

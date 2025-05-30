@@ -1,0 +1,31 @@
+<div class="flex items-center justify-between bg-[#fdf6f0] p-4 border-b">
+  <!-- Titre dynamique -->
+  <div>
+    <h1 class="text-3xl font-bold">{{ pageTitle }}</h1>
+    <p class="text-sm text-gray-700">Bienvenue dans l’espace administrateur</p>
+  </div>
+
+  <!-- Barre de recherche et utilisateur -->
+  <div class="flex items-center gap-6">
+    <!-- Barre de recherche -->
+    <div class="relative">
+      <input
+        type="text"
+        placeholder="Recherchez"
+        class="border rounded-full px-4 py-1 text-sm"
+      />
+      <span class="material-icons absolute top-1 right-2 text-gray-400">search</span>
+    </div>
+
+    <!-- Infos utilisateur -->
+    <div class="flex items-center gap-2">
+      <div class="bg-yellow-200 rounded-full p-2">
+        <span class="material-icons">person</span>
+      </div>
+      <div>
+        <p class="font-semibold">Lucien da Souza</p>
+        <p class="text-xs text-gray-600">Administrateur</p>
+      </div>
+    </div>
+  </div>
+</div>
