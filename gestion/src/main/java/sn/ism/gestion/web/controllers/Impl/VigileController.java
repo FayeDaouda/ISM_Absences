@@ -78,7 +78,7 @@ public class VigileController implements IVigileController {
         return new ResponseEntity<>(
                 new RestResponse().response(
                         HttpStatus.OK,vigileDto,
-                        "vigileAllResponse"),
+                        "vigileSimpleResponse"),
                 HttpStatus.OK);
     }
 

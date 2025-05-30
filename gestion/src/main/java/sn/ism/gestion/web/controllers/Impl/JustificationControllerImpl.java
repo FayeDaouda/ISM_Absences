@@ -44,7 +44,7 @@ public class JustificationControllerImpl implements IJustificationController {
         Justification justification = justificationService.createJustication(request);
         Justification entityJustification = justificationMapper.toEntity(justification);
 
-        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityJustification, "Justification"), HttpStatus.CREATED);
+        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityJustification, "JustificationCreate"), HttpStatus.CREATED);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class JustificationControllerImpl implements IJustificationController {
                         response.getTotalElements(),
                         response.isFirst(),
                         response.isLast(),
-                        "JustificationsimpleResponses"),
+                        "JustificationAllResponses"),
                 HttpStatus.OK);
     }
 
@@ -91,7 +91,7 @@ public class JustificationControllerImpl implements IJustificationController {
         Justification justification = justificationService.findById(id);
         justificationService.delete(id);
         return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.ACCEPTED, justification, "Justification"),
+                RestResponse.response(HttpStatus.ACCEPTED, justification, "JustificationUpdate"),
                 HttpStatus.ACCEPTED);
     }
 

@@ -44,7 +44,11 @@ public class AbsenceControllerImpl implements IAbsenceController {
         Absence absence = absenceService.createAbsence(request);
         Absence entityAbsence = absenceMapper.toEntity(absence);
 
-        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityAbsence, "Absence"), HttpStatus.CREATED);
+        return new ResponseEntity<>(RestResponse.response(  
+            HttpStatus.CREATED, 
+                    entityAbsence, 
+                    "AbsenceCreateRequest"), 
+            HttpStatus.CREATED);
     }
 
     @Override
@@ -63,7 +67,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
                         response.getTotalElements(),
                         response.isFirst(),
                         response.isLast(),
-                        "AbsencesimpleResponses"),
+                        "AbsenceAllResponses"),
                 HttpStatus.OK);
     }
 
@@ -94,7 +98,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
         Absence absence = absenceService.findById(id);
         absenceService.delete(id);
         return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.ACCEPTED, absence, "Absence"),
+                RestResponse.response(HttpStatus.ACCEPTED, absence, "DeleteAbsence"),
                 HttpStatus.ACCEPTED);
     }
 

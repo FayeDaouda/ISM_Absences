@@ -47,7 +47,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
         Etudiant etudiant = etudiantService.createEtudiant(request);
         Etudiant entityEtudiant = etudiantMapper.toEntity(etudiant);
 
-        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityEtudiant, "Etudiant"), HttpStatus.CREATED);
+        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityEtudiant, "EtudiantCreate"), HttpStatus.CREATED);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
                         response.getTotalElements(),
                         response.isFirst(),
                         response.isLast(),
-                        "EtudiantsimpleResponses"),
+                        "EtudiantAllResponses"),
                 HttpStatus.OK);
     }
 

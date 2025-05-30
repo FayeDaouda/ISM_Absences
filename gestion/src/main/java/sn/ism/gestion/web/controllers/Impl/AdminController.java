@@ -47,7 +47,7 @@ public class AdminController implements IAdminController {
         Admin admin = adminService.createAdmin(request);
         Admin entityAdmin = adminMapper.toEntity(admin);
 
-        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityAdmin, "Admin"), HttpStatus.CREATED);
+        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityAdmin, "AdminCreate"), HttpStatus.CREATED);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class AdminController implements IAdminController {
         return new ResponseEntity<>(
                 new RestResponse().response(
                         HttpStatus.OK,adminDto,
-                        "adminAllResponse"),
+                        "adminSimpleResponse"),
                 HttpStatus.OK);
     }
 
