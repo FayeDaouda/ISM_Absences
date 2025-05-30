@@ -58,4 +58,12 @@ export class AbsenceService {
   getById(id: number): Absence | undefined {
     return this.absences.find(a => a.id === id);
   }
+
+  updateEtat(id: number, newEtat: Absence['etat']): void {
+  const found = this.absences.find(a => a.id === id);
+  if (found) {
+    found.etat = newEtat;
+  }
+}
+
 }

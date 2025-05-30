@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AbsenceService } from '../../../shared/services/absence.service';
 import { Absence } from '../../../shared/models/absence.model';
@@ -15,7 +15,7 @@ import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.com
 export class JustificationComponent {
   absence?: Absence;
 
-  constructor(private route: ActivatedRoute, private service: AbsenceService) {
+  constructor(private route: ActivatedRoute, private router: Router, private service: AbsenceService) {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.absence = this.service.getById(id);
   }
@@ -33,6 +33,20 @@ export class JustificationComponent {
       case 'justifiee': return 'text-green-600';
       case 'en_attente': return 'text-yellow-600';
       case 'non_justifiee': return 'text-red-600';
+    }
+  }
+
+  valider() {
+    if (this.absence) {
+      this.service.updateEtat(this.absence.id, 'justifiee');
+      this.router.navigate(['/absences']);
+    }
+  }
+
+  invalider() {
+    if (this.absence) {
+      this.service.updateEtat(this.absence.id, 'non_justifiee');
+      this.router.navigate(['/absences']);
     }
   }
 }
