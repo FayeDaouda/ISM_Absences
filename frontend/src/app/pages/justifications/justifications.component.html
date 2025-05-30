@@ -1,4 +1,4 @@
-<!-- justification.component.html -->
+<!-- justification-detail.component.html -->
 <div class="dashboard-container">
   <!-- Sidebar -->
   <div class="sidebar">
@@ -17,18 +17,18 @@
         <li class="nav-item">
           <button (click)="navigateToAccueil()" class="nav-button">
             <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L8 5.414V17a1 1 0 001 1h2a1 1 0 001-1v-3a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 001 1h2a1 1 0 001-1V5.414l6.293 6.293a1 1 0 001.414-1.414l-9-9z"></path>
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
             </svg>
             Accueil
           </button>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link active">
+          <button (click)="navigateToAbsences()" class="nav-button active">
             <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
             </svg>
             Absences
-          </a>
+          </button>
         </li>
         <li class="nav-item">
           <button (click)="navigateToEtudiants()" class="nav-button">
@@ -90,75 +90,60 @@
     </header>
 
     <!-- Justification Content -->
-    <main class="justification-main">
-      <!-- Loading State -->
-      <div *ngIf="loading" class="loading-container">
-        <div class="loading-spinner"></div>
-        <p>Chargement en cours...</p>
-      </div>
-
-      <!-- Error State -->
-      <div *ngIf="error && !loading" class="error-container">
-        <div class="error-message">
-          <svg class="error-icon" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-          </svg>
-          <h3>Erreur</h3>
-          <p>{{ error }}</p>
-          <button (click)="loadJustification(justification.id)" class="btn btn-retry">
-            Réessayer
-          </button>
-        </div>
-      </div>
-
-      <!-- Main Content -->
-      <div *ngIf="!loading && !error" class="justification-container">
+    <main class="dashboard-main">
+      <div class="justification-container">
         <div class="justification-card">
           <div class="justification-header">
-            <h2>Justification</h2>
-            <p>Veuillez valider ou invalider la justification</p>
+            <h2 class="justification-title">Justification</h2>
+            <p class="justification-subtitle">Veuillez valider ou invalider la justification</p>
           </div>
 
           <div class="justification-content">
-            <div class="student-info-section">
-              <div class="info-card left-info">
+            <!-- Informations personnelles -->
+            <div class="info-grid">
+              <div class="info-section left">
                 <div class="info-item">
-                  <strong>Nom:</strong>
-                  <span>{{ justification.nom }}</span>
+                  <span class="info-label">Nom:</span>
+                  <span class="info-value">{{ justification?.nom || 'Faye' }}</span>
                 </div>
                 <div class="info-item">
-                  <strong>Prénom:</strong>
-                  <span>{{ justification.prenom }}</span>
+                  <span class="info-label">Prénom:</span>
+                  <span class="info-value">{{ justification?.prenom || 'Daouda' }}</span>
                 </div>
                 <div class="info-item">
-                  <strong>Classe:</strong>
-                  <span>{{ justification.classe }}</span>
+                  <span class="info-label">Classe:</span>
+                  <span class="info-value">{{ justification?.classe || 'L3CDSD' }}</span>
                 </div>
               </div>
 
-              <div class="info-card right-info">
+              <div class="info-section right">
                 <div class="info-item">
-                  <strong>Mail:</strong>
-                  <span class="email-text">{{ justification.email }}</span>
+                  <span class="info-label">Mail:</span>
+                  <span class="info-value email">{{ justification?.email || 'daouda.faye1@ism.edu.sn' }}</span>
                 </div>
                 <div class="info-item">
-                  <strong>Matricule:</strong>
-                  <span>{{ justification.matricule }}</span>
+                  <span class="info-label">Matricule:</span>
+                  <span class="info-value">{{ justification?.matricule || 'Mat09462' }}</span>
                 </div>
                 <div class="info-item">
-                  <strong>Motif:</strong>
-                  <span>{{ justification.motif }}</span>
+                  <span class="info-label">Motif:</span>
+                  <span class="info-value">{{ justification?.motif || 'Absence' }}</span>
                 </div>
               </div>
             </div>
 
+            <!-- Document de justification -->
             <div class="document-section">
-              <div class="document-left">
+              <div class="document-header">
                 <h3>Document de justification:</h3>
-                <div class="document-content">
-                  <div class="document-text">
-                    <p>{{ justification.documentTexte }}</p>
+              </div>
+              
+              <div class="document-content">
+                <div class="document-text">
+                  <div class="document-paper">
+                    <p class="document-line">{{ justification?.document || 'Je me suis cassé la jambe en m\'entrainant........................' }}</p>
                     <div class="document-lines">
+                      <div class="line"></div>
                       <div class="line"></div>
                       <div class="line"></div>
                       <div class="line"></div>
@@ -167,27 +152,44 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="document-right">
-                <div class="illustration">
-                  <img src="assets/student-illustration.svg" alt="Student illustration" class="student-img" />
+                
+                <div class="document-illustration">
+                  <div class="illustration-container">
+                    <svg width="200" height="150" viewBox="0 0 200 150" class="student-illustration">
+                      <!-- Étudiant assis avec une jambe cassée -->
+                      <circle cx="100" cy="30" r="15" fill="#8B4513" />
+                      <rect x="85" y="45" width="30" height="40" rx="5" fill="#FF6B35" />
+                      <rect x="80" y="85" width="15" height="25" fill="#4A90E2" />
+                      <rect x="105" y="85" width="15" height="25" fill="#4A90E2" />
+                      <rect x="75" y="110" width="25" height="8" fill="#8B4513" />
+                      <rect x="100" y="110" width="25" height="8" fill="#FF4444" />
+                      <!-- Bandage sur la jambe -->
+                      <rect x="98" y="108" width="30" height="12" rx="2" fill="white" stroke="#ccc" />
+                      <text x="113" y="116" text-anchor="middle" font-size="8" fill="#666">!</text>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
 
+            <!-- Boutons d'action -->
             <div class="action-buttons">
               <button 
                 (click)="validerJustification()" 
                 class="btn btn-valider"
+                [disabled]="isProcessing"
               >
-                Valider
+                <span *ngIf="!isProcessing">Valider</span>
+                <span *ngIf="isProcessing">En cours...</span>
               </button>
+              
               <button 
                 (click)="invaliderJustification()" 
                 class="btn btn-invalider"
+                [disabled]="isProcessing"
               >
-                Invalider
+                <span *ngIf="!isProcessing">Invalider</span>
+                <span *ngIf="isProcessing">En cours...</span>
               </button>
             </div>
           </div>

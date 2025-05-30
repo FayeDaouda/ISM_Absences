@@ -1,0 +1,23 @@
+# Global .gitignore
+# Node/Angular
+node_modules/
+dist/
+
+# Java/Spring
+target/
+*.iml
+
+# Flutter
+build/
+.dart_tool/
+.packages
+.flutter-plugins
+.pub-cache/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env

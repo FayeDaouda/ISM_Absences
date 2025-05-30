@@ -12,6 +12,7 @@ interface Absence {
   etat: 'Justifié(e)' | 'En attente' | 'Non justifié(e)';
   motif?: string;
   dateAbsence?: string;
+  justificationId?: number; // AJOUT: ID de la justification associée
 }
 
 @Component({
@@ -25,12 +26,6 @@ interface Absence {
   styleUrls: ['./absences.component.css']
 })
 export class AbsencesComponent implements OnInit {
-logout() {
-throw new Error('Method not implemented.');
-}
-navigateToAbsences() {
-throw new Error('Method not implemented.');
-}
 
   // Infos utilisateur
   userDisplayName = 'Lucien da Souza';
@@ -62,7 +57,8 @@ throw new Error('Method not implemented.');
       date: '22/03/2025',
       etat: 'En attente',
       motif: 'Rendez-vous médical',
-      dateAbsence: '22/03/2025'
+      dateAbsence: '22/03/2025',
+      justificationId: 2 // AJOUT: Lien vers la justification correspondante
     },
     {
       id: 3,
@@ -81,7 +77,8 @@ throw new Error('Method not implemented.');
       date: '02/02/2025',
       etat: 'En attente',
       motif: 'Problème familial',
-      dateAbsence: '02/02/2025'
+      dateAbsence: '02/02/2025',
+      justificationId: 4 // AJOUT: Lien vers la justification correspondante
     },
     {
       id: 5,
@@ -112,15 +109,24 @@ throw new Error('Method not implemented.');
 
   // Navigation
   navigateToHome(): void {
+    console.log('Navigation vers dashboard');
     this.router.navigate(['/dashboard']);
   }
 
+  navigateToAbsences(): void {
+    console.log('Déjà sur la page absences');
+    // Déjà sur cette page, ne rien faire ou rafraîchir
+  }
+
   navigateToEtudiants(): void {
+    console.log('Navigation vers étudiants');
     this.router.navigate(['/etudiants']);
   }
 
   deconnexion(): void {
+    console.log('Déconnexion en cours...');
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
 
@@ -177,8 +183,41 @@ throw new Error('Method not implemented.');
     }
   }
 
+  // CORRECTION: Méthode pour voir les détails d'une absence - navigation vers justification
   voirDetails(absence: Absence): void {
-    this.router.navigate(['/absences/details', absence.id]);
+    console.log('Voir détails absence:', absence);
+    
+    // CORRECTION: Si l'absence a un statut "En attente" ET un justificationId, naviguer vers la justification
+    if (absence.etat === 'En attente' && absence.justificationId) {
+      console.log('Navigation vers justification ID:', absence.justificationId);
+      this.router.navigate(['/justification-detail', absence.justificationId]);
+    }
+    // Si l'absence est "Justifiée", on peut aussi naviguer vers sa justification si elle existe
+    else if (absence.etat === 'Justifié(e)' && absence.justificationId) {
+      console.log('Navigation vers justification validée ID:', absence.justificationId);
+      this.router.navigate(['/justification-detail', absence.justificationId]);
+    }
+    // Pour les absences non justifiées, afficher les informations disponibles
+    else {
+      console.log('Aucune justification disponible pour cette absence');
+      this.showAbsenceDetails(absence);
+    }
+  }
+
+  // CORRECTION: Méthode pour afficher les détails d'une absence sans justification
+  showAbsenceDetails(absence: Absence): void {
+    const message = `Détails de l'absence:
+
+Nom: ${absence.nom}
+Prénom: ${absence.prenom}
+Classe: ${absence.classe}
+Date: ${absence.date}
+État: ${absence.etat}
+Motif: ${absence.motif || 'Non spécifié'}
+
+${absence.etat === 'Non justifié(e)' ? 'Cette absence n\'a pas été justifiée.' : ''}`;
+
+    alert(message);
   }
 
   onSearchChange(): void {

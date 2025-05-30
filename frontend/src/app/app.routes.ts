@@ -22,13 +22,12 @@ export const routes: Routes = [
     data: { preload: true }
   },
   {
-    path: 'absences', 
+    path: 'absences',
     loadComponent: () =>
       import('./pages/absences/absences.component').then(m => m.AbsencesComponent),
     canActivate: [authGuard],
     data: { preload: true }
   },
-  
   {
     path: 'etudiants',
     loadComponent: () =>
@@ -36,36 +35,30 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { preload: true }
   },
-
+  {
+    path: 'justifications',
+    loadComponent: () =>
+      import('./pages/justifications/justifications.component').then(m => m.JustificationsComponent),
+    canActivate: [authGuard],
+    data: { preload: true }
+  },
+  {
+    path: 'justifications-list',
+    loadComponent: () =>
+      import('./pages/justifications/justifications-list.component').then(m => m.JustificationsListComponent),
+    canActivate: [authGuard],
+    data: { preload: true }
+  },
+  // Route pour les détails d'une justification avec paramètre ID
+  {
+    path: 'justification-detail/:id',
+    loadComponent: () =>
+      import('./pages/justifications/justifications.component').then(m => m.JustificationsComponent),
+    canActivate: [authGuard],
+    data: { preload: true }
+  },
   {
     path: '**',
     redirectTo: 'login'
   }
 ];
-
-// import { Routes } from '@angular/router';
-
-// export const routes: Routes = [
-//   {
-//     path: '',
-//     redirectTo: 'login',
-//     pathMatch: 'full'
-//   },
-//   {
-//     path: 'login',
-//     loadComponent: () =>
-//       import('./pages/login/login.component').then(m => m.LoginComponent),
-//     // Preload le composant pour éviter le délai de chargement
-//     data: { preload: true }
-//   },
-//   {
-//     path: 'dashboard',
-//     loadComponent: () =>
-//       import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
-//     data: { preload: true }
-//   },
-//   {
-//     path: '**',
-//     redirectTo: 'login'
-//   }
-// ];
