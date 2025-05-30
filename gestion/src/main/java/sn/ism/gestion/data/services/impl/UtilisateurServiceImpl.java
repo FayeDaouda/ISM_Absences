@@ -1,11 +1,13 @@
 package sn.ism.gestion.data.services.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import sn.ism.gestion.data.entities.Utilisateur;
@@ -56,10 +58,18 @@ public class UtilisateurServiceImpl implements IUtilisateurService {
 
     @Override
     public Utilisateur findByLogin(String login) {
-       return utilisateurRepo.findByLogin(login)
-            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
+        return utilisateurRepo.findByLogin(login)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec le login : " + login));
     }
 
-   
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Utilisateur utilisateur = utilisateurRepo.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec le login : " + username));
+
+        return User.withUsername(utilisateur.getLogin())
+                .password(utilisateur.getMotDePasse())
+                .roles(utilisateur.getRole().name())
+                .build();
+    }
 }

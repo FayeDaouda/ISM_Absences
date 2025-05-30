@@ -1,5 +1,7 @@
 package sn.ism.gestion.data.services.impl;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
+import sn.ism.gestion.data.enums.Situation;
 import sn.ism.gestion.data.repositories.*;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.services.IAbsenceService;
+import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.AbsenceMapper;
 import sn.ism.gestion.web.dto.Request.AbsenceRequest;
 import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
@@ -30,6 +34,8 @@ public class AbsenceServiceImpl implements IAbsenceService {
     private UtilisateurRepository utilisateurRepository;
     @Autowired
     private AbsenceMapper absenceMapper;
+    @Autowired
+    private SessionsCoursRepository sessionCoursRepository;
 
 
     @Override
@@ -45,6 +51,59 @@ public class AbsenceServiceImpl implements IAbsenceService {
         Absence absenceCreate = absenceMapper.toEntityR(absenceRequest);
         absenceCreate.setEtudiantId(existingEtudiant.getId());
         return absenceRepository.save(absenceCreate);
+    }
+//
+//    @Override
+//    public Absence pointerEtudiant(String sessionId, String etudiantId) {
+//        Absence absence = absenceRepository.findOneBySessionIdAndEtudiantId(sessionId, etudiantId)
+//            .orElseThrow(() -> new EntityNotFoundExecption("Absence non initialisée"));
+//
+//        LocalDateTime heureActuelle = LocalDateTime.now();
+//        LocalDateTime heureDebut = sessionCoursRepository.findById(sessionId)
+//            .orElseThrow().getHeureDebut();
+//
+//        if (heureActuelle.isBefore(heureDebut.plusMinutes(5))) {
+//            absence.setType(Situation.PRESENT);
+//        } else {
+//            absence.setType(Situation.RETARD);
+//        }
+//            absence.setHeurePointage(LocalTime.now());
+//            absenceRepository.save(absence);
+//        return absence;
+//    }
+
+    public Absence pointerEtudiant(String sessionId, String etudiantId) {
+        // Rechercher ou créer l'absence
+        Absence absence = absenceRepository.findOneBySessionIdAndEtudiantId(sessionId, etudiantId)
+                .orElseGet(() -> {
+                    // Vérification que la session et l'étudiant existent
+                    sessionCoursRepository.findById(sessionId)
+                            .orElseThrow(() -> new EntityNotFoundExecption("Session introuvable"));
+                    etudiantRepository.findById(etudiantId)
+                            .orElseThrow(() -> new EntityNotFoundExecption("Étudiant introuvable"));
+
+                    Absence newAbsence = new Absence();
+                    newAbsence.setSessionId(sessionId);
+                    newAbsence.setEtudiantId(etudiantId);
+                    newAbsence.setJustifiee(false);
+                    return absenceRepository.save(newAbsence);
+                });
+
+        // Charger la session pour avoir l'heure de début
+        LocalDateTime heureDebut = sessionCoursRepository.findById(sessionId)
+                .orElseThrow(() -> new EntityNotFoundExecption("Session introuvable"))
+                .getHeureDebut();
+
+        LocalDateTime heureActuelle = LocalDateTime.now();
+
+        if (heureActuelle.isBefore(heureDebut.plusMinutes(5))) {
+            absence.setType(Situation.PRESENT);
+        } else {
+            absence.setType(Situation.RETARD);
+        }
+
+        absence.setHeurePointage(LocalTime.now());
+        return absenceRepository.save(absence);
     }
 
     @Override

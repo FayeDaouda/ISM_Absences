@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/absences")
+@RequestMapping("api/pointages")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AbsenceControllerImpl implements IAbsenceController {
 
@@ -47,7 +47,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
         return new ResponseEntity<>(RestResponse.response(  
             HttpStatus.CREATED, 
                     entityAbsence, 
-                    "AbsenceCreateRequest"), 
+                    "PointageCreateRequest"), 
             HttpStatus.CREATED);
     }
 
@@ -67,11 +67,14 @@ public class AbsenceControllerImpl implements IAbsenceController {
                         response.getTotalElements(),
                         response.isFirst(),
                         response.isLast(),
-                        "AbsenceAllResponses"),
+                        "PointageAllResponses"),
                 HttpStatus.OK);
     }
 
-
+    public ResponseEntity<?> pointerEtudiant(@RequestParam String sessionId, @RequestParam String etudiantId) {
+        Absence absence = absenceService.pointerEtudiant(sessionId, etudiantId);
+        return ResponseEntity.ok().body(absence);
+    }
 
 
     @Override
@@ -82,7 +85,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
         return new ResponseEntity<>(
                 new RestResponse().response(
                         HttpStatus.OK,absenceDto,
-                        "absenceSimpleResponse"),
+                        "PointageSimpleResponse"),
                 HttpStatus.OK);
     }
 
@@ -111,4 +114,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
     public ResponseEntity<Map<String, Object>> findByDetailsId(String id) {
         return null;
     }
+
+    
+
 }

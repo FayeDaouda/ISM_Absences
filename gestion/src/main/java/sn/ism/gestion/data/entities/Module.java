@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Document(collection = "modules")
@@ -12,4 +14,6 @@ public class Module extends AbstractEntity
 {
     private String libelle;
     private String semestre;
+    List<String> sessionCoursIds ;
+
 }

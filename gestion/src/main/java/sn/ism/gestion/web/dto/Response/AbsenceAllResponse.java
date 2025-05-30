@@ -13,5 +13,6 @@ public class AbsenceAllResponse {
     private String sessionId;
     private Situation type;
     private boolean justifiee;
+  
 
 }

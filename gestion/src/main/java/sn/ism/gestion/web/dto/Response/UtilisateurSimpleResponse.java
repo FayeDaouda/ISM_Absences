@@ -7,7 +7,6 @@ import sn.ism.gestion.data.enums.Role;
 @Setter
 public class UtilisateurSimpleResponse {
 
-    
     private String id;
     private String nom;
     private String prenom;

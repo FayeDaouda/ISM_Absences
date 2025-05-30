@@ -14,6 +14,6 @@ public class Classe extends AbstractEntity
 {
     private String libelle;
     private String niveau;
-    private Filiere filiere;
+    private String filiereId;
     private List<String> anneeScolaireId;
 }

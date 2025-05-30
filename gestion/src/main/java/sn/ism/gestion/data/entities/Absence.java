@@ -6,6 +6,8 @@ import sn.ism.gestion.data.enums.Situation;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalTime;
+
 @Getter
 @Setter
 @Document(collection = "absences")
@@ -17,4 +19,7 @@ public class Absence extends AbstractEntity {
     private Situation type;
     private boolean justifiee;
     private String justificationId;
+    private LocalTime heurePointage;
+
+    
 }

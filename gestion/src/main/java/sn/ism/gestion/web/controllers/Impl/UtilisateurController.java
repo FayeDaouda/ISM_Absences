@@ -1,19 +1,28 @@
 package sn.ism.gestion.web.controllers.Impl;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.services.IUtilisateurService;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.controllers.IUtilisateurController;
+import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 
@@ -27,16 +36,56 @@ public class UtilisateurController implements IUtilisateurController {
     private final UtilisateurMapper utilisateurMapper;
 
 
+    public ResponseEntity<Map<String, Object>> Create(
+            UtilisateurCreateRequest request, BindingResult bindingResult) {
+//
+//       if (bindingResult.hasErrors()) {
+//            Map<String, Object> errors = new HashMap<>();
+//            for (FieldError error : bindingResult.getFieldErrors()) {
+//                errors.put(error.getField(), error.getDefaultMessage());
+//            }
+//            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+//        }
+//        Utilisateur utilisateur = utilisateurService.create(request);
+//        Utilisateur entityUtilisateur = utilisateurMapper.toEntity(utilisateur);
+//        return new ResponseEntity<>(RestResponse.response(
+//            HttpStatus.CREATED,
+//                entityUtilisateur,
+//            "utilisateurCreate"), HttpStatus.CREATED);
+        return  null;
+
+    }
+
+
     @Override
-    public ResponseEntity<Map<String, Object>> SelectAll(int page, int size) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'SelectAll'");
+    public ResponseEntity<Map<String, Object>> SelectAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Utilisateur> utilisateurs = utilisateurService.findAll(pageable);
+        Page<UtilisateurSimpleResponse> response = utilisateurs.map(utilisateurMapper::toDto);
+        return new ResponseEntity<>(
+                RestResponse.responsePaginate(
+                        HttpStatus.OK,
+                        response.getContent(),
+                        response.getNumber(),
+                        response.getTotalPages(),
+                        response.getTotalElements(),
+                        response.isFirst(),
+                        response.isLast(),
+                        "utilisateurAllResponse"),
+                HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'SelectdById'");
+        var utilisateur = utilisateurService.findById(id);
+        var utilisateurDto = utilisateurMapper.toDto(utilisateur);
+        return new ResponseEntity<>(
+                new RestResponse().response(
+                        HttpStatus.OK,utilisateurDto,
+                        "utilisateurSimpleResponse"),
+                HttpStatus.OK);
     }
 
     @Override
@@ -61,34 +110,3 @@ public class UtilisateurController implements IUtilisateurController {
     }
     
 }
-
-// <!-- Spring Security -->
-// <dependency>
-//     <groupId>org.springframework.boot</groupId>
-//     <artifactId>spring-boot-starter-security</artifactId>
-// </dependency>
-
-// <!-- JWT (JSON Web Token) pour l'authentification stateless -->
-// <dependency>
-//     <groupId>io.jsonwebtoken</groupId>
-//     <artifactId>jjwt-api</artifactId>
-//     <version>0.11.5</version>
-// </dependency>
-// <dependency>
-//     <groupId>io.jsonwebtoken</groupId>
-//     <artifactId>jjwt-impl</artifactId>
-//     <version>0.11.5</version>
-//     <scope>runtime</scope>
-// </dependency>
-// <dependency>
-//     <groupId>io.jsonwebtoken</groupId>
-//     <artifactId>jjwt-jackson</artifactId> <!-- ou jjwt-gson selon ce que tu veux -->
-//     <version>0.11.5</version>
-//     <scope>runtime</scope>
-// </dependency>
-
-// <!-- Pour encoder les mots de passe -->
-// <dependency>
-//     <groupId>org.springframework.security</groupId>
-//     <artifactId>spring-security-crypto</artifactId>
-// </dependency>

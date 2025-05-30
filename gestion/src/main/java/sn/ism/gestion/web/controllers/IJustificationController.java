@@ -19,6 +19,7 @@ import sn.ism.gestion.web.dto.Request.JustificationRequest;
 @RequestMapping("/api/justifications")
 public interface IJustificationController extends Controller<Justification> {
 
+    
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody JustificationRequest objet,
         BindingResult bindingResult);

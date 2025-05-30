@@ -12,12 +12,16 @@ import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/absences")
+@RequestMapping("/api/pointages")
 public interface IAbsenceController extends Controller<Absence> {
 
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody AbsenceRequest request,
                                                BindingResult bindingResult);
+
+    @PostMapping("/pointer")
+     ResponseEntity<?> pointerEtudiant(@RequestParam String sessionId,
+                                       @RequestParam String etudiantId);
 
     @GetMapping("/{etudiantId}")
     ResponseEntity<Map<String,Object>> findAbsencesByEtudiant(@PathVariable String id, 

@@ -11,10 +11,12 @@ import java.util.List;
 @Getter
 @Setter
 public class Cours extends AbstractEntity {
+
     private String professeurId;
     private String moduleId;
     private List<String> classeIds;
     private String semestre;
     private int nombreHeuresGlobal;
     private String anneeScolaireId;
+
 }

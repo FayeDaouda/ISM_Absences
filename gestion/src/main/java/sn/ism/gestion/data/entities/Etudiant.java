@@ -18,4 +18,5 @@ public class Etudiant extends AbstractEntity {
     private String telephone;
     private String classeId;
     List<String> absenceIds ;
+
 }
