@@ -55,7 +55,11 @@ public class UtilisateurServiceImpl implements IUtilisateurService {
     }
 
     @Override
-    public Optional<Utilisateur> findByLogin(String login) {
-        return utilisateurRepo.findByLogin(login);
+    public Utilisateur findByLogin(String login) {
+       return utilisateurRepo.findByLogin(login)
+            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
     }
+
+   
 }

@@ -7,6 +7,6 @@ import sn.ism.gestion.data.entities.Utilisateur;
 
 public interface IUtilisateurService extends Service<Utilisateur> {
     
-    Optional<Utilisateur> findByLogin(String login);
+    Utilisateur findByLogin(String login);
 
 }

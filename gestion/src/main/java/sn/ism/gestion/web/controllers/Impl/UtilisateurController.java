@@ -53,7 +53,7 @@ public class UtilisateurController implements IUtilisateurController {
 
     @Override
     public ResponseEntity<Map<String, Object>> findByLogin(String login) {
-        Optional<Utilisateur> utilisateur = utilisateurService.findByLogin(login);
+        Utilisateur utilisateur = utilisateurService.findByLogin(login);
         UtilisateurSimpleResponse dto = utilisateurMapper.toDto(utilisateur);
         return new ResponseEntity<>(
                 RestResponse.response(HttpStatus.OK, dto, "UtilisateurSimpleResponse"),
@@ -61,3 +61,34 @@ public class UtilisateurController implements IUtilisateurController {
     }
     
 }
+
+// <!-- Spring Security -->
+// <dependency>
+//     <groupId>org.springframework.boot</groupId>
+//     <artifactId>spring-boot-starter-security</artifactId>
+// </dependency>
+
+// <!-- JWT (JSON Web Token) pour l'authentification stateless -->
+// <dependency>
+//     <groupId>io.jsonwebtoken</groupId>
+//     <artifactId>jjwt-api</artifactId>
+//     <version>0.11.5</version>
+// </dependency>
+// <dependency>
+//     <groupId>io.jsonwebtoken</groupId>
+//     <artifactId>jjwt-impl</artifactId>
+//     <version>0.11.5</version>
+//     <scope>runtime</scope>
+// </dependency>
+// <dependency>
+//     <groupId>io.jsonwebtoken</groupId>
+//     <artifactId>jjwt-jackson</artifactId> <!-- ou jjwt-gson selon ce que tu veux -->
+//     <version>0.11.5</version>
+//     <scope>runtime</scope>
+// </dependency>
+
+// <!-- Pour encoder les mots de passe -->
+// <dependency>
+//     <groupId>org.springframework.security</groupId>
+//     <artifactId>spring-security-crypto</artifactId>
+// </dependency>

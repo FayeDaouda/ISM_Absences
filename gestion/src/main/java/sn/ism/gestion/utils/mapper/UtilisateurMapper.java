@@ -10,8 +10,9 @@ import java.util.Optional;
 @Mapper(componentModel = "spring")
 public interface UtilisateurMapper {
 
-
-    UtilisateurSimpleResponse toDto(Optional<Utilisateur> utilisateur);
-    Utilisateur toEntity(UtilisateurCreateRequest request);
+    Utilisateur toEntity(UtilisateurCreateRequest request) ;
+    
+    UtilisateurSimpleResponse toDto(Utilisateur user);
+  
 
 }
