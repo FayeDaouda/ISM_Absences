@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
+import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.web.controllers.IEtudiantController;
@@ -55,7 +56,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<EtudiantAllResponse> etudiants = etudiantService.getAllEtudiants(pageable);
-        Page<EtudiantAllResponse> response = etudiants.map(etudiantMapper::toDtoAll);
+        Page<EtudiantAllResponse> response = etudiants.map(etudiantMapper::toDto);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -100,17 +101,13 @@ public class EtudiantControllerImpl implements IEtudiantController {
 
     @Override
     public ResponseEntity<Map<String, Object>> Update(String id, EtudiantSimpleRequest request) {
-        Etudiant updated = etudiantService.update(id, etudiantMapper.toEntityR(request));
-        EtudiantSimpleResponse dto = etudiantMapper.toDto(updated);
-        return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.ACCEPTED, dto, "EtudiantSimpleResponse"),
-                HttpStatus.ACCEPTED);
+       return null;
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> justifierAbsence(String id, JustificationRequest justification) {
+    public ResponseEntity<Map<String, Object>> justifierAbsence(String id, JustificationRequest justificationRequest) {
 
-         Absence justificationAbsence = etudiantService.justifierAbsence(id, justification.toEntity());
+        Absence justificationAbsence = etudiantService.justifierAbsence(id, justificationRequest);
         return new ResponseEntity<>(
                 RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "jusificationEtudiant"),
                 HttpStatus.ACCEPTED);
@@ -131,7 +128,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
                                                                  @RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<?> absences = etudiantService.getMylistAbsencesPageable(id, pageable);
+        Page<?> absences = etudiantService.getAbsencesByEtudiantId(id, pageable);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -141,7 +138,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
                         absences.getTotalElements(),
                         absences.isFirst(),
                         absences.isLast(),
-                        "EtudiantAllResponse"),
+                        "EtudiantlisteAbsence"),
                 HttpStatus.OK);
     }
 

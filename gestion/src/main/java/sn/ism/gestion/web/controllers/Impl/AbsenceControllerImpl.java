@@ -13,14 +13,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import sn.ism.gestion.data.entities.Absence;
-import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.services.IAbsenceService;
 import sn.ism.gestion.utils.mapper.AbsenceMapper;
 import sn.ism.gestion.web.controllers.IAbsenceController;
-import sn.ism.gestion.web.dto.Request.AbsenceSimpleRequest;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
+import sn.ism.gestion.web.dto.Request.AbsenceRequest;
 import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
-import sn.ism.gestion.web.dto.Response.AbsenceSimpleResponse;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -35,8 +32,9 @@ public class AbsenceControllerImpl implements IAbsenceController {
     private final AbsenceMapper absenceMapper;
 
     @Override
-    public ResponseEntity<Map<String, Object>> Create(AbsenceSimpleRequest request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+    public ResponseEntity<Map<String, Object>> Create(AbsenceRequest request, BindingResult bindingResult) {
+
+            if (bindingResult.hasErrors()) {
             Map<String, Object> errors = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errors.put(error.getField(), error.getDefaultMessage());
@@ -55,7 +53,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<AbsenceAllResponse> absences = absenceService.getAllAbsences(pageable);
-        Page<AbsenceAllResponse> response = absences.map(absenceMapper::toDtoAll);
+        Page<AbsenceAllResponse> response = absences.map(absenceMapper::toDto);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
                         HttpStatus.OK,
@@ -68,6 +66,9 @@ public class AbsenceControllerImpl implements IAbsenceController {
                         "AbsencesimpleResponses"),
                 HttpStatus.OK);
     }
+
+
+
 
     @Override
     @GetMapping("/{id}")
@@ -83,29 +84,10 @@ public class AbsenceControllerImpl implements IAbsenceController {
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> findByMatricule(String matricule) {
-        var absence = absenceService.findByMat(matricule);
-        var absenceDto = absenceMapper.toDtoAll(absence);
-        return new ResponseEntity<>(
-                new RestResponse().response(
-                        HttpStatus.OK,absenceDto,
-                        "absenceSimpleResponse"),
-                HttpStatus.OK);
-    }
-
-    @Override
     public ResponseEntity<Map<String, Object>> Update(String id, Absence request) {
         return null;
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> Update(String id, AbsenceSimpleRequest request) {
-        Absence updated = absenceService.update(id, absenceMapper.toEntityR(request));
-        AbsenceSimpleResponse dto = absenceMapper.toDto(updated);
-        return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.ACCEPTED, dto, "AbsenceSimpleResponse"),
-                HttpStatus.ACCEPTED);
-    }
     
     @Override
     public ResponseEntity<Map<String, Object>> Delete(String id) {
@@ -115,5 +97,14 @@ public class AbsenceControllerImpl implements IAbsenceController {
                 RestResponse.response(HttpStatus.ACCEPTED, absence, "Absence"),
                 HttpStatus.ACCEPTED);
     }
-    
+
+    @Override
+    public ResponseEntity<Map<String, Object>> findAbsencesByEtudiant(String id, int page, int size) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> findByDetailsId(String id) {
+        return null;
+    }
 }

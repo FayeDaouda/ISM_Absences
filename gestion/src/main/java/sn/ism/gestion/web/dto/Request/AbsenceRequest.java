@@ -19,19 +19,16 @@ public class AbsenceRequest {
     private String sessionId;
 
     @NotBlank(message = "Le type d'absence est requis")
-    private String type; // Enum: Situation
+    private String type;
 
     private boolean justifiee;
-
-    private String justificationId;
 
     public Absence toEntity() {
         Absence absence = new Absence();
         absence.setEtudiantId(this.etudiantId);
         absence.setSessionId(this.sessionId);
-        absence.setType(Situation.valueOf(this.type)); // Attention à la casse de la string
+        absence.setType(Situation.valueOf(this.type));
         absence.setJustifiee(this.justifiee);
-        absence.setJustificationId(this.justificationId);
         return absence;
     }
 }

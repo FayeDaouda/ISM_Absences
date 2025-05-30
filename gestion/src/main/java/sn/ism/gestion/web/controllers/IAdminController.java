@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Admin;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
+import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 
 import java.util.Map;
 public interface IAdminController extends Controller<Admin> {
@@ -15,9 +16,11 @@ public interface IAdminController extends Controller<Admin> {
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody AdminSimpleRequest request,
                                                BindingResult bindingResult);
 
-    @PutMapping("/{absenceId}/valider")
-    ResponseEntity<Map<String,Object>> validerJustification(
-        @PathVariable String absenceId, 
-        @RequestParam boolean valider
-    );
+    @PutMapping("/{id}/valider")
+    ResponseEntity<Map<String,Object>> traiterJustification(
+            @PathVariable String id,
+            @RequestParam JustificationValidationRequest request
+            );
+
+
 }

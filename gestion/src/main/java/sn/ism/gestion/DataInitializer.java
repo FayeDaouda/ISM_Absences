@@ -8,9 +8,7 @@ import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.enums.Situation;
 import sn.ism.gestion.data.repositories.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class DataInitializer {
@@ -31,6 +29,7 @@ public class DataInitializer {
         vigileRepository.deleteAll();
         absenceRepository.deleteAll();
 
+        // 1. Utilisateurs
         List<Utilisateur> utilisateurs = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
             Utilisateur u = new Utilisateur();
@@ -43,6 +42,7 @@ public class DataInitializer {
         }
         utilisateurRepository.saveAll(utilisateurs);
 
+        // 2. Filières
         List<Filiere> filieres = new ArrayList<>();
         for (int i = 1; i <= 2; i++) {
             Filiere f = new Filiere();
@@ -51,7 +51,7 @@ public class DataInitializer {
         }
         filiereRepository.saveAll(filieres);
 
-        // 2. Classes
+        // 3. Classes
         List<Classe> classes = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
             Classe c = new Classe();
@@ -63,7 +63,7 @@ public class DataInitializer {
         }
         classeRepository.saveAll(classes);
 
-        // ==== 3. Étudiants ====
+        // 4. Étudiants
         List<Etudiant> etudiants = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
             Etudiant etu = new Etudiant();
@@ -76,6 +76,7 @@ public class DataInitializer {
         }
         etudiantRepository.saveAll(etudiants);
 
+        // 5. Vigiles
         List<Vigile> vigiles = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             Vigile v = new Vigile();
@@ -84,20 +85,42 @@ public class DataInitializer {
         }
         vigileRepository.saveAll(vigiles);
 
+        // 6. Absences et liaison aux utilisateurs
         List<Absence> absences = new ArrayList<>();
+        Map<String, List<Absence>> utilisateurAbsencesMap = new HashMap<>();
+
         for (int i = 1; i <= 6; i++) {
             Absence a = new Absence();
-            a.setEtudiantId(etudiants.get(i % etudiants.size()).getId());
+            Etudiant etu = etudiants.get(i % etudiants.size());
+
+            a.setEtudiantId(etu.getId());
             a.setSessionId("SESSION" + i);
             a.setType(i % 2 == 0 ? Situation.ABSENCE : Situation.RETARD);
             a.setJustifiee(i % 2 == 0);
             a.setJustificationId("JUSTIF" + i);
             absences.add(a);
 
-            etudiants.get(i % etudiants.size()).getAbsenceIds().add(a.getId());
+            // Ajouter ID à la liste d’absences de l’étudiant
+            etu.getAbsenceIds().add(a.getId());
+
+            // Lier aux utilisateurs via leur utilisateurId
+            String utilisateurId = etu.getUtilisateurId();
+            utilisateurAbsencesMap
+                    .computeIfAbsent(utilisateurId, k -> new ArrayList<>())
+                    .add(a);
         }
         absenceRepository.saveAll(absences);
         etudiantRepository.saveAll(etudiants);
+
+        // 7. Affichage utilisateur → absences
+        System.out.println("=== Liste des absences par utilisateur (étudiants) ===");
+        utilisateurAbsencesMap.forEach((utilisateurId, listeAbsences) -> {
+            Optional<Utilisateur> userOpt = utilisateurRepository.findById(utilisateurId);
+            userOpt.ifPresent(user -> {
+                System.out.println("Utilisateur : " + user.getPrenom() + " " + user.getNom());
+                listeAbsences.forEach(abs -> System.out.println("  - Absence ID : " + abs.getId() + ", Session : " + abs.getSessionId()));
+            });
+        });
 
         System.out.println("=== Fixtures insérées avec succès ===");
     }

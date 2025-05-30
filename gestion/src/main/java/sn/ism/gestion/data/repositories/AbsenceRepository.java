@@ -6,8 +6,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import sn.ism.gestion.data.entities.Absence;
 
+import java.util.List;
+
 public interface AbsenceRepository extends MongoRepository<Absence, String>{
-    
-    Page<Absence> findByEtudiantId(String etudiantId, Pageable pageable);
+
+   Page<Absence> findByEtudiantId(String etudiantId, Pageable pageable);
 
 }

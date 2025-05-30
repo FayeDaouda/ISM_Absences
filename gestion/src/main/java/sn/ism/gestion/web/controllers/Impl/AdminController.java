@@ -12,13 +12,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Admin;
+import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IAdminService;
+import sn.ism.gestion.data.services.IJustificationService;
+import sn.ism.gestion.data.services.impl.JustificationServiceImpl;
 import sn.ism.gestion.utils.mapper.AdminMapper;
 import sn.ism.gestion.web.controllers.IAdminController;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
+import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 import sn.ism.gestion.web.dto.Response.AdminAllResponse;
-import sn.ism.gestion.web.dto.Response.AdminSimpleResponse;
 import sn.ism.gestion.web.dto.Response.RestResponse;
 
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ import sn.ism.gestion.web.dto.Response.RestResponse;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController implements IAdminController {
 
+    private final IJustificationService justificationService;
     private final IAdminService adminService;
     private final AdminMapper adminMapper;
 
@@ -88,9 +93,11 @@ public class AdminController implements IAdminController {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> validerJustification(String absenceId, boolean valider) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validerJustification'");
+    public ResponseEntity<Map<String, Object>> traiterJustification(String id, JustificationValidationRequest request) {
+        Justification justificationAbsence = justificationService.traiterJustication(id, request);
+        return new ResponseEntity<>(
+                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "traitementJustifiction"),
+                HttpStatus.ACCEPTED);
     }
     
 }

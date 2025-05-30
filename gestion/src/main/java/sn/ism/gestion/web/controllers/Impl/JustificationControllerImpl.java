@@ -67,9 +67,6 @@ public class JustificationControllerImpl implements IJustificationController {
                 HttpStatus.OK);
     }
 
-
-
-
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {

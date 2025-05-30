@@ -7,10 +7,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sn.ism.gestion.data.entities.Absence;
+import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.repositories.AbsenceRepository;
+import sn.ism.gestion.data.enums.Situation;
+import sn.ism.gestion.data.repositories.*;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
+import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.services.IAbsenceService;
+import sn.ism.gestion.utils.mapper.AbsenceMapper;
+import sn.ism.gestion.utils.mapper.EtudiantMapper;
+import sn.ism.gestion.utils.mapper.EtudiantMapper;
+import sn.ism.gestion.web.dto.Request.AbsenceRequest;
+import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
+import sn.ism.gestion.web.dto.Response.AbsenceSimpleResponse;
 
 
 
@@ -19,8 +28,13 @@ public class AbsenceServiceImpl implements IAbsenceService {
 
     @Autowired
     private AbsenceRepository absenceRepository;
-      @Autowired
+    @Autowired
     private EtudiantRepository etudiantRepository;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+    @Autowired
+    private AbsenceMapper absenceMapper;
+
 
     @Override
     public Absence create(Absence object) {
@@ -28,10 +42,13 @@ public class AbsenceServiceImpl implements IAbsenceService {
     }
 
     @Override
-    public Page<Absence> findAbsencesByEtudiant(String matricule, Pageable pageable) {
-        Etudiant etudiant = etudiantRepository.findByMatricule(matricule)
-                .orElseThrow(() -> new RuntimeException("Étudiant non trouvé avec le matricule : " + matricule));
-        return absenceRepository.findByEtudiantId(etudiant.getId(),pageable);
+    public Absence createAbsence(AbsenceRequest absenceRequest) {
+    var existingEtudiant = etudiantRepository.findEtudiantById(absenceRequest.getEtudiantId())
+            .orElseThrow(()-> new RuntimeException("Etudiant not found ou id baxxoul"));
+
+        Absence absenceCreate = absenceMapper.toEntityR(absenceRequest);
+        absenceCreate.setEtudiantId(existingEtudiant.getId());
+        return absenceRepository.save(absenceCreate);
     }
 
     @Override
@@ -67,4 +84,44 @@ public class AbsenceServiceImpl implements IAbsenceService {
         return absenceRepository.findAll(pageable);
     }
 
+    @Override
+    public Page<AbsenceAllResponse> getAllAbsences(Pageable pageable) {
+        Page<Absence> absences = absenceRepository.findAll(pageable);
+
+        return absences.map(a -> {
+            AbsenceAllResponse dto = new AbsenceAllResponse();
+            dto.setType(a.getType());
+            dto.setSessionId(a.getSessionId());
+            dto.setJustifiee(a.isJustifiee());
+            etudiantRepository.findById(a.getEtudiantId()).ifPresent(e -> {
+                dto.setClasseEtudiant(e.getClasseId());
+                utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
+                    dto.setPrenomEtudiant(u.getPrenom());
+                    dto.setNonEtudiant(u.getNom());
+                });
+            });
+            return dto;
+        });
+    }
+
+    @Override
+     public AbsenceSimpleResponse getOne(String id) {
+         Absence absence = absenceRepository.findById(id)
+                 .orElseThrow(() -> new RuntimeException("Aucun Absence trouvé"));
+
+         Etudiant etudiant = etudiantRepository.findById(absence.getEtudiantId())
+                 .orElseThrow(() -> new RuntimeException("Etudiant introuvable"));
+
+         AbsenceSimpleResponse dto = new AbsenceSimpleResponse();
+         dto.setType(absence.getType());
+         dto.setSessionId(absence.getSessionId());
+         dto.setType(absence.getType());
+         dto.setJustificationId(absence.getJustificationId());
+         dto.setJustifiee(absence.isJustifiee());
+         dto.setClasseEtudiant(etudiant.getClasseId());
+
+
+         return dto;
+     }
+    
 }

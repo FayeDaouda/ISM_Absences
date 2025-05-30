@@ -16,14 +16,17 @@ import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
+import sn.ism.gestion.data.repositories.JustificationRepository;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
+import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
+import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
 
 
 @Service
@@ -40,7 +43,11 @@ public class EtudiantServiceImpl implements IEtudiantService {
     private UtilisateurMapper utilisateurMapper;
     @Autowired
     private EtudiantMapper etudiantMapper;
-   
+    @Autowired
+    private JustificationRepository justificationRepository;
+    @Autowired
+    private JustificationServiceImpl justificationServiceImpl;
+
 
     public Etudiant createEtudiant(EtudiantSimpleRequest etudiantSimpleRequest) {
         var existingEtudiant = etudiantRepository.findByMatricule(etudiantSimpleRequest.getMatricule());
@@ -50,6 +57,7 @@ public class EtudiantServiceImpl implements IEtudiantService {
         Utilisateur utilisateur = utilisateurMapper.toEntity(etudiantSimpleRequest.getUtilisateurcreate());
         utilisateur.setRole(Role.ETUDIANT);
         utilisateur = utilisateurRepository.save(utilisateur);
+
         Etudiant etudiantCreate = etudiantMapper.toEntityR(etudiantSimpleRequest);
         etudiantCreate.setUtilisateurId(utilisateur.getId());
         return etudiantRepository.save(etudiantCreate);
@@ -102,30 +110,27 @@ public class EtudiantServiceImpl implements IEtudiantService {
     }
 
     @Override
-    public Absence justifierAbsence(String absenceId, Justification justificatif) {
+    public Absence justifierAbsence(String absenceId, JustificationRequest justification) {
         Absence absence = absenceRepository.findById(absenceId)
                 .orElseThrow(() -> new EntityNotFoundExecption("Absence non trouvée"));
-        absence.setJustificationId(justificatif.getId());
+        Justification justificationCreate = justification.toJustification();
+        justificationCreate.setAbsenceId(absence.getId());
         absence.setJustifiee(true);
+        justificationServiceImpl.createJustication(justification);
         return absenceRepository.save(absence);
     }
 
-    @Override
-    public Page<Absence> getMylistAbsencesPageable(String etudiantId, Pageable pageable) {
-        return absenceRepository.findByEtudiantId(etudiantId, pageable);
-    }
     @Override
     public Page<EtudiantAllResponse> getAllEtudiants(Pageable pageable) {
         Page<Etudiant> etudiants = etudiantRepository.findAll(pageable);
 
         return etudiants.map(e -> {
             EtudiantAllResponse dto = new EtudiantAllResponse();
+            dto.setId(e.getId());
             dto.setMatricule(e.getMatricule());
             dto.setTelephone(e.getTelephone());
-
+            dto.setClasseId(e.getClasseId());
             utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
-                dto.setUtilisateurId(u.getId());
-                dto.setLogin(u.getLogin());
                 dto.setNom(u.getNom());
                 dto.setPrenom(u.getPrenom());
             });
@@ -135,19 +140,19 @@ public class EtudiantServiceImpl implements IEtudiantService {
     }
 
      @Override
-     public EtudiantAllResponse getOne(String id) {
+     public EtudiantSimpleResponse getOne(String id) {
          Etudiant etudiant = etudiantRepository.findById(id)
                  .orElseThrow(() -> new RuntimeException("Aucun Etudiant trouvé"));
 
          Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
                  .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-         EtudiantAllResponse dto = new EtudiantAllResponse();
+         EtudiantSimpleResponse dto = new EtudiantSimpleResponse();
          dto.setId(etudiant.getId());
          dto.setMatricule(etudiant.getMatricule());
          dto.setTelephone(etudiant.getTelephone());
-         dto.setUtilisateurId(utilisateur.getId());
-         dto.setLogin(utilisateur.getLogin());
+        //  dto.setUtilisateurId(utilisateur.getId());
+        //  dto.setLogin(utilisateur.getLogin());
          dto.setNom(utilisateur.getNom());
          dto.setPrenom(utilisateur.getPrenom());
 
@@ -156,23 +161,28 @@ public class EtudiantServiceImpl implements IEtudiantService {
 
 
     @Override
-    public EtudiantAllResponse findByMat(String matricule) {
+    public EtudiantSimpleResponse findByMat(String matricule) {
         Etudiant etudiant = etudiantRepository.findByMatricule(matricule)
                 .orElseThrow(() -> new RuntimeException("Aucun Etudiant trouvé"));
 
         Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-        EtudiantAllResponse dto = new EtudiantAllResponse();
+        EtudiantSimpleResponse dto = new EtudiantSimpleResponse();
         dto.setId(etudiant.getId());
         dto.setMatricule(etudiant.getMatricule());
         dto.setTelephone(etudiant.getTelephone());
-
-        dto.setUtilisateurId(utilisateur.getId());
-        dto.setLogin(utilisateur.getLogin());
+        // dto.setUtilisateurId(utilisateur.getId());
+        // dto.setLogin(utilisateur.getLogin());
         dto.setNom(utilisateur.getNom());
         dto.setPrenom(utilisateur.getPrenom());
 
         return dto;
+    }
+
+    @Override
+    public Page<Absence> getAbsencesByEtudiantId(String etudiantId, Pageable pageable) {
+             return absenceRepository.findByEtudiantId(etudiantId, pageable);
+
     }
 }

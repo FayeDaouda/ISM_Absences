@@ -17,11 +17,4 @@ public class JustificationSimpleResponse {
     private StatutJustification statut;
     private LocalDateTime dateSoumission;
 
-    public JustificationSimpleResponse(Justification justification) {
-        this.absenceId = justification.getAbsenceId();
-        this.commentaire = justification.getCommentaire();
-        this.fichierUrl = justification.getFichierUrl();
-        this.statut = justification.getStatut();
-        this.dateSoumission = justification.getDateSoumission();
-    }
 }

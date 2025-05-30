@@ -28,7 +28,7 @@ public interface IEtudiantController extends Controller<Etudiant> {
                 BindingResult bindingResult);
 
 
-    @GetMapping("/absences/{id}")
+    @GetMapping("/{id}/absences")
     ResponseEntity<Map<String,Object>> getMyListAbsences(@PathVariable String id, 
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size);
@@ -40,7 +40,7 @@ public interface IEtudiantController extends Controller<Etudiant> {
     @ApiResponse(responseCode = "200")
     ResponseEntity<Map<String, Object>> Update(@PathVariable String id, @RequestBody EtudiantSimpleRequest request);
 
-     @PostMapping("/{Id}/justicationAsence/")
+     @PostMapping("/{id}/justificationAbsence")
      ResponseEntity<Map<String,Object>> justifierAbsence(
              @PathVariable String id ,
              @RequestBody JustificationRequest justification);
