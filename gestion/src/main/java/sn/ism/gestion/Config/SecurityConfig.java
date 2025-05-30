@@ -21,22 +21,22 @@ public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//            .authorizeHttpRequests()
-//                .requestMatchers("/api/admins/**").hasRole("ADMIN")
-//                .requestMatchers("/api/etudiants/**").hasRole("ETUDIANT")
-//                .requestMatchers("/api/vigiles/**").hasRole("VIGILE")
-//                .requestMatchers("/api/**").authenticated()
-//                .anyRequest().permitAll()
-//            .and()
-//            .formLogin()
-//            .and()
-//            .logout().permitAll();
-//
-//        return http.build();
-//    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/admins/**").hasRole("ADMIN")
+                .requestMatchers("/api/etudiants/**").hasRole("ETUDIANT")
+                .requestMatchers("/api/vigiles/**").hasRole("VIGILE")
+                .anyRequest().authenticated()
+            )
+            .httpBasic(httpBasic -> {}) 
+            .logout(logout -> logout.permitAll());
+    
+        return http.build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,18 +56,18 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/**").permitAll() // ← accès libre à tous les endpoints API
-                .anyRequest().permitAll()
-                .and()
-                .formLogin()
-                .and()
-                .logout().permitAll();
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    //     http.csrf().disable()
+    //             .authorizeHttpRequests()
+    //             .requestMatchers("/api/**").permitAll() // ← accès libre à tous les endpoints API
+    //             .anyRequest().permitAll()
+    //             .and()
+    //             .formLogin()
+    //             .and()
+    //             .logout().permitAll();
 
-        return http.build();
-    }
+    //     return http.build();
+    // }
 
 }
