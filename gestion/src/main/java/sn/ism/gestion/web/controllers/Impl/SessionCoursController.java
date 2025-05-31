@@ -1,9 +1,6 @@
 package sn.ism.gestion.web.controllers.Impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -15,15 +12,11 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sn.ism.gestion.data.entities.SessionCours;
 import sn.ism.gestion.data.services.ISessionCoursService;
-import sn.ism.gestion.data.services.impl.SessionCoursServiceImpl;
 import sn.ism.gestion.utils.mapper.SessionMapper;
 import sn.ism.gestion.web.controllers.ISessionCoursController;
-import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
-import sn.ism.gestion.web.dto.Response.RestResponse;
+import sn.ism.gestion.web.dto.RestResponse;
 import sn.ism.gestion.web.dto.Response.SessionAllResponse;
-import sn.ism.gestion.web.dto.Response.SessionSimpleResponse;
 
 @AllArgsConstructor
 @RestController

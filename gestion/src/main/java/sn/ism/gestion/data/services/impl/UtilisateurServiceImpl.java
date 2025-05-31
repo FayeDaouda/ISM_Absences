@@ -2,6 +2,7 @@ package sn.ism.gestion.data.services.impl;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IUtilisateurService;
 
+@AllArgsConstructor
 @Service
 public class UtilisateurServiceImpl implements IUtilisateurService {
 

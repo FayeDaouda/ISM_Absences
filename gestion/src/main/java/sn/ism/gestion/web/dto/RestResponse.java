@@ -1,4 +1,4 @@
-package sn.ism.gestion.web.dto.Response;
+package sn.ism.gestion.web.dto;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -18,7 +18,7 @@ import sn.ism.gestion.utils.mapper.JustificationMapper;
 import sn.ism.gestion.web.controllers.IJustificationController;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.JustificationSimpleResponse;
-import sn.ism.gestion.web.dto.Response.RestResponse;
+import sn.ism.gestion.web.dto.RestResponse;
 
 import lombok.RequiredArgsConstructor;
 

@@ -10,7 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import sn.ism.gestion.data.entities.Utilisateur;
 
 public interface IUtilisateurService extends Service<Utilisateur>, UserDetailsService {
-    
+
+
     Utilisateur findByLogin(String login);
 
 }

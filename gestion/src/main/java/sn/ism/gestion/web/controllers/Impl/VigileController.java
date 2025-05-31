@@ -18,8 +18,7 @@ import sn.ism.gestion.utils.mapper.VigileMapper;
 import sn.ism.gestion.web.controllers.IVigileController;
 import sn.ism.gestion.web.dto.Request.VigileSimpleRequest;
 import sn.ism.gestion.web.dto.Response.VigileAllResponse;
-import sn.ism.gestion.web.dto.Response.VigileSimpleResponse;
-import sn.ism.gestion.web.dto.Response.RestResponse;
+import sn.ism.gestion.web.dto.RestResponse;
 
 @RequiredArgsConstructor
 @RestController

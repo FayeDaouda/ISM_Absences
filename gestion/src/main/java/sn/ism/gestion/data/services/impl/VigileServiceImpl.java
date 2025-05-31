@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import sn.ism.gestion.data.entities.Vigile;
-import sn.ism.gestion.data.entities.Pointage;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
@@ -98,11 +97,7 @@ public class VigileServiceImpl implements IVigileService {
         return vigileRepository.findAll(pageable);
     }
 
-    // Exemple fictif (tu peux modifier selon ta logique)
-    @Override
-    public Pointage pointerEtudiant(String matricule) {
-        throw new UnsupportedOperationException("Méthode pointerEtudiant non implémentée");
-    }
+
 
    @Override
     public Page<VigileAllResponse> getAllVigiles(Pageable pageable) {

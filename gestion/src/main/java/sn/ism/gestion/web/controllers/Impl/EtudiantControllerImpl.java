@@ -14,15 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.web.controllers.IEtudiantController;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
-import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
-import sn.ism.gestion.web.dto.Response.RestResponse;
+import sn.ism.gestion.web.dto.RestResponse;
 
 import lombok.RequiredArgsConstructor;
 

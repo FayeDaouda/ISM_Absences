@@ -12,18 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Admin;
 import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IAdminService;
 import sn.ism.gestion.data.services.IJustificationService;
-import sn.ism.gestion.data.services.impl.JustificationServiceImpl;
 import sn.ism.gestion.utils.mapper.AdminMapper;
 import sn.ism.gestion.web.controllers.IAdminController;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 import sn.ism.gestion.web.dto.Response.AdminAllResponse;
-import sn.ism.gestion.web.dto.Response.RestResponse;
+import sn.ism.gestion.web.dto.RestResponse;
 
 @RequiredArgsConstructor
 @RestController

@@ -3,6 +3,7 @@ package sn.ism.gestion;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import sn.ism.gestion.data.entities.*;
 import sn.ism.gestion.data.enums.ModeCours;
@@ -24,6 +25,7 @@ public class DataInitializer {
     @Autowired private VigileRepository vigileRepository;
     @Autowired private AbsenceRepository absenceRepository;
     @Autowired private SessionsCoursRepository sessionCoursRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
@@ -43,7 +45,7 @@ public class DataInitializer {
             u.setNom("Nom" + i);
             u.setPrenom("Prenom" + i);
             u.setLogin("login" + i);
-            u.setMotDePasse("pass" + i);
+            u.setMotDePasse(passwordEncoder.encode("pass" + i));
             u.setRole(i % 2 == 0 ? Role.ETUDIANT : Role.VIGILE);
             utilisateurs.add(u);
         }

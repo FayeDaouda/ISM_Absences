@@ -18,7 +18,7 @@ import sn.ism.gestion.utils.mapper.AbsenceMapper;
 import sn.ism.gestion.web.controllers.IAbsenceController;
 import sn.ism.gestion.web.dto.Request.AbsenceRequest;
 import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
-import sn.ism.gestion.web.dto.Response.RestResponse;
+import sn.ism.gestion.web.dto.RestResponse;
 
 import lombok.RequiredArgsConstructor;
 
