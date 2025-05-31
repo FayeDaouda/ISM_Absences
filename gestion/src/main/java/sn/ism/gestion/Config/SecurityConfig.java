@@ -1,6 +1,6 @@
 package sn.ism.gestion.Config;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,40 +8,39 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import sn.ism.gestion.Config.JwtAuthenticationFilter;
+import sn.ism.gestion.data.services.IUtilisateurService;
 
 @Configuration
 @EnableMethodSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
+    private final IUtilisateurService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/utilisateurs/**").permitAll()
-                .requestMatchers("/api/admins/**").hasRole("ADMIN")
-                .requestMatchers("/api/etudiants/**").hasRole("ETUDIANT")
-                .requestMatchers("/api/vigiles/**").hasRole("VIGILE")
-                .anyRequest().authenticated()
-            )
-            .httpBasic(httpBasic -> {}) 
-            .logout(logout -> logout.permitAll());
-    
-        return http.build();
-    }
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/utilisateurs/login").permitAll()
+                        .requestMatchers("/api/admins/**").hasAnyRole("ETUDIANT","ADMIN","VIGILE")
+                        .requestMatchers("/api/etudiants/**").hasAnyRole("ETUDIANT","ADMIN","VIGILE")
+                        .requestMatchers("/api/vigiles/**").hasAnyRole("ETUDIANT","ADMIN","VIGILE")
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return http.build();
     }
 
     @Bean
@@ -57,18 +56,8 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    //     http.csrf().disable()
-    //             .authorizeHttpRequests()
-    //             .requestMatchers("/api/**").permitAll() // ← accès libre à tous les endpoints API
-    //             .anyRequest().permitAll()
-    //             .and()
-    //             .formLogin()
-    //             .and()
-    //             .logout().permitAll();
-
-    //     return http.build();
-    // }
-
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

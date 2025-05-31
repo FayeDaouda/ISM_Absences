@@ -65,13 +65,14 @@ public class UtilisateurServiceImpl implements IUtilisateurService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Utilisateur utilisateur = utilisateurRepo.findByLogin(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec le login : " + username));
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Utilisateur utilisateur = utilisateurRepo.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec login: " + login));
 
-        return User.withUsername(utilisateur.getLogin())
+        return org.springframework.security.core.userdetails.User
+                .withUsername(utilisateur.getLogin())
                 .password(utilisateur.getMotDePasse())
-                .roles(utilisateur.getRole().name())
+                .authorities("ROLE_" + utilisateur.getRole().name())
                 .build();
     }
 }

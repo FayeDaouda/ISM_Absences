@@ -1,5 +1,6 @@
 package sn.ism.gestion.web.controllers.Impl;
 
+import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,10 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import sn.ism.gestion.Config.JwtService;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IUtilisateurService;
@@ -33,6 +34,7 @@ public class UtilisateurController implements IUtilisateurController {
     private final IUtilisateurService utilisateurService;
     private final UtilisateurMapper utilisateurMapper;
     private final UtilisateurRepository utilisateurRepository;
+    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @Override
@@ -47,8 +49,14 @@ public class UtilisateurController implements IUtilisateurController {
                         .orElse(null);
 
                 if (utilisateur != null) {
+                    String token = jwtService.generateToken(utilisateur.getLogin());
+
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("token", token);
+                    data.put("utilisateur", utilisateur); // tu peux remplacer par un DTO si tu veux masquer le mot de passe
+
                     return new ResponseEntity<>(
-                            RestResponse.response(HttpStatus.OK, utilisateur, "Connexion réussie"),
+                            RestResponse.response(HttpStatus.OK, data, "Connexion réussie"),
                             HttpStatus.OK
                     );
                 } else {
@@ -70,6 +78,7 @@ public class UtilisateurController implements IUtilisateurController {
             );
         }
     }
+
 
 
     public ResponseEntity<Map<String, Object>> Create(
