@@ -11,6 +11,7 @@ public class UtilisateurSimpleResponse {
     private String nom;
     private String prenom;
     private String login;
+    private String photo;
     private Role role;
 
 
