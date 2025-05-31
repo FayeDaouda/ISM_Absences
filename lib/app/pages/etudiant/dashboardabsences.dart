@@ -6,7 +6,6 @@ class DashboardAbsences extends StatelessWidget {
   DashboardAbsences({Key? key}) : super(key: key);
 
   final AuthController authController = Get.find();
-
   final RxList<Map<String, dynamic>> absences = RxList([
     {
       'date': '2025-05-22',
@@ -141,7 +140,7 @@ class DashboardAbsences extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.brown,
+                    color: Color.fromARGB(251, 251, 68, 2),
                   ),
                 ),
               ),

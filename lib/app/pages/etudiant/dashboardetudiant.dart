@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'dashboardabsences.dart';
 import 'dashboardjustification.dart';
 
@@ -24,7 +25,7 @@ class _DashboardEtudiantState extends State<DashboardEtudiant> {
     "Samedi": [{'heure': '08h - 12h', 'cours': 'Flutter', 'salle': 'Salle 101'}],
   };
 
-  final String studentName = "DAOUDA FALL";
+  final String Nom = "DAOUDA FALL";
   final String matricule = "ISM20222025";
   final String niveau = "L3 CDSD";
   final String email = "daouda.fall@ism.edu.sn";
@@ -80,102 +81,114 @@ class _DashboardEtudiantState extends State<DashboardEtudiant> {
   }
 
   Widget _buildPlanning() {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.orange,
-                child: Icon(Icons.person, color: Colors.white),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.orange[100],
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.orange.withOpacity(0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(studentName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    Text(matricule),
-                    Text(niveau),
-                    Text(
-                      "Mail: $email",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 254, 183, 2),
-                      ),
-                    ),
-                  ],
-                ),
+              child: QrImageView(
+                data: '''
+                    Nom: $Nom
+                    Matricule: $matricule
+                    Classe: $niveau
+                    Email: $email
+                    ''',
+                version: QrVersions.auto,
+                size: 150.0,
+                backgroundColor: Colors.white,
               ),
-            ],
+            ),
           ),
           const SizedBox(height: 16),
           Obx(() {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _StatBox(label: "Absences", count: absents.value, color: Colors.red, bgColor: Colors.red.shade50),
-                _StatBox(label: "Retards", count: retards.value, color: Colors.orange, bgColor: Colors.orange.shade50),
-                _StatBox(label: "Justifiées", count: justifies.value, color: Colors.green, bgColor: Colors.green.shade50),
+                _StatBox(
+                    label: "Absences",
+                    count: absents.value,
+                    color: Colors.red,
+                    bgColor: Colors.red.shade50),
+                _StatBox(
+                    label: "Retards",
+                    count: retards.value,
+                    color: Colors.orange,
+                    bgColor: Colors.orange.shade50),
+                _StatBox(
+                    label: "Justifiées",
+                    count: justifies.value,
+                    color: Colors.green,
+                    bgColor: Colors.green.shade50),
               ],
             );
           }),
           const SizedBox(height: 24),
           const Align(
             alignment: Alignment.centerLeft,
-            child: Text("📅 Emploi du temps", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.brown)),
+            child: Text("📅 Emploi du temps",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.brown)),
           ),
           const SizedBox(height: 6),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text("Votre planning de cours de la semaine"),
-          ),
+          const Text("Votre planning de cours de la semaine"),
           const SizedBox(height: 12),
-          Expanded(
-            child: SingleChildScrollView(
-              child: GridView.count(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                children: emploiDuTemps.keys.map((jour) {
-                  final coursList = emploiDuTemps[jour]!;
-                  return Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.orange[100],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(jour, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 10),
-                        if (coursList.isEmpty)
-                          const Text("Aucun cours", textAlign: TextAlign.center),
-                        for (var cours in coursList)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 6.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(cours['cours']!, style: const TextStyle(fontWeight: FontWeight.w600)),
-                                Text(cours['heure']!),
-                                Text(cours['salle']!),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
+          GridView.count(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            children: emploiDuTemps.keys.map((jour) {
+              final coursList = emploiDuTemps[jour]!;
+              return Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.orange[100],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(jour,
+                        style:
+                            const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
+                    if (coursList.isEmpty)
+                      const Text("Aucun cours", textAlign: TextAlign.center),
+                    for (var cours in coursList)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 6.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(cours['cours']!,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600)),
+                            Text(cours['heure']!),
+                            Text(cours['salle']!),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),
@@ -212,7 +225,8 @@ class _StatBox extends StatelessWidget {
         children: [
           Text(
             count.toString().padLeft(2, '0'),
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: color),
+            style: TextStyle(
+                fontSize: 25, fontWeight: FontWeight.bold, color: color),
           ),
           const SizedBox(height: 4),
           Text(label, style: TextStyle(color: color)),
