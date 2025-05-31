@@ -15,6 +15,6 @@ public class EtudiantSimpleResponse {
     private String classeId;
     private String matricule;
     private String telephone;
-    List<String> absenceIds ;
+//    List<String> absenceIds ;
 
 }

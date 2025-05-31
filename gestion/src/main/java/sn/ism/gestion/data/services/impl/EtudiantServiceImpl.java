@@ -146,7 +146,7 @@ public class EtudiantServiceImpl implements IEtudiantService {
      @Override
      public EtudiantSimpleResponse getOne(String id) {
          Etudiant etudiant = etudiantRepository.findById(id)
-                 .orElseThrow(() -> new RuntimeException("Aucun Etudiant trouvé"));
+                 .orElseThrow(() -> new RuntimeException("Aucun Étudiant trouvé"));
 
          Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
                  .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
@@ -155,8 +155,6 @@ public class EtudiantServiceImpl implements IEtudiantService {
          dto.setId(etudiant.getId());
          dto.setMatricule(etudiant.getMatricule());
          dto.setTelephone(etudiant.getTelephone());
-        //  dto.setUtilisateurId(utilisateur.getId());
-        //  dto.setLogin(utilisateur.getLogin());
          dto.setNom(utilisateur.getNom());
          dto.setPrenom(utilisateur.getPrenom());
 

@@ -136,7 +136,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
                         absences.getTotalElements(),
                         absences.isFirst(),
                         absences.isLast(),
-                        "EtudiantlistePointages"),
+                        "EtudiantlisteAbsence"),
                 HttpStatus.OK);
     }
 
