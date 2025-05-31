@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface AbsenceRepository extends MongoRepository<Absence, String>{
 
+   Page<Absence> findByType(Situation type, Pageable pageable);
    Page<Absence> findByEtudiantIdAndType(String etudiantId, Situation type, Pageable pageable);
    Optional<Absence> findOneBySessionIdAndEtudiantId(String sessionId, String etudiantId);
 

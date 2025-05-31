@@ -167,8 +167,28 @@ public class AbsenceServiceImpl implements IAbsenceService {
     }
 
     @Override
-    public Page<AbsenceAllResponse> getAllAbsences(Pageable pageable) {
+    public Page<AbsenceAllResponse> getAllPointages(Pageable pageable) {
         Page<Absence> absences = absenceRepository.findAll(pageable);
+
+        return absences.map(a -> {
+            AbsenceAllResponse dto = new AbsenceAllResponse();
+            dto.setType(a.getType());
+            dto.setSessionId(a.getSessionId());
+            dto.setJustifiee(a.isJustifiee());
+            etudiantRepository.findById(a.getEtudiantId()).ifPresent(e -> {
+                dto.setClasseEtudiant(e.getClasseId());
+                utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
+                    dto.setPrenomEtudiant(u.getPrenom());
+                    dto.setNonEtudiant(u.getNom());
+                });
+            });
+            return dto;
+        });
+    }
+
+    @Override
+    public Page<AbsenceAllResponse> getAllAbsences(Pageable pageable) {
+        Page<Absence> absences = absenceRepository.findByType(Situation.ABSENCE ,pageable);
 
         return absences.map(a -> {
             AbsenceAllResponse dto = new AbsenceAllResponse();

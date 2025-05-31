@@ -11,6 +11,7 @@ import sn.ism.gestion.web.dto.Response.AbsenceSimpleResponse;
 
 public interface IAbsenceService extends Service<Absence> {
 
+    Page<AbsenceAllResponse> getAllPointages(Pageable pageable);
     Absence pointerEtudiantByMatricule(String sessionId, String matricule);
     Absence pointerEtudiant(String sessionId, String etudiantId);
     Absence createAbsence(AbsenceRequest object);

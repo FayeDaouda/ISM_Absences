@@ -56,7 +56,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<AbsenceAllResponse> absences = absenceService.getAllAbsences(pageable);
+        Page<AbsenceAllResponse> absences = absenceService.getAllPointages(pageable);
         Page<AbsenceAllResponse> response = absences.map(absenceMapper::toDto);
         return new ResponseEntity<>(
                 RestResponse.responsePaginate(
@@ -68,6 +68,26 @@ public class AbsenceControllerImpl implements IAbsenceController {
                         response.isFirst(),
                         response.isLast(),
                         "PointageAllResponses"),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> SelectAllAbsence(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AbsenceAllResponse> absences = absenceService.getAllAbsences(pageable);
+        Page<AbsenceAllResponse> response = absences.map(absenceMapper::toDto);
+        return new ResponseEntity<>(
+                RestResponse.responsePaginate(
+                        HttpStatus.OK,
+                        response.getContent(),
+                        response.getNumber(),
+                        response.getTotalPages(),
+                        response.getTotalElements(),
+                        response.isFirst(),
+                        response.isLast(),
+                        "AbsenceAllResponses"),
                 HttpStatus.OK);
     }
 

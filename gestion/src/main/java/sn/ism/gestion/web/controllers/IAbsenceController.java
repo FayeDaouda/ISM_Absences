@@ -1,5 +1,6 @@
 package sn.ism.gestion.web.controllers;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,11 @@ public interface IAbsenceController extends Controller<Absence> {
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody AbsenceRequest request,
                                                BindingResult bindingResult);
+    @GetMapping("/absences")
+    @ApiResponse(responseCode = "200")
+    ResponseEntity<Map<String, Object>> SelectAllAbsence(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size);
 
     @PostMapping("/pointer")
      ResponseEntity<?> pointerEtudiantByQRcode(@RequestParam String sessionId,
