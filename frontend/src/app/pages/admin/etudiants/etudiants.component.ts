@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NavebarComponent } from '../../../shared/components/navebar/navebar.component';
 import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.component';
+import { Etudiant, EtudiantService } from '../../../shared/services/etudiant.service';
 
 @Component({
   selector: 'app-etudiants',
@@ -10,17 +11,18 @@ import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.com
   styleUrl: './etudiants.component.css'
 })
 export class EtudiantsComponent {
-etudiants = [
-    { nom: 'Ndiaye', prenom: 'Abdoulaye', matricule: 'Mat23809', classe: 'L2MAIE' },
-    { nom: 'Faye', prenom: 'Daouda', matricule: 'Mat09462', classe: 'L3CDSD' },
-    { nom: 'Mbow', prenom: 'Fallou', matricule: 'Mat17234', classe: 'L2IAGE' },
-    { nom: 'Diop', prenom: 'Pape Mbaye', matricule: 'Mat04972', classe: 'L3GLRS' },
-    { nom: 'Camara', prenom: 'Fatou', matricule: 'Mat18273', classe: 'L1MAIE' },
-    { nom: 'Fall', prenom: 'Abdoulaye', matricule: 'Mat29301', classe: 'M1CDSD' },
-  ];
+  etudiants: Etudiant[] = [];
 
   currentPage = 1;
   pageSize = 3;
+
+  constructor(private etudiantService: EtudiantService) {}
+
+  ngOnInit(): void {
+    this.etudiantService.getAllEtudiants().subscribe((data) => {
+      this.etudiants = data;
+    });
+  }
 
   get paginatedEtudiants() {
     const start = (this.currentPage - 1) * this.pageSize;
