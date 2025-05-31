@@ -74,10 +74,7 @@ public class VigileController implements IVigileController {
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
         var vigile = vigileService.findById(id);
         var vigileDto = vigileMapper.toDto(vigile);
-        return new ResponseEntity<>(
-                new RestResponse().response(
-                        HttpStatus.OK,vigileDto,
-                        "vigileSimpleResponse"),
+        return new ResponseEntity<>(RestResponse.response(HttpStatus.OK,vigileDto, "vigileSimpleResponse"),
                 HttpStatus.OK);
     }
 

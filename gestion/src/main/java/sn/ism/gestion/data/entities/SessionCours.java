@@ -15,13 +15,13 @@ import sn.ism.gestion.data.enums.ModeCours;
 @Document(collection = "sessions")
 public class SessionCours extends AbstractEntity {
 
+    private String coursId;
     private LocalDate date;
     private LocalDateTime heureDebut;
     private LocalDateTime heureFin;
-    private String nombreHeures;
+    private int nombreHeures;
     private ModeCours mode;
     private String classeId;
     private boolean valide;
-    private List<String> etudiantsAttendus;
-
+//    private List<String> ettudiantIds;
 }

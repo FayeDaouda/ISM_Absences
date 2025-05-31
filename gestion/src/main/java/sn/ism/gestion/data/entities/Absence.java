@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Document(collection = "absences")
-
 public class Absence extends AbstractEntity {
 
     private String etudiantId;

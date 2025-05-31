@@ -14,6 +14,5 @@ public class Module extends AbstractEntity
 {
     private String libelle;
     private String semestre;
-    List<String> sessionCoursIds ;
-
+    private List<String> coursIds;
 }

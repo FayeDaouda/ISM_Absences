@@ -93,6 +93,10 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+		</dependency>
 		<!-- JWT (JSON Web Token) pour l'authentification stateless -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -111,6 +115,13 @@
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>java-dotenv</artifactId>
+			<version>5.2.2</version>
+		</dependency>
+
 
 		<!-- Pour encoder les mots de passe -->
 		<dependency>

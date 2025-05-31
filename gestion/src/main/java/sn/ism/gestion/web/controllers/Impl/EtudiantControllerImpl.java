@@ -74,7 +74,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
         var etudiant = etudiantService.getOne(id);
         var etudiantDto = etudiantMapper.toDtoAll(etudiant);
         return new ResponseEntity<>(
-                new RestResponse().response(
+                 RestResponse.response(
                         HttpStatus.OK,etudiantDto,
                         "etudiantSimpleResponse"),
                 HttpStatus.OK);
@@ -86,7 +86,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
         var etudiant = etudiantService.findByMat(matricule);
         var etudiantDto = etudiantMapper.toDtoAll(etudiant);
         return new ResponseEntity<>(
-                new RestResponse().response(
+                 RestResponse.response(
                         HttpStatus.OK,etudiantDto,
                         "etudiantSimpleResponse"),
                 HttpStatus.OK);

@@ -49,7 +49,7 @@ public class DataInitializer {
         filiereRepository.deleteAll();
         utilisateurRepository.deleteAll();
 
-        // 1. Utilisateurs
+        // Utilisateurs
         List<Utilisateur> utilisateurs = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
             Utilisateur u = new Utilisateur();
@@ -63,7 +63,7 @@ public class DataInitializer {
         }
         utilisateurRepository.saveAll(utilisateurs);
 
-        // 2. Filières
+        // Filières
         List<Filiere> filieres = new ArrayList<>();
         for (int i = 1; i <= 2; i++) {
             Filiere f = new Filiere();
@@ -72,109 +72,96 @@ public class DataInitializer {
         }
         filiereRepository.saveAll(filieres);
 
-        // 3. Classes
+        // Classes
         List<Classe> classes = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
             Classe c = new Classe();
             c.setLibelle("Classe " + i);
             c.setNiveau("Niveau " + ((i % 3) + 1));
             c.setFiliereId(filieres.get((i - 1) % filieres.size()).getId());
-            c.setAnneeScolaireId(List.of(UUID.randomUUID().toString()));
+            c.setAnneeScolaireId("2024-2025");
+            c.setEtudiantIds(new ArrayList<>());
             classes.add(c);
         }
         classeRepository.saveAll(classes);
 
-        // 4. Étudiants
+        // Étudiants
         List<Etudiant> etudiants = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
             Etudiant etu = new Etudiant();
             etu.setMatricule("MATRICULE" + i);
             etu.setUtilisateurId(utilisateurs.get(i - 1).getId());
             etu.setTelephone("77000000" + i);
-            etu.setClasseId(classes.get(i % classes.size()).getId());
+            Classe classe = classes.get(i % classes.size());
+            etu.setClasseId(classe.getId());
             etu.setAbsenceIds(new ArrayList<>());
             etudiants.add(etu);
+
+            // mise à jour de la classe
+            classe.getEtudiantIds().add(etu.getId());
         }
         etudiantRepository.saveAll(etudiants);
+        classeRepository.saveAll(classes);
 
-        // 5. Vigiles
+        // Vigiles
         List<Vigile> vigiles = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            if (utilisateurs.get(i).getRole() == Role.VIGILE) {
+        for (Utilisateur u : utilisateurs) {
+            if (u.getRole() == Role.VIGILE) {
                 Vigile v = new Vigile();
-                v.setUtilisateurId(utilisateurs.get(i).getId());
+                v.setUtilisateurId(u.getId());
                 vigiles.add(v);
             }
         }
         vigileRepository.saveAll(vigiles);
 
-        // 6. Sessions de cours (ajoutées)
+        // Sessions de cours
         List<SessionCours> sessions = new ArrayList<>();
         for (Classe classe : classes) {
-            for (int j = 0; j < 5; j++) { // 5 jours de sessions pour chaque classe
+            List<Etudiant> etudiantsClasse = etudiantRepository.findByclasseId(classe.getId());
+            List<String> etudiantIds = etudiantsClasse.stream().map(Etudiant::getId).toList();
+
+            for (int j = 0; j < 5; j++) {
                 SessionCours session = new SessionCours();
                 session.setClasseId(classe.getId());
                 session.setDate(LocalDate.now().plusDays(j));
-
-                LocalDateTime heureDebut = LocalDate.now().plusDays(j).atTime(8, 0); // 08h00
-                LocalDateTime heureFin = heureDebut.plusHours(2); // 2h de cours
-
-                session.setHeureDebut(heureDebut);
-                session.setHeureFin(heureFin);
-                session.setNombreHeures("2");
+                session.setHeureDebut(session.getDate().atTime(8, 0));
+                session.setHeureFin(session.getHeureDebut().plusHours(2));
+                session.setNombreHeures(2);
                 session.setMode(ModeCours.PRESENTIEL);
                 session.setValide(true);
-
-                // Etudiants attendus
-                List<Etudiant> etudiantsClasse = etudiantRepository.findByclasseId(classe.getId());
-                List<String> etudiantsIds = etudiantsClasse.stream().map(Etudiant::getId).toList();
-                session.setEtudiantsAttendus(etudiantsIds);
-
+//                session.setEtudiantsAttendus(etudiantIds);
                 sessions.add(session);
             }
         }
         sessionCoursRepository.saveAll(sessions);
-        System.out.println("=== Sessions de cours générées ===");
 
-        // 7. Absences (liées aux étudiants) - exemple simple
+        // Absences fictives
         List<Absence> absences = new ArrayList<>();
-        for (int i = 1; i <= 6; i++) {
-            Etudiant etu = etudiants.get(i % etudiants.size());
+        for (int i = 0; i < 6; i++) {
+            Etudiant etu = etudiants.get(i);
+            SessionCours session = sessions.get(i % sessions.size());
+
             Absence a = new Absence();
             a.setEtudiantId(etu.getId());
-            a.setSessionId("SESSION" + i);
+            a.setSessionId(session.getId());
             a.setType(i % 2 == 0 ? Situation.ABSENCE : Situation.RETARD);
             a.setJustifiee(i % 2 == 0);
             a.setJustificationId("JUSTIF" + i);
-            absences.add(a);
 
-            // Associer à l’étudiant
+            absences.add(a);
             etu.getAbsenceIds().add(a.getId());
         }
         absenceRepository.saveAll(absences);
-        etudiantRepository.saveAll(etudiants); // mise à jour des IDs d’absence
+        etudiantRepository.saveAll(etudiants);
 
-        // 8. Affichage
-        System.out.println("=== Liste des absences par utilisateur (étudiants) ===");
-        for (Etudiant e : etudiants) {
-            utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(user -> {
-                System.out.println("Utilisateur : " + user.getPrenom() + " " + user.getNom());
-                e.getAbsenceIds().forEach(id -> System.out.println("  - Absence ID : " + id));
-            });
-        }
-
-        System.out.println("=== Fixtures insérées avec succès ===");
+        System.out.println("=== Données initialisées avec succès ===");
     }
 
-    /**
-     * Initialisation automatique des absences chaque jour à 6h du matin
-     */
     @Scheduled(cron = "0 0 6 * * *")
-    public void initialiserAbsencesDuJour()
-    {
+    public void initialiserAbsencesDuJour() {
         LocalDate dateDuJour = LocalDate.now();
-        Pageable pageable = PageRequest.of(0, 100); // Exemple : 100 sessions max
-        Page<SessionCours> sessionsDuJour = sessionCoursRepository.getSessionsDuJour(dateDuJour,pageable);
+        Pageable pageable = PageRequest.of(0, 100);
+        Page<SessionCours> sessionsDuJour = sessionCoursRepository.getSessionsDuJour(dateDuJour, pageable);
 
         List<Absence> absences = new ArrayList<>();
 
@@ -196,9 +183,9 @@ public class DataInitializer {
 
         if (!absences.isEmpty()) {
             absenceRepository.saveAll(absences);
-            System.out.println("Absences initialisées pour " + absences.size() + " étudiants à la date " + dateDuJour);
+            System.out.println("Absences du jour " + dateDuJour + " enregistrées : " + absences.size());
         } else {
-            System.out.println("Aucune absence initialisée ce jour : " + dateDuJour);
+            System.out.println("Aucune absence créée pour " + dateDuJour);
         }
     }
 }
