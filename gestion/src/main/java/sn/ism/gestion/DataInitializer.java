@@ -46,6 +46,7 @@ public class DataInitializer {
             u.setPrenom("Prenom" + i);
             u.setLogin("login" + i);
             u.setMotDePasse(passwordEncoder.encode("pass" + i));
+            u.setPhoto("absent.img");
             u.setRole(i % 2 == 0 ? Role.ETUDIANT : Role.VIGILE);
             utilisateurs.add(u);
         }
