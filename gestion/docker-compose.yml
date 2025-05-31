@@ -17,7 +17,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGODB_URI=mongodb://mongo:27017/maDb
+      - MONGODB_URI=${MONGODB_URI}
     restart: unless-stopped
 
 volumes:
