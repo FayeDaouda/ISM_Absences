@@ -11,6 +11,7 @@ import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.enums.Situation;
 import sn.ism.gestion.data.repositories.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -25,6 +26,7 @@ public class DataInitializer {
     @Autowired private VigileRepository vigileRepository;
     @Autowired private AbsenceRepository absenceRepository;
     @Autowired private SessionsCoursRepository sessionCoursRepository;
+    @Autowired private PaiementRepository paiementRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
     @PostConstruct
@@ -33,6 +35,7 @@ public class DataInitializer {
         absenceRepository.deleteAll();
         sessionCoursRepository.deleteAll();
         vigileRepository.deleteAll();
+        paiementRepository.deleteAll();
         etudiantRepository.deleteAll();
         classeRepository.deleteAll();
         filiereRepository.deleteAll();
@@ -85,6 +88,20 @@ public class DataInitializer {
         }
         etudiantRepository.saveAll(etudiants);
 
+        // 4bis. Paiements
+        List<Paiement> paiements = new ArrayList<>();
+        for (Etudiant etudiant : etudiants) {
+            for (int j = 1; j <= 3; j++) { // 3 paiements par étudiant
+                Paiement paiement = new Paiement();
+                paiement.setEtudiantId(etudiant.getId());
+                paiement.setMontant(new BigDecimal("100000"));
+                paiement.setDatePaiement(LocalDate.now().minusMonths(j));
+                paiements.add(paiement);
+            }
+        }
+        paiementRepository.saveAll(paiements);
+        System.out.println("=== Paiements générés pour les étudiants ===");
+
         // 5. Vigiles
         List<Vigile> vigiles = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
@@ -96,24 +113,19 @@ public class DataInitializer {
         }
         vigileRepository.saveAll(vigiles);
 
-        // 6. Sessions de cours (ajoutées)
+        // 6. Sessions de cours
         List<SessionCours> sessions = new ArrayList<>();
         for (Classe classe : classes) {
-            for (int j = 0; j < 5; j++) { // 5 jours de sessions pour chaque classe
+            for (int j = 0; j < 5; j++) {
                 SessionCours session = new SessionCours();
                 session.setClasseId(classe.getId());
                 session.setDate(LocalDate.now().plusDays(j));
-
-                LocalDateTime heureDebut = LocalDate.now().plusDays(j).atTime(8, 0); // 08h00
-                LocalDateTime heureFin = heureDebut.plusHours(2); // 2h de cours
-
-                session.setHeureDebut(heureDebut);
-                session.setHeureFin(heureFin);
+                session.setHeureDebut(LocalDate.now().plusDays(j).atTime(8, 0));
+                session.setHeureFin(session.getHeureDebut().plusHours(2));
                 session.setNombreHeures("2");
                 session.setMode(ModeCours.PRESENTIEL);
                 session.setValide(true);
 
-                // Etudiants attendus
                 List<Etudiant> etudiantsClasse = etudiantRepository.findByclasseId(classe.getId());
                 List<String> etudiantsIds = etudiantsClasse.stream().map(Etudiant::getId).toList();
                 session.setEtudiantsAttendus(etudiantsIds);
@@ -124,7 +136,7 @@ public class DataInitializer {
         sessionCoursRepository.saveAll(sessions);
         System.out.println("=== Sessions de cours générées ===");
 
-        // 7. Absences (liées aux étudiants) - exemple simple
+        // 7. Absences fictives
         List<Absence> absences = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
             Etudiant etu = etudiants.get(i % etudiants.size());
@@ -135,12 +147,10 @@ public class DataInitializer {
             a.setJustifiee(i % 2 == 0);
             a.setJustificationId("JUSTIF" + i);
             absences.add(a);
-
-            // Associer à l’étudiant
             etu.getAbsenceIds().add(a.getId());
         }
         absenceRepository.saveAll(absences);
-        etudiantRepository.saveAll(etudiants); // mise à jour des IDs d’absence
+        etudiantRepository.saveAll(etudiants);
 
         // 8. Affichage
         System.out.println("=== Liste des absences par utilisateur (étudiants) ===");
@@ -161,7 +171,6 @@ public class DataInitializer {
     public void initialiserAbsencesDuJour() {
         LocalDate dateDuJour = LocalDate.now();
         List<SessionCours> sessionsDuJour = sessionCoursRepository.getSessionsDuJour(dateDuJour);
-
         List<Absence> absences = new ArrayList<>();
 
         for (SessionCours session : sessionsDuJour) {
