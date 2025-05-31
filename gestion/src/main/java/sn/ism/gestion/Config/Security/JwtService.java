@@ -1,4 +1,4 @@
-package sn.ism.gestion.Config;
+package sn.ism.gestion.Config.Security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

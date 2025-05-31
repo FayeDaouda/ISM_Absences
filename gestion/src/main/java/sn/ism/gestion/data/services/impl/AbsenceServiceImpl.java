@@ -72,16 +72,44 @@ public class AbsenceServiceImpl implements IAbsenceService {
 //        return absence;
 //    }
 
+    public Absence pointerEtudiantByMatricule(String sessionId, String matricule) {
+        Absence absence = absenceRepository.findOneBySessionIdAndEtudiantId(sessionId, matricule)
+                .orElseGet(() -> {
+                    sessionCoursRepository.findById(sessionId)
+                            .orElseThrow(() -> new EntityNotFoundExecption("Session introuvable"));
+                    var etu = etudiantRepository.findByMatricule(matricule)
+                            .orElseThrow(() -> new EntityNotFoundExecption("Étudiant introuvable"));
+
+                    Absence newAbsence = new Absence();
+                    newAbsence.setSessionId(sessionId);
+                    newAbsence.setEtudiantId(etu.getId());
+                    newAbsence.setJustifiee(false);
+                    return absenceRepository.save(newAbsence);
+                });
+
+        LocalDateTime heureDebut = sessionCoursRepository.findById(sessionId)
+                .orElseThrow(() -> new EntityNotFoundExecption("Session introuvable"))
+                .getHeureDebut();
+
+        LocalDateTime heureActuelle = LocalDateTime.now();
+
+        if (heureActuelle.isBefore(heureDebut.plusMinutes(5))) {
+            absence.setType(Situation.PRESENT);
+        } else {
+            absence.setType(Situation.RETARD);
+        }
+
+        absence.setHeurePointage(LocalTime.now());
+        return absenceRepository.save(absence);
+    }
+
     public Absence pointerEtudiant(String sessionId, String etudiantId) {
-        // Rechercher ou créer l'absence
         Absence absence = absenceRepository.findOneBySessionIdAndEtudiantId(sessionId, etudiantId)
                 .orElseGet(() -> {
-                    // Vérification que la session et l'étudiant existent
                     sessionCoursRepository.findById(sessionId)
                             .orElseThrow(() -> new EntityNotFoundExecption("Session introuvable"));
                     etudiantRepository.findById(etudiantId)
                             .orElseThrow(() -> new EntityNotFoundExecption("Étudiant introuvable"));
-
                     Absence newAbsence = new Absence();
                     newAbsence.setSessionId(sessionId);
                     newAbsence.setEtudiantId(etudiantId);
@@ -89,7 +117,6 @@ public class AbsenceServiceImpl implements IAbsenceService {
                     return absenceRepository.save(newAbsence);
                 });
 
-        // Charger la session pour avoir l'heure de début
         LocalDateTime heureDebut = sessionCoursRepository.findById(sessionId)
                 .orElseThrow(() -> new EntityNotFoundExecption("Session introuvable"))
                 .getHeureDebut();

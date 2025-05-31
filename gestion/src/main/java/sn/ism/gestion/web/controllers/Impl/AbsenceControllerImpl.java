@@ -71,11 +71,17 @@ public class AbsenceControllerImpl implements IAbsenceController {
                 HttpStatus.OK);
     }
 
-    public ResponseEntity<?> pointerEtudiant(@RequestParam String sessionId, @RequestParam String etudiantId) {
+    @Override
+    public ResponseEntity<?> pointerEtudiantByQRcode(@RequestParam String sessionId, @RequestParam String etudiantId) {
         Absence absence = absenceService.pointerEtudiant(sessionId, etudiantId);
         return ResponseEntity.ok().body(absence);
     }
 
+    @Override
+    public ResponseEntity<?> pointerEtudiantByMatricule(@RequestParam String sessionId, @RequestParam String matricule) {
+        Absence absence = absenceService.pointerEtudiantByMatricule(sessionId, matricule);
+        return ResponseEntity.ok().body(absence);
+    }
 
     @Override
     @GetMapping("/{id}")

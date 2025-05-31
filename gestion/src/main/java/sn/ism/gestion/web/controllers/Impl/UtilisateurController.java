@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import sn.ism.gestion.Config.JwtService;
+import sn.ism.gestion.Config.Security.JwtService;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IUtilisateurService;

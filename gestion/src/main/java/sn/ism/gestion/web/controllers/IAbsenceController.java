@@ -20,8 +20,13 @@ public interface IAbsenceController extends Controller<Absence> {
                                                BindingResult bindingResult);
 
     @PostMapping("/pointer")
-     ResponseEntity<?> pointerEtudiant(@RequestParam String sessionId,
+     ResponseEntity<?> pointerEtudiantByQRcode(@RequestParam String sessionId,
                                        @RequestParam String etudiantId);
+
+    @PostMapping("/pointerByMatricule")
+    ResponseEntity<?> pointerEtudiantByMatricule(@RequestParam String sessionId,
+                                      @RequestParam String matricule);
+
 
     @GetMapping("/{etudiantId}")
     ResponseEntity<Map<String,Object>> findAbsencesByEtudiant(@PathVariable String id, 
