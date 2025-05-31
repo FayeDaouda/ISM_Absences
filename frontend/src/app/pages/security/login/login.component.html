@@ -1,0 +1,34 @@
+<div class="min-h-screen flex items-center justify-center bg-[#fef1e7]">
+  <div class="border-2 border-blue-500 rounded-md w-[80%] flex bg-white shadow-xl p-10">
+    <!-- Logo + Texte -->
+    <div class="w-1/2 flex flex-col items-center justify-center space-y-6">
+      <img src="assets/logo-cap.png" alt="logo" class="w-40 h-40" />
+      <h1 class="text-lg font-semibold text-center">Système de Gestion des Absences</h1>
+    </div>
+
+    <!-- Formulaire -->
+    <form class="w-1/2 flex flex-col justify-center items-center" (submit)="handleLogin($event)">
+      <img src="assets/logo-ism.png" alt="ISM" class="w-20 h-20 mb-2" />
+      <h2 class="text-xl font-bold mb-5">Connexion</h2>
+
+      <div class="mb-4 w-3/4">
+        <label class="text-sm font-medium">Email ou Identifiant</label>
+        <input type="email" class="input" [value]="email" (input)="email = $any($event.target).value" required />
+      </div>
+
+      <div class="mb-4 w-3/4 relative">
+        <label class="text-sm font-medium">Mot de passe</label>
+        <input [type]="showPassword ? 'text' : 'password'" class="input pr-10" [value]="password"
+          (input)="password = $any($event.target).value" required />
+        <span class="absolute right-3 top-8 cursor-pointer" (click)="togglePassword()">👁️</span>
+      </div>
+
+      <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded w-3/4 flex items-center justify-center mt-3">
+        🔒 Se connecter
+      </button>
+
+      <p class="text-xs mt-2">Mot de passe oublié? <a href="#" class="text-orange-500">Cliquez ici</a></p>
+      <p class="text-red-600 text-sm mt-2" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>
