@@ -36,9 +36,6 @@ public class UtilisateurCreateRequest {
     @NotBlank(message = "Le rôle est obligatoire")
     private String role; // Enum sous forme de String
 
-    @URL(message = "L'URL de la photo est invalide")
-    private String photo;
-
     public Utilisateur toEntity() {
         Utilisateur u = new Utilisateur();
         u.setNom(nom);

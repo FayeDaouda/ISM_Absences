@@ -17,6 +17,5 @@ public class Utilisateur extends AbstractEntity {
     private String login;
     private String motDePasse;
     private String photo;
-
     private Role role;
 }
