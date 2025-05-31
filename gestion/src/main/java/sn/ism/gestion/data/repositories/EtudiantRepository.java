@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import sn.ism.gestion.data.entities.Etudiant;
+import sn.ism.gestion.data.enums.Situation;
 
 public interface EtudiantRepository extends MongoRepository<Etudiant, String>{
 

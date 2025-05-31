@@ -14,6 +14,7 @@ import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.enums.Role;
+import sn.ism.gestion.data.enums.Situation;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
 import sn.ism.gestion.data.repositories.JustificationRepository;
@@ -112,7 +113,10 @@ public class EtudiantServiceImpl implements IEtudiantService {
     @Override
     public Absence justifierAbsence(String absenceId, JustificationRequest justification) {
         Absence absence = absenceRepository.findById(absenceId)
-                .orElseThrow(() -> new EntityNotFoundExecption("Absence non trouvée"));
+                .orElseThrow(() -> new EntityNotFoundExecption("Pointage non trouvée"));
+        if (absence.getType()!=Situation.ABSENCE){
+            throw new EntityNotFoundExecption("Pas une Absence");
+        }
         Justification justificationCreate = justification.toJustification();
         justificationCreate.setAbsenceId(absence.getId());
         absence.setJustifiee(true);
@@ -182,7 +186,7 @@ public class EtudiantServiceImpl implements IEtudiantService {
 
     @Override
     public Page<Absence> getAbsencesByEtudiantId(String etudiantId, Pageable pageable) {
-             return absenceRepository.findByEtudiantId(etudiantId, pageable);
-
+        return absenceRepository.findByEtudiantIdAndType(etudiantId, Situation.ABSENCE, pageable);
     }
+
 }

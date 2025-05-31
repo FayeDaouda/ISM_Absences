@@ -107,7 +107,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
 
         Absence justificationAbsence = etudiantService.justifierAbsence(id, justificationRequest);
         return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "jusificationEtudiant"),
+                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "jusificationAbsence"),
                 HttpStatus.ACCEPTED);
     }
 
@@ -136,7 +136,7 @@ public class EtudiantControllerImpl implements IEtudiantController {
                         absences.getTotalElements(),
                         absences.isFirst(),
                         absences.isLast(),
-                        "EtudiantlisteAbsence"),
+                        "EtudiantlistePointages"),
                 HttpStatus.OK);
     }
 
