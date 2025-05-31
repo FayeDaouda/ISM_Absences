@@ -1,30 +1,27 @@
-<nav
-  class="bg-[#FFF9F2] w-full h-16 px-6 mb-6 flex items-center justify-between border-b border-black ">
+<nav class="bg-[#FFF9F2] w-full h-16 px-6 mb-6 flex items-center justify-between border-b border-black">
   <div>
-    <h1 class="text-2xl font-bold text-black">ABSENCES</h1>
+    <h1 class="text-2xl font-bold text-black">{{ pageTitle }}</h1>
     <p class="text-sm text-gray-600">Bienvenue dans l'espace administrateur</p>
   </div>
+
   <div class="flex items-center space-x-4">
     <div class="relative">
-      <i
-        class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-[#78350F]"></i>
+      <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-[#78350F]"></i>
       <input
         type="text"
         placeholder="Rechercher"
-        class="pl-10 pr-3 py-1 rounded border border-[#78350F] bg-white text-gray-500" />
+        class="pl-10 pr-3 py-1 rounded border border-[#78350F] bg-white text-gray-500"
+      />
     </div>
 
     <div class="flex items-center space-x-2">
-      <div
-        class="w-8 h-8 rounded-full bg-[#EFB36B] border border-black flex items-center justify-center">
+      <div class="w-8 h-8 rounded-full bg-[#EFB36B] border border-black flex items-center justify-center">
         <i class="fas fa-user text-white text-sm"></i>
       </div>
-
       <div class="flex flex-col leading-tight">
         <span class="font-semibold">Lucien da Souza</span>
         <span class="text-xs text-gray-500">Administrateur</span>
       </div>
     </div>
-
   </div>
 </nav>

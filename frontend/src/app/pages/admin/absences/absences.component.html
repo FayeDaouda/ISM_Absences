@@ -15,14 +15,14 @@
             class="border border-black rounded-xl px-6 py-4 flex justify-between items-center shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
             <div class="grid grid-cols-4 gap-x-8 gap-y-2 w-full text-sm">
               <p><span class="font-semibold text-[#EFB36B]">Nom</span><span
-                  class="font-bold"><br />{{
+                  class=""><br />{{
                 a.nom }}</span></p>
               <p><span class="font-semibold text-[#EFB36B]">Prenom</span><span
-                  class="font-bold"><br />{{
+                  class=""><br />{{
                 a.prenom }}</span></p>
               <p><span
                   class="font-semibold text-[#EFB36B]">Date</span><br /><span
-                  class="font-bold">{{ a.date }}</span></p>
+                  class="">{{ a.date }}</span></p>
               <p>
                 <span class="font-semibold text-[#EFB36B]">Etat</span><br />
                 <span [ngClass]="getEtatColor(a.etat)" class="font-semibold">

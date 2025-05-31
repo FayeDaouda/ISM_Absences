@@ -1,0 +1,51 @@
+<div class="flex h-screen font-sans">
+  <app-sidebar class="w-[250px]"></app-sidebar>
+
+  <div class="flex-1 flex flex-col bg-[#FFF9F2]">
+    <app-navebar></app-navebar>
+
+    <main class="flex-1 p-8">
+      <section class="bg-white border border-[#78350F] rounded p-6">
+        <h2 class="text-2xl font-bold text-[#78350F]">Gestion des etudiants</h2>
+        <p class="text-gray-600 mb-6">Liste de tous les etudiants inscrits</p>
+
+        <div class="flex gap-6">
+          <div class="flex-1 space-y-4">
+            <div *ngFor="let e of paginatedEtudiants" class="border border-gray-300 rounded px-6 py-3 shadow-sm bg-white">
+              <div class="grid grid-cols-4 gap-4 text-sm text-[#EFB36B] font-semibold mb-1">
+                <span>Nom</span>
+                <span>Prenom</span>
+                <span>Matricule</span>
+                <span>Classe</span>
+              </div>
+              <div class="grid grid-cols-4 gap-4 text-sm">
+                <span class="text-black">{{ e.nom }}</span>
+                <span class="text-black">{{ e.prenom }}</span>
+                <span class="text-black">{{ e.matricule }}</span>
+                <span class="text-black">{{ e.classe }}</span>
+              </div>
+            </div>
+
+            <div class="flex justify-center gap-2 pt-4">
+              <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+                class="px-3 py-1 text-white font-bold bg-[#573826] rounded disabled:opacity-50">Précédent</button>
+
+              <button *ngFor="let p of totalPagesArray; let i = index"
+                (click)="changePage(i + 1)"
+                [ngClass]="currentPage === i + 1 ? 'bg-[#573826] text-white' : 'bg-white text-black border border-[#78350F]'"
+                class="px-3 py-1 rounded font-semibold">
+                {{ i + 1 }}
+              </button>
+
+              <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+                class="px-3 py-1 text-white font-bold bg-[#573826] rounded disabled:opacity-50">Suivant</button>
+            </div>
+          </div>
+          <div class="w-[180px]">
+            <img src="/boy.jpg" alt="Etudiant" class="rounded shadow h-[240px]" />
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>

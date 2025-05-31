@@ -1,0 +1,18 @@
+<div class="bg-white border border-[#FED7AA] p-6 rounded-lg shadow w-[400px]">
+  <div class="flex items-center gap-2 mb-4">
+    <div class="w-6 h-6 bg-[#F59E0B] flex items-center justify-center rounded text-white text-sm">
+      <i class="fas fa-hourglass-half"></i>
+    </div>
+    <h2 class="text-[#3B1E00] font-bold text-xl">Absences</h2>
+  </div>
+  <div class="space-y-4">
+    <div *ngFor="let a of absences" class="bg-[#F9FAFB] p-3 rounded shadow flex flex-col gap-1">
+      <p class="font-semibold text-sm">{{ a.nom }} {{ a.prenom }} – {{ a.matricule }}</p>
+      <p class="text-sm text-gray-600">{{ a.classe }} — {{ a.heure }}</p>
+      <div class="flex gap-2 mt-1">
+        <span class="text-xs px-2 py-1 bg-red-600 text-white rounded-full">Absent(e)</span>
+        <span class="text-xs px-2 py-1 bg-gray-200 text-gray-600 rounded-full">Non justifiée</span>
+      </div>
+    </div>
+  </div>
+</div>

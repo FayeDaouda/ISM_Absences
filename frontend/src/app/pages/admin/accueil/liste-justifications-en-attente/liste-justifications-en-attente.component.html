@@ -1,0 +1,20 @@
+<div class="bg-white border border-[#FED7AA] p-6 rounded-lg shadow w-[530px]">
+  <div class="flex items-center gap-2 mb-4">
+    <div class="w-6 h-6 bg-[#78350F] flex items-center justify-center rounded text-white text-sm">
+      <i class="fas fa-file-alt"></i>
+    </div>
+    <h2 class="text-[#3B1E00] font-bold text-xl">Justification en attente</h2>
+  </div>
+
+  <div *ngFor="let j of justifications" class="bg-[#F9FAFB] p-4 rounded shadow mb-4 space-y-1">
+    <p class="font-semibold text-sm">{{ j.nom }} {{ j.prenom }} – {{ j.matricule }}</p>
+    <p class="text-sm text-gray-600">Classe : {{ j.classe }}</p>
+    <p class="text-sm text-red-600">Absent(e) pour {{ j.motif }}</p>
+
+    <div class="flex gap-2 mt-2">
+      <button class="bg-[#78350F] text-white text-xs px-3 py-1 rounded">Détails</button>
+      <button class="bg-green-500 text-white text-xs px-3 py-1 rounded">Valider</button>
+      <button class="bg-red-600 text-white text-xs px-3 py-1 rounded">Invalider</button>
+    </div>
+  </div>
+</div>
