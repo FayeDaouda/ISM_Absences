@@ -8,4 +8,5 @@ import sn.ism.gestion.data.entities.Utilisateur;
 public interface UtilisateurRepository extends MongoRepository<Utilisateur, String> {
     
     Optional<Utilisateur> findByLogin(String login);
+    boolean existsByLogin(String login);
 }

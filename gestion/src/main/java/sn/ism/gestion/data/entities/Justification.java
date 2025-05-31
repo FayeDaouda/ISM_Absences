@@ -16,5 +16,5 @@ public class Justification extends AbstractEntity {
     private String commentaire;
     private String fichierUrl;
     private StatutJustification statut;
-    private LocalDateTime dateSoumission;
+    private LocalDateTime dateSoumission = LocalDateTime.now() ;
 }

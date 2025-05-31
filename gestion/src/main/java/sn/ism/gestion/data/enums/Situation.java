@@ -1,5 +1,5 @@
 package sn.ism.gestion.data.enums;
 
 public enum Situation {
-    ABSENCE, RETARD
+    ABSENCE, RETARD, PRESENT
 }

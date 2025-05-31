@@ -1,51 +1,26 @@
 package sn.ism.gestion.data.entities;
 
-import java.time.LocalDateTime;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 
-
-@MappedSuperclass
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
-public abstract class AbstractEntity{
+@NoArgsConstructor
+public abstract class AbstractEntity {
+
     @Id
-    
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     protected String id;
 
-    @Column(name = "created_at")
+    @CreatedDate
     protected LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @LastModifiedDate
     protected LocalDateTime updatedAt;
-
-    protected AbstractEntity()
-    {
-    }
-
-    @PrePersist
-    public void onPrePersist()
-    {
-        this.setCreatedAt(LocalDateTime.now());
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    @PreUpdate
-    public void onPreUpdate()
-    {
-        this.setUpdatedAt(LocalDateTime.now());
-    }
 
 }

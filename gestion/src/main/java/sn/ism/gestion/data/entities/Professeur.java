@@ -11,6 +11,8 @@ import lombok.Setter;
 @Document(collection = "professeurs")
 public class Professeur extends AbstractEntity 
 {
+    private String nom;
+    private String prenom;
     private String utilisateurId; 
     private List<String> moduleIds;
 

@@ -18,7 +18,7 @@ public interface Controller<T> {
     @ApiResponse(responseCode = "200")
     ResponseEntity<Map<String, Object>> SelectAll(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size);
+            @RequestParam(defaultValue = "5") int size);
 
     @GetMapping("/{id}")
     @ApiResponses(value = {
@@ -28,11 +28,11 @@ public interface Controller<T> {
     })
     ResponseEntity<Map<String, Object>> SelectdById(@PathVariable String id);
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @ApiResponse(responseCode = "200")
-    ResponseEntity<Map<String, Object>> Update(@PathVariable String id, @RequestBody T objet);
+    ResponseEntity<Map<String, Object>> Update(@PathVariable String id, @RequestBody T request);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ApiResponse(responseCode = "200")
     ResponseEntity<Map<String, Object>> Delete(@PathVariable String id);
 

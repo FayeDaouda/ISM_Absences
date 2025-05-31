@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 @Document(collection = "vigiles")
 public class Vigile extends AbstractEntity{
+
     private String utilisateurId ;
 }
