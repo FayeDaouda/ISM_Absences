@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sn.ism.gestion.data.entities.Utilisateur;
+import org.hibernate.validator.constraints.URL;
 import sn.ism.gestion.data.enums.Role;
 
 @Data
@@ -28,6 +29,9 @@ public class UtilisateurCreateRequest {
     @Size(min = 6, message = "Le mot de passe doit contenir au moins 6 caractères")
     private String motDePasse;
 
+    @URL(message = "L'URL de la photo est invalide")
+    private String photo;
+
     @NotBlank(message = "Le rôle est obligatoire")
     private String role; // Enum sous forme de String
 
@@ -37,6 +41,7 @@ public class UtilisateurCreateRequest {
         u.setPrenom(prenom);
         u.setLogin(login);
         u.setMotDePasse(motDePasse);
+        u.setPhoto(photo);
         u.setRole(Role.valueOf(role));
         return u;
     }
