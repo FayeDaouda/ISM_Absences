@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import sn.ism.gestion.Config.Controller;
-import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
 
 @RestController
 @RequestMapping("/api/web/justifications")
-public interface IJustificationController extends Controller<Justification> {
+public interface IJustificationWebController extends Controller<Justification> {
 
     
     @PostMapping("")

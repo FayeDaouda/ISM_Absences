@@ -5,16 +5,27 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+//@Getter
+//@Setter
+//public class EtudiantSimpleResponse {
+//
+//    private String id;
+//    private String nom;
+//    private String prenom;
+//    private String classe;
+//    private String matricule;
+//    private String telephone;
+//    List<String> absences ;
+//
+//}
 @Getter
 @Setter
 public class EtudiantSimpleResponse {
-
     private String id;
     private String nom;
     private String prenom;
-    private String classeId;
+    private String classe;
     private String matricule;
     private String telephone;
-//    List<String> absenceIds ;
-
+    private List<AbsenceAllResponse> absences;
 }

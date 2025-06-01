@@ -16,7 +16,7 @@ import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
-import sn.ism.gestion.web.controllers.IEtudiantController;
+import sn.ism.gestion.web.controllers.IEtudiantWebController;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
@@ -26,9 +26,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/etudiants")
+@RequestMapping("api/web/etudiants")
 @CrossOrigin(origins = "http://localhost:4200")
-public class EtudiantControllerImpl implements IEtudiantController {
+public class EtudiantWebControllerImpl implements IEtudiantWebController {
 
     private final IEtudiantService etudiantService;
     private final EtudiantMapper etudiantMapper;

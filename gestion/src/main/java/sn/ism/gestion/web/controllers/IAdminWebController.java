@@ -12,7 +12,7 @@ import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 import java.util.Map;
 @RestController
 @RequestMapping("/api/web/admins")
-public interface IAdminController extends Controller<Admin> {
+public interface IAdminWebController extends Controller<Admin> {
 
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody AdminSimpleRequest request,

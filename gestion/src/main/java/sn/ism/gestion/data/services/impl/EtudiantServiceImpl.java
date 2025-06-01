@@ -8,23 +8,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import sn.ism.gestion.data.entities.Absence;
-import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.entities.Justification;
-import sn.ism.gestion.data.entities.Utilisateur;
+import sn.ism.gestion.data.entities.*;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.enums.Situation;
-import sn.ism.gestion.data.repositories.AbsenceRepository;
-import sn.ism.gestion.data.repositories.EtudiantRepository;
-import sn.ism.gestion.data.repositories.JustificationRepository;
-import sn.ism.gestion.data.repositories.UtilisateurRepository;
+import sn.ism.gestion.data.repositories.*;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
+import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
@@ -48,7 +43,10 @@ public class EtudiantServiceImpl implements IEtudiantService {
     private JustificationRepository justificationRepository;
     @Autowired
     private JustificationServiceImpl justificationServiceImpl;
-
+    @Autowired
+    private ClasseRepository classeRepository;
+    @Autowired
+    private SessionsCoursRepository sessionRepository;
 
     public Etudiant createEtudiant(EtudiantSimpleRequest etudiantSimpleRequest) {
         var existingEtudiant = etudiantRepository.findByMatricule(etudiantSimpleRequest.getMatricule());
@@ -143,23 +141,59 @@ public class EtudiantServiceImpl implements IEtudiantService {
         });
     }
 
-     @Override
-     public EtudiantSimpleResponse getOne(String id) {
-         Etudiant etudiant = etudiantRepository.findById(id)
-                 .orElseThrow(() -> new RuntimeException("Aucun Étudiant trouvé"));
+//     @Override
+//     public EtudiantSimpleResponse getOne(String id) {
+//         Etudiant etudiant = etudiantRepository.findById(id)
+//                 .orElseThrow(() -> new RuntimeException("Aucun Étudiant trouvé"));
+//
+//         Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
+//                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+//
+//         EtudiantSimpleResponse dto = new EtudiantSimpleResponse();
+//         dto.setId(etudiant.getId());
+//         dto.setMatricule(etudiant.getMatricule());
+//         dto.setTelephone(etudiant.getTelephone());
+//         dto.setNom(utilisateur.getNom());
+//         dto.setPrenom(utilisateur.getPrenom());
+//
+//         return dto;
+//     }
 
-         Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
-                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+    @Override
+    public EtudiantSimpleResponse getOne(String id) {
+        Etudiant etudiant = etudiantRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Aucun Étudiant trouvé"));
 
-         EtudiantSimpleResponse dto = new EtudiantSimpleResponse();
-         dto.setId(etudiant.getId());
-         dto.setMatricule(etudiant.getMatricule());
-         dto.setTelephone(etudiant.getTelephone());
-         dto.setNom(utilisateur.getNom());
-         dto.setPrenom(utilisateur.getPrenom());
+        Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+        Classe classe = classeRepository.findById(etudiant.getClasseId())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+        List<Absence> absences = absenceRepository
+                .findAbsenceByEtudiantIdAndType(etudiant.getId(),Situation.ABSENCE);
 
-         return dto;
-     }
+        List<AbsenceAllResponse> absenceResponses = absences.stream().map(abs -> {
+            AbsenceAllResponse dto = new AbsenceAllResponse();
+            dto.setId(abs.getId());
+            dto.setType(abs.getType());
+            dto.setJustifiee(abs.isJustifiee());
+            dto.setSessionId(abs.getSessionId()); // tu peux remplacer par le nom si tu as la session
+            dto.setNonEtudiant(utilisateur.getNom());
+            dto.setPrenomEtudiant(utilisateur.getPrenom());
+            dto.setClasseEtudiant(etudiant.getClasseId());
+            return dto;
+        }).toList();
+
+        EtudiantSimpleResponse dto = new EtudiantSimpleResponse();
+        dto.setId(etudiant.getId());
+        dto.setMatricule(etudiant.getMatricule());
+        dto.setTelephone(etudiant.getTelephone());
+        dto.setNom(utilisateur.getNom());
+        dto.setPrenom(utilisateur.getPrenom());
+        dto.setClasse(classe.getLibelle());
+        dto.setAbsences(absenceResponses);
+
+        return dto;
+    }
 
 
     @Override

@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/web/sessions")
-public interface ISessionCoursController {
+public interface ISessionCoursWebController {
 
     @GetMapping("/duJour")
     ResponseEntity<Map<String,Object>> getSessionsDuJour(LocalDate date ,

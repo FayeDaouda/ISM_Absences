@@ -19,7 +19,7 @@ import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
 import sn.ism.gestion.data.services.IUtilisateurService;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
-import sn.ism.gestion.web.controllers.IUtilisateurController;
+import sn.ism.gestion.web.controllers.IUtilisateurWebController;
 import sn.ism.gestion.web.dto.Request.LoginRequest;
 import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
 import sn.ism.gestion.web.dto.RestResponse;
@@ -27,9 +27,9 @@ import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/utilisateurs")
+@RequestMapping("api/web/utilisateurs")
 @CrossOrigin(origins = "http://localhost:4200")
-public class UtilisateurController implements IUtilisateurController {
+public class UtilisateurWebController implements IUtilisateurWebController {
 
     private final IUtilisateurService utilisateurService;
     private final UtilisateurMapper utilisateurMapper;

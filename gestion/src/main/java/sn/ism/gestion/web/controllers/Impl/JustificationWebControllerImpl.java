@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IJustificationService;
 import sn.ism.gestion.utils.mapper.JustificationMapper;
-import sn.ism.gestion.web.controllers.IJustificationController;
+import sn.ism.gestion.web.controllers.IJustificationWebController;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.JustificationSimpleResponse;
 import sn.ism.gestion.web.dto.RestResponse;
@@ -24,9 +24,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/justifications")
+@RequestMapping("api/web/justifications")
 @CrossOrigin(origins = "http://localhost:4200")
-public class JustificationControllerImpl implements IJustificationController {
+public class JustificationWebControllerImpl implements IJustificationWebController {
 
     private final IJustificationService justificationService;
     private final JustificationMapper justificationMapper;

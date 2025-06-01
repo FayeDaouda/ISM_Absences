@@ -4,23 +4,28 @@ import java.time.LocalDate;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sn.ism.gestion.data.services.ISessionCoursService;
 import sn.ism.gestion.utils.mapper.SessionMapper;
-import sn.ism.gestion.web.controllers.ISessionCoursController;
+import sn.ism.gestion.web.controllers.ISessionCoursWebController;
 import sn.ism.gestion.web.dto.RestResponse;
 import sn.ism.gestion.web.dto.Response.SessionAllResponse;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
-public class SessionCoursController implements ISessionCoursController {
+@RequestMapping("api/web/sessionsCours")
+@CrossOrigin(origins = "http://localhost:4200")
+public class SessionCoursWebController implements ISessionCoursWebController {
 
 
     private final ISessionCoursService sessionCoursService;

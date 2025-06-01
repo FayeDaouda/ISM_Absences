@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.web.dto.Request.AbsenceRequest;
-import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/web/pointages")
-public interface IAbsenceController extends Controller<Absence> {
+public interface IAbsenceWebController extends Controller<Absence> {
 
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody AbsenceRequest request,

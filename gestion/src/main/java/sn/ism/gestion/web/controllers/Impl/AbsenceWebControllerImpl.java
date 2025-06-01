@@ -16,7 +16,7 @@ import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.services.IAbsenceService;
 import sn.ism.gestion.data.services.IPaiementService;
 import sn.ism.gestion.utils.mapper.AbsenceMapper;
-import sn.ism.gestion.web.controllers.IAbsenceController;
+import sn.ism.gestion.web.controllers.IAbsenceWebController;
 import sn.ism.gestion.web.dto.Request.AbsenceRequest;
 import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
 import sn.ism.gestion.web.dto.RestResponse;
@@ -25,9 +25,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/pointages")
+@RequestMapping("api/web/pointages")
 @CrossOrigin(origins = "http://localhost:4200")
-public class AbsenceControllerImpl implements IAbsenceController {
+public class AbsenceWebControllerImpl implements IAbsenceWebController {
 
     private final IAbsenceService absenceService;
     private final AbsenceMapper absenceMapper;

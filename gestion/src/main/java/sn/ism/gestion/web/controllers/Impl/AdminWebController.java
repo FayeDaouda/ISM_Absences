@@ -17,7 +17,7 @@ import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IAdminService;
 import sn.ism.gestion.data.services.IJustificationService;
 import sn.ism.gestion.utils.mapper.AdminMapper;
-import sn.ism.gestion.web.controllers.IAdminController;
+import sn.ism.gestion.web.controllers.IAdminWebController;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 import sn.ism.gestion.web.dto.Response.AdminAllResponse;
@@ -25,9 +25,9 @@ import sn.ism.gestion.web.dto.RestResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/admins")
+@RequestMapping("api/web/admins")
 @CrossOrigin(origins = "http://localhost:4200")
-public class AdminController implements IAdminController {
+public class AdminWebController implements IAdminWebController {
 
     private final IJustificationService justificationService;
     private final IAdminService adminService;

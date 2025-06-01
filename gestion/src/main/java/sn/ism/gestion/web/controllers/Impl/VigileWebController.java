@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.data.entities.Vigile;
 import sn.ism.gestion.data.services.IVigileService;
 import sn.ism.gestion.utils.mapper.VigileMapper;
-import sn.ism.gestion.web.controllers.IVigileController;
+import sn.ism.gestion.web.controllers.IVigileWebController;
 import sn.ism.gestion.web.dto.Request.VigileSimpleRequest;
 import sn.ism.gestion.web.dto.Response.VigileAllResponse;
 import sn.ism.gestion.web.dto.RestResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/vigiles")
+@RequestMapping("api/web/vigiles")
 @CrossOrigin(origins = "http://localhost:4200")
-public class VigileController implements IVigileController {
+public class VigileWebController implements IVigileWebController {
 
     private final IVigileService vigileService;
     private final VigileMapper vigileMapper;

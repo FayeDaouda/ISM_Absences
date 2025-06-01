@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/web/utilisateurs")
-public interface IUtilisateurController extends Controller<Utilisateur> {
+public interface IUtilisateurWebController extends Controller<Utilisateur> {
 
     @PostMapping("/login")
     ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest request);

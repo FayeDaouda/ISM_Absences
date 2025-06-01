@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
+import sn.ism.gestion.data.entities.SessionCours;
 import sn.ism.gestion.data.enums.Situation;
 import sn.ism.gestion.data.repositories.*;
 import sn.ism.gestion.data.repositories.EtudiantRepository;
@@ -215,9 +216,15 @@ public class AbsenceServiceImpl implements IAbsenceService {
          Etudiant etudiant = etudiantRepository.findById(absence.getEtudiantId())
                  .orElseThrow(() -> new RuntimeException("Etudiant introuvable"));
 
+        SessionCours session = sessionCoursRepository.findById(absence.getSessionId())
+                .orElseThrow(() -> new RuntimeException("sessions introuvable"));
+
          AbsenceSimpleResponse dto = new AbsenceSimpleResponse();
          dto.setType(absence.getType());
-         dto.setSessionId(absence.getSessionId());
+         dto.setSessionId(session.getId());
+         dto.setSessionHeure(session.getHeureDebut());
+         dto.setSessionHeureFin(session.getHeureFin());
+         dto.setSessionDate(session.getDate());
          dto.setType(absence.getType());
          dto.setJustificationId(absence.getJustificationId());
          dto.setJustifiee(absence.isJustifiee());

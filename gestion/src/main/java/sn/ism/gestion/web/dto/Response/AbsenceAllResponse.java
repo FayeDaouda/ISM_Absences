@@ -7,6 +7,7 @@ import sn.ism.gestion.data.enums.Situation;
 @Setter
 public class AbsenceAllResponse {
 
+    private String id ;
     private String nonEtudiant;
     private String prenomEtudiant;
     private String classeEtudiant;

@@ -21,7 +21,7 @@ import sn.ism.gestion.web.dto.Request.JustificationRequest;
 
 @RestController
 @RequestMapping("/api/web/etudiants")
-public interface IEtudiantController extends Controller<Etudiant> {
+public interface IEtudiantWebController extends Controller<Etudiant> {
 
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody EtudiantSimpleRequest request,
