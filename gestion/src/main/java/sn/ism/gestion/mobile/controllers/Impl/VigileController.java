@@ -10,13 +10,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.data.entities.Vigile;
+import sn.ism.gestion.data.services.IAbsenceService;
 import sn.ism.gestion.data.services.IVigileService;
 import sn.ism.gestion.mobile.controllers.IVigileController;
+import sn.ism.gestion.utils.mapper.AbsenceMapper;
 import sn.ism.gestion.utils.mapper.VigileMapper;
 import sn.ism.gestion.web.dto.Request.VigileSimpleRequest;
+import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
 import sn.ism.gestion.web.dto.Response.VigileAllResponse;
 import sn.ism.gestion.web.dto.RestResponse;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +32,8 @@ public class VigileController implements IVigileController {
 
     private final IVigileService vigileService;
     private final VigileMapper vigileMapper;
+    private final IAbsenceService absenceService;
+    private final AbsenceMapper absenceMapper;
 
     @Override
     public ResponseEntity<Map<String, Object>> Create(VigileSimpleRequest request, BindingResult bindingResult) {
@@ -91,5 +97,23 @@ public class VigileController implements IVigileController {
         return null;
     }
 
-
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllPointagesDuJour(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AbsenceAllResponse> absences = absenceService.getAllPointagesDuJour(LocalDate.now(),pageable);
+        Page<AbsenceAllResponse> response = absences.map(absenceMapper::toDto);
+        return new ResponseEntity<>(
+                RestResponse.responsePaginate(
+                        HttpStatus.OK,
+                        response.getContent(),
+                        response.getNumber(),
+                        response.getTotalPages(),
+                        response.getTotalElements(),
+                        response.isFirst(),
+                        response.isLast(),
+                        "PointageAllResponses"),
+                HttpStatus.OK);
+    }
 }

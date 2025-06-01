@@ -8,9 +8,12 @@ import sn.ism.gestion.web.dto.Request.AbsenceRequest;
 import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
 import sn.ism.gestion.web.dto.Response.AbsenceSimpleResponse;
 
+import java.time.LocalDate;
+
 
 public interface IAbsenceService extends Service<Absence> {
 
+    Page<AbsenceAllResponse> getAllPointagesDuJour(LocalDate date ,Pageable pageable);
     Page<AbsenceAllResponse> getAllPointages(Pageable pageable);
     Absence pointerEtudiantByMatricule(String sessionId, String matricule);
     Absence pointerEtudiant(String sessionId, String etudiantId);

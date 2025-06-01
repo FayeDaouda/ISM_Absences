@@ -21,4 +21,9 @@ public interface IVigileController extends Controller<Vigile> {
     @PostMapping("/pointer")
     ResponseEntity<Map<String,Object>> pointerEtudiant(
         @RequestParam String matricule );
+
+    @PostMapping("/AllPointagesDuJour")
+    ResponseEntity<Map<String, Object>> getAllPointagesDuJour(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size);
 }

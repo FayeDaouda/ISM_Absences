@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sn.ism.gestion.data.entities.Absence;
@@ -187,6 +188,32 @@ public class AbsenceServiceImpl implements IAbsenceService {
             return dto;
         });
     }
+
+    @Override
+    public Page<AbsenceAllResponse> getAllPointagesDuJour(LocalDate date, Pageable pageable) {
+        Page<Absence> absences = absenceRepository.findByDate(date, pageable);
+
+        List<AbsenceAllResponse> filteredList = absences
+                .stream()
+                .filter(a -> a.getType() == Situation.PRESENT || a.getType() == Situation.RETARD)
+                .map(a -> {
+                    AbsenceAllResponse dto = new AbsenceAllResponse();
+                    dto.setType(a.getType());
+                    dto.setSessionId(a.getSessionId());
+                    dto.setJustifiee(a.isJustifiee());
+                    etudiantRepository.findById(a.getEtudiantId()).ifPresent(e -> {
+                        dto.setClasseEtudiant(e.getClasseId());
+                        utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
+                            dto.setPrenomEtudiant(u.getPrenom());
+                            dto.setNonEtudiant(u.getNom());
+                        });
+                    });
+                    return dto;
+                }).toList();
+
+        return new PageImpl<>(filteredList, pageable, filteredList.size());
+    }
+
 
     @Override
     public Page<AbsenceAllResponse> getAllAbsences(Pageable pageable) {
