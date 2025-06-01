@@ -94,40 +94,6 @@ public class AbsenceWebControllerImpl implements IAbsenceWebController {
     }
 
     @Override
-    public ResponseEntity<?> pointerEtudiantByQRcode(@RequestParam String sessionId, @RequestParam String etudiantId) {
-        if (!paiementService.estAjourDansPaiement(etudiantId)) {
-            return new ResponseEntity<>(
-                    RestResponse.response(
-                            HttpStatus.OK,
-                            null,
-                            "Pointage refusé : l'étudiant n'est pas à jour dans ses paiements."
-                    ),
-                    HttpStatus.OK
-            );
-        }
-        Absence absence = absenceService.pointerEtudiant(sessionId, etudiantId);
-        return ResponseEntity.ok().body(absence);
-
-//        AbsenceAllResponse absenceDto = absenceMapper.toDtoAll(absence);
-//        return new ResponseEntity<>(
-//                RestResponse.response(
-//                        HttpStatus.OK,
-//                        absenceDto,
-//                        "Pointage effectué avec succès."
-//                ),
-//                HttpStatus.OK
-//        );
-    }
-
-
-    @Override
-    public ResponseEntity<?> pointerEtudiantByMatricule(@RequestParam String sessionId, @RequestParam String matricule) {
-        Absence absence = absenceService.pointerEtudiantByMatricule(sessionId, matricule);
-        return ResponseEntity.ok().body(absence);
-    }
-
-    @Override
-    @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
         var absence = absenceService.getOne(id);
         var absenceDto = absenceMapper.toDtoAll(absence);
@@ -160,10 +126,9 @@ public class AbsenceWebControllerImpl implements IAbsenceWebController {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> findByDetailsId(String id) {
+    public ResponseEntity<Map<String, Object>> getAbsenceDetails(String id) {
         return null;
     }
 
-    
 
 }

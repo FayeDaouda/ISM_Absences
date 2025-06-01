@@ -18,7 +18,7 @@ public class JustificationTraitementRequest {
     @NotBlank(message = "Le statut est requis")
     private String statut;
 
-    public Justification toValidate() {
+    public Justification toTraitement() {
         Justification justification = new Justification();
         justification.setStatut(StatutJustification.valueOf(statut));
         return justification;

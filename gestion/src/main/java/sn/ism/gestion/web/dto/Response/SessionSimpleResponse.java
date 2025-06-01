@@ -15,7 +15,7 @@ import sn.ism.gestion.data.enums.Role;
 @Setter
 public class SessionSimpleResponse {
 
-    private  String id;
+    private String id;
     private String coursId;
     private LocalDate date;
     private LocalDateTime heureDebut;

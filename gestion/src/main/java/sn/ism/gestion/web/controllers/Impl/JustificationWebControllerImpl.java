@@ -16,7 +16,7 @@ import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IJustificationService;
 import sn.ism.gestion.utils.mapper.JustificationMapper;
 import sn.ism.gestion.web.controllers.IJustificationWebController;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
+import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;
 import sn.ism.gestion.web.dto.Response.JustificationSimpleResponse;
 import sn.ism.gestion.web.dto.RestResponse;
 
@@ -31,20 +31,13 @@ public class JustificationWebControllerImpl implements IJustificationWebControll
     private final IJustificationService justificationService;
     private final JustificationMapper justificationMapper;
 
+
     @Override
-    public ResponseEntity<Map<String, Object>> Create(JustificationRequest request, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            Map<String, Object> errors = new HashMap<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errors.put(error.getField(), error.getDefaultMessage());
-            }
-            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-        }
-        Justification justification = justificationService.createJustication(request);
-        Justification entityJustification = justificationMapper.toEntity(justification);
-
-        return new ResponseEntity<>(RestResponse.response(HttpStatus.CREATED, entityJustification, "JustificationCreate"), HttpStatus.CREATED);
+    public ResponseEntity<Map<String, Object>> traiterJustification(String id, JustificationTraitementRequest request) {
+        Justification justificationAbsence = justificationService.traiterJustication(id, request);
+        return new ResponseEntity<>(
+                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "traitementJustifiction"),
+                HttpStatus.ACCEPTED);
     }
 
     @Override

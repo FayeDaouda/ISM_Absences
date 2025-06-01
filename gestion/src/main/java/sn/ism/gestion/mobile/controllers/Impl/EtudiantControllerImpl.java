@@ -15,7 +15,6 @@ import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.mobile.controllers.IEtudiantController;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.RestResponse;
 

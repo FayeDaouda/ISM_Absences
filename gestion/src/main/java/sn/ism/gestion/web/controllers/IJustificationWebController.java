@@ -4,24 +4,22 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Justification;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
+import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;
+import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 
 @RestController
 @RequestMapping("/api/web/justifications")
 public interface IJustificationWebController extends Controller<Justification> {
 
-    
-    @PostMapping("")
-    ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody JustificationRequest objet,
-        BindingResult bindingResult);
-    
-    
+
+    @PutMapping("/{id}/traitement")
+    ResponseEntity<Map<String,Object>> traiterJustification(
+            @PathVariable String id,
+            @RequestParam JustificationTraitementRequest request
+    );
 }

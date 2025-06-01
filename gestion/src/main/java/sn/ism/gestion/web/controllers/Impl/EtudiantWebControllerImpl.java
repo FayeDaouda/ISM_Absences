@@ -18,7 +18,6 @@ import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.web.controllers.IEtudiantWebController;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.RestResponse;
 
@@ -100,15 +99,6 @@ public class EtudiantWebControllerImpl implements IEtudiantWebController {
     @Override
     public ResponseEntity<Map<String, Object>> Update(String id, EtudiantSimpleRequest request) {
        return null;
-    }
-
-    @Override
-    public ResponseEntity<Map<String, Object>> justifierAbsence(String id, JustificationRequest justificationRequest) {
-
-        Absence justificationAbsence = etudiantService.justifierAbsence(id, justificationRequest);
-        return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "jusificationAbsence"),
-                HttpStatus.ACCEPTED);
     }
 
     @Override

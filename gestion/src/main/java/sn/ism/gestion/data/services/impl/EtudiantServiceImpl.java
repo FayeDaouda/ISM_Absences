@@ -18,9 +18,7 @@ import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Response.AbsenceAllResponse;
-import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
 import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
 
@@ -109,20 +107,6 @@ public class EtudiantServiceImpl implements IEtudiantService {
     }
 
     @Override
-    public Absence justifierAbsence(String absenceId, JustificationRequest justification) {
-        Absence absence = absenceRepository.findById(absenceId)
-                .orElseThrow(() -> new EntityNotFoundExecption("Pointage non trouvée"));
-        if (absence.getType()!=Situation.ABSENCE){
-            throw new EntityNotFoundExecption("Pas une Absence");
-        }
-        Justification justificationCreate = justification.toJustification();
-        justificationCreate.setAbsenceId(absence.getId());
-        absence.setJustifiee(true);
-        justificationServiceImpl.createJustication(justification);
-        return absenceRepository.save(absence);
-    }
-
-    @Override
     public Page<EtudiantAllResponse> getAllEtudiants(Pageable pageable) {
         Page<Etudiant> etudiants = etudiantRepository.findAll(pageable);
 
@@ -131,7 +115,9 @@ public class EtudiantServiceImpl implements IEtudiantService {
             dto.setId(e.getId());
             dto.setMatricule(e.getMatricule());
             dto.setTelephone(e.getTelephone());
-            dto.setClasseId(e.getClasseId());
+            classeRepository.findById(e.getClasseId()).ifPresent(c -> {
+                dto.setClasse(c.getLibelle());
+            });
             utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
                 dto.setNom(u.getNom());
                 dto.setPrenom(u.getPrenom());

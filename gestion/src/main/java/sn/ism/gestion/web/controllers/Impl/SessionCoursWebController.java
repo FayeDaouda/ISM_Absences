@@ -54,7 +54,7 @@ public class SessionCoursWebController implements ISessionCoursWebController {
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> findById(String id) {
+    public ResponseEntity<Map<String, Object>> getById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }

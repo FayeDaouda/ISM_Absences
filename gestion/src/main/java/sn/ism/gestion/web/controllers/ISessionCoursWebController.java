@@ -16,5 +16,5 @@ public interface ISessionCoursWebController {
                     @RequestParam(defaultValue = "10") int size);
 
     @GetMapping("/{id}")
-    ResponseEntity<Map<String,Object>> findById(@PathVariable String id);
+    ResponseEntity<Map<String,Object>> getById(@PathVariable String id);
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Admin;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
-import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
+import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;
 
 import java.util.Map;
 @RestController
@@ -18,11 +18,11 @@ public interface IAdminWebController extends Controller<Admin> {
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody AdminSimpleRequest request,
                                                BindingResult bindingResult);
 
-    @PutMapping("/{id}/valider")
-    ResponseEntity<Map<String,Object>> traiterJustification(
-            @PathVariable String id,
-            @RequestParam JustificationValidationRequest request
-            );
+//    @PutMapping("/{id}/traiter")
+//    ResponseEntity<Map<String,Object>> traiterJustification(
+//            @PathVariable String id,
+//            @RequestParam JustificationTraitementRequest request
+//            );
 
 
 }

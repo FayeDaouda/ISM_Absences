@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Justification;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
 
 import java.util.Map;
 

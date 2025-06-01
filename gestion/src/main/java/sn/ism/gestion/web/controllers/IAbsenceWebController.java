@@ -24,21 +24,12 @@ public interface IAbsenceWebController extends Controller<Absence> {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size);
 
-    @PostMapping("/pointer")
-     ResponseEntity<?> pointerEtudiantByQRcode(@RequestParam String sessionId,
-                                       @RequestParam String etudiantId);
-
-    @PostMapping("/pointerByMatricule")
-    ResponseEntity<?> pointerEtudiantByMatricule(@RequestParam String sessionId,
-                                      @RequestParam String matricule);
-
-
     @GetMapping("/{etudiantId}")
     ResponseEntity<Map<String,Object>> findAbsencesByEtudiant(@PathVariable String id, 
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size);
 
-    @GetMapping("/{id}/details")
-    ResponseEntity<Map<String,Object>> findByDetailsId(@PathVariable String id);
+    @GetMapping("/absence/{id}")
+    ResponseEntity<Map<String,Object>> getAbsenceDetails(@PathVariable String id);
 
 }

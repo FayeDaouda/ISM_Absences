@@ -19,6 +19,7 @@ import sn.ism.gestion.data.services.IJustificationService;
 import sn.ism.gestion.utils.mapper.AdminMapper;
 import sn.ism.gestion.web.controllers.IAdminWebController;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
+import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;
 import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 import sn.ism.gestion.web.dto.Response.AdminAllResponse;
 import sn.ism.gestion.web.dto.RestResponse;
@@ -90,12 +91,12 @@ public class AdminWebController implements IAdminWebController {
         return null;
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> traiterJustification(String id, JustificationValidationRequest request) {
-        Justification justificationAbsence = justificationService.traiterJustication(id, request);
-        return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "traitementJustifiction"),
-                HttpStatus.ACCEPTED);
-    }
+//    @Override
+//    public ResponseEntity<Map<String, Object>> traiterJustification(String id, JustificationTraitementRequest request) {
+//        Justification justificationAbsence = justificationService.traiterJustication(id, request);
+//        return new ResponseEntity<>(
+//                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "traitementJustifiction"),
+//                HttpStatus.ACCEPTED);
+//    }
     
 }

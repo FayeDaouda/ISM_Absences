@@ -10,11 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JustificationSimpleResponse {
-    
+
+
     private String absenceId;
     private String commentaire;
     private String fichierUrl;
     private StatutJustification statut;
     private LocalDateTime dateSoumission;
-
+    private JustificationAllResponse justificationAllResponse;
 }

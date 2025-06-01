@@ -12,8 +12,7 @@ import sn.ism.gestion.data.repositories.JustificationRepository;
 import sn.ism.gestion.data.services.IJustificationService;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.JustificationMapper;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
-import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
+import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class JustificationServiceImpl implements IJustificationService {
     }
 
     @Override
-    public Justification traiterJustication(String absenceId, JustificationValidationRequest justificationRequest) {
+    public Justification traiterJustication(String absenceId, JustificationTraitementRequest justificationRequest) {
         Absence absence = absenceRepository.findById(absenceId)
                 .orElseThrow(() -> new EntityNotFoundExecption("Absence non trouvée"));
 

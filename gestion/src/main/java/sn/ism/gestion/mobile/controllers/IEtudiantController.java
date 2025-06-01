@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
 
 import java.util.Map;
 
