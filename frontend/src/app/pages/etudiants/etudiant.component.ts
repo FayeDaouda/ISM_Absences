@@ -8,10 +8,11 @@ import { EtudiantService, EtudiantResponse, PagedResponse } from '../../shared/s
 import { Subscription, debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { SidebarComponent } from "../../shared/components/sidebar/sidebar.component";
 
+
 @Component({
   standalone: true,
   selector: 'app-etudiants',
-  imports: [CommonModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './etudiant.component.html',
   styleUrls: ['./etudiant.component.css']
 })

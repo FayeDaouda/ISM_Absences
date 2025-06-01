@@ -203,8 +203,8 @@
                   <span class="time-empty" *ngIf="!absence.heureArrivee">Non enregistrée</span>
                 </td>
                 <td>
-                  <span class="status-badge" [ngClass]="getStatusClass(absence.typePointage)">
-                    {{ getStatusText(absence.typePointage) }}
+                  <span class="status-badge" [ngClass]="getStatusClass(absence.datePointage)">
+                    {{ getStatusText(absence.datePointage) }}
                   </span>
                 </td>
                 <td>

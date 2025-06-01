@@ -17,6 +17,7 @@ interface AbsenceBackend {
 
 // Interface pour l'affichage frontend
 interface Absence {
+date: any;
   id?: string;
   nom: string;
   prenom: string;
@@ -175,17 +176,19 @@ export class AbsencesComponent implements OnInit {
 
   // Mapper les données du backend vers le format frontend
   private mapBackendToFrontend(backendData: AbsenceBackend[]): Absence[] {
-    return backendData.map(item => ({
-      nom: item.nonEtudiant || 'N/A',
-      prenom: item.prenomEtudiant || 'N/A',
-      classe: item.classeEtudiant || 'N/A',
-      sessionId: item.sessionId,
-      type: item.type,
-      etat: this.getEtatFromTypeAndJustification(item.type, item.justifiee),
-      dateAbsence: new Date().toLocaleDateString('fr-FR'), // À adapter selon vos besoins
-      justificationId: item.justifiee ? 'justified' : undefined
-    }));
-  }
+  return backendData.map(item => ({
+    nom: item.nonEtudiant || 'N/A',
+    prenom: item.prenomEtudiant || 'N/A',
+    classe: item.classeEtudiant || 'N/A',
+    sessionId: item.sessionId,
+    type: item.type,
+    etat: this.getEtatFromTypeAndJustification(item.type, item.justifiee),
+    dateAbsence: new Date().toLocaleDateString('fr-FR'),
+    justificationId: item.justifiee ? 'justified' : undefined,
+    date: new Date() // ou n'importe quelle date par défaut ou réelle
+  }));
+}
+
 
   // Déterminer l'état d'affichage basé sur le type et la justification
   private getEtatFromTypeAndJustification(type: string, justifiee: boolean): 'Justifié(e)' | 'En attente' | 'Non justifié(e)' {
@@ -208,7 +211,8 @@ export class AbsencesComponent implements OnInit {
         type: 'ABSENCE',
         etat: 'Justifié(e)',
         dateAbsence: '25/03/2025',
-        justificationId: '1'
+        justificationId: '1',
+        date: undefined
       },
       {
         nom: 'Faye',
@@ -218,7 +222,8 @@ export class AbsencesComponent implements OnInit {
         type: 'ABSENCE',
         etat: 'En attente',
         dateAbsence: '22/03/2025',
-        justificationId: '2'
+        justificationId: '2',
+        date: undefined
       }
     ];
     this.applyClientSideFilter();
