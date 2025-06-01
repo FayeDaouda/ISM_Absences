@@ -1,69 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Absence } from '../models/absence.model';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AbsenceService {
-  private absences: Absence[] = [
-    {
-      id: 1,
-      nom: 'Diop',
-      prenom: 'Lamine',
-      date: '2025-05-20',
-      etat: 'en_attente',
-      description: 'Problème de santé, demande envoyée.',
-      justificatifUrl: '/assets/justif-alice.pdf'
-    },
-    {
-      id: 2,
-      nom: 'Diagne',
-      prenom: 'Issa',
-      date: '2025-05-18',
-      etat: 'justifiee',
-      description: 'Voyage scolaire avec document fourni.',
-      justificatifUrl: '/assets/justif-jean.pdf'
-    },
-    {
-      id: 3,
-      nom: 'Ndour',
-      prenom: 'Kiki',
-      date: '2025-05-15',
-      etat: 'non_justifiee',
-      description: 'Absence non justifiée, pas de document.',
-      justificatifUrl: ''
-    },
-    {
-      id: 4,
-      nom: 'Faye',
-      prenom: 'Daouda',
-      date: '2025-05-10',
-      etat: 'justifiee',
-      description: 'Rendez-vous médical, justificatif fourni.',
-      justificatifUrl: '/assets/justif-marc.pdf'
-    },
-    {
-      id: 5,
-      nom: 'Dia',
-      prenom: 'Ibou',
-      date: '2025-05-08',
-      etat: 'en_attente',
-      description: 'Demande en cours de traitement.',
-      justificatifUrl: ''
-    }
-  ];
+  private apiUrl = 'http://localhost:8081/api/absences';
 
-  getAll(): Absence[] {
-    return this.absences;
-  }
+  constructor(private http: HttpClient) {}
 
-  getById(id: number): Absence | undefined {
-    return this.absences.find(a => a.id === id);
-  }
+  getAll(): Observable<Absence[]> {
+  return this.http.get<Absence[]>('http://localhost:8081/api/absences/details');
+}
 
-  updateEtat(id: number, newEtat: Absence['etat']): void {
-  const found = this.absences.find(a => a.id === id);
-  if (found) {
-    found.etat = newEtat;
-  }
+
+  updateEtat(id: string, newEtat: 'justifiee' | 'non_justifiee') {
+  const url = newEtat === 'justifiee'
+    ? `${this.apiUrl}/justifier/${id}`
+    : `${this.apiUrl}/refuser/${id}`;
+  return this.http.put<Absence>(url, {});
+}
+
+getById(id: string): Observable<Absence> {
+  return this.http.get<Absence>(`${this.apiUrl}/${id}`);
 }
 
 }

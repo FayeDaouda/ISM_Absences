@@ -1,8 +1,9 @@
 export interface Absence {
-  id: number;
+date: any;
+  id: string;
   nom: string;
   prenom: string;
-  date: string;
+  dateAbsence: string;
   etat: 'justifiee' | 'en_attente' | 'non_justifiee';
   description: string;
   justificatifUrl: string;

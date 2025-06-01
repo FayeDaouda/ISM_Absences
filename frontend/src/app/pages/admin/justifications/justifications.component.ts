@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AbsenceService } from '../../../shared/services/absence.service';
@@ -12,13 +12,20 @@ import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.com
   imports: [CommonModule, NavebarComponent, SidebarComponent],
   templateUrl: './justifications.component.html',
 })
-export class JustificationComponent {
+export class JustificationComponent implements OnInit {
   absence?: Absence;
 
-  constructor(private route: ActivatedRoute, private router: Router, private service: AbsenceService) {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.absence = this.service.getById(id);
+ constructor(private route: ActivatedRoute, private router: Router, private service: AbsenceService) {}
+
+ngOnInit(): void {
+  const id = this.route.snapshot.paramMap.get('id');
+  if (id) {
+    this.service.getById(id).subscribe((data) => {
+      this.absence = data;
+    });
   }
+}
+
 
   getEtatLabel(etat: Absence['etat']) {
     switch (etat) {
@@ -37,16 +44,19 @@ export class JustificationComponent {
   }
 
   valider() {
-    if (this.absence) {
-      this.service.updateEtat(this.absence.id, 'justifiee');
+  if (this.absence?.id) {
+    this.service.updateEtat(this.absence.id, 'justifiee').subscribe(() => {
       this.router.navigate(['/absences']);
-    }
+    });
   }
+}
 
-  invalider() {
-    if (this.absence) {
-      this.service.updateEtat(this.absence.id, 'non_justifiee');
+invalider() {
+  if (this.absence?.id) {
+    this.service.updateEtat(this.absence.id, 'non_justifiee').subscribe(() => {
       this.router.navigate(['/absences']);
-    }
+    });
   }
+}
+
 }

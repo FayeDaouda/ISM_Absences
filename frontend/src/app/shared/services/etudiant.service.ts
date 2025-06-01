@@ -11,11 +11,12 @@ export interface Etudiant {
 
 @Injectable({ providedIn: 'root' })
 export class EtudiantService {
-  private apiUrl = 'http://localhost:8080/api/etudiants';
+  private apiUrl = 'http://localhost:8081/api/etudiants'; 
 
   constructor(private http: HttpClient) {}
 
   getAllEtudiants(): Observable<Etudiant[]> {
-    return this.http.get<Etudiant[]>(this.apiUrl);
+    return this.http.get<Etudiant[]>(`${this.apiUrl}/light`);
   }
 }
+

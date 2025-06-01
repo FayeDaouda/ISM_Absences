@@ -17,9 +17,13 @@ export class AbsencesComponent {
   pageSize = 3;
   currentPage = 1;
 
-  constructor(private absenceService: AbsenceService) {
-    this.absences = this.absenceService.getAll();
-  }
+constructor(private absenceService: AbsenceService) {}
+
+ngOnInit(): void {
+  this.absenceService.getAll().subscribe((data) => {
+    this.absences = data;
+  });
+}
 
   get paginatedAbsences() {
     const start = (this.currentPage - 1) * this.pageSize;
