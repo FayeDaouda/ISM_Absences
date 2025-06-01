@@ -13,11 +13,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class JustificationValidationRequest {
+public class JustificationTraitementRequest {
 
     @NotBlank(message = "Le statut est requis")
     private String statut;
-
 
     public Justification toValidate() {
         Justification justification = new Justification();
