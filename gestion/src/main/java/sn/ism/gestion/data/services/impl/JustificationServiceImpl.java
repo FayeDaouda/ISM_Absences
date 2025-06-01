@@ -10,6 +10,7 @@ import sn.ism.gestion.data.enums.StatutJustification;
 import sn.ism.gestion.data.repositories.AbsenceRepository;
 import sn.ism.gestion.data.repositories.JustificationRepository;
 import sn.ism.gestion.data.services.IJustificationService;
+import sn.ism.gestion.mobile.dto.Request.JustificationRequest;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.JustificationMapper;
 import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;

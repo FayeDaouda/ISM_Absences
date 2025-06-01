@@ -20,7 +20,6 @@ import sn.ism.gestion.utils.mapper.AdminMapper;
 import sn.ism.gestion.web.controllers.IAdminWebController;
 import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;
-import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 import sn.ism.gestion.web.dto.Response.AdminAllResponse;
 import sn.ism.gestion.web.dto.RestResponse;
 

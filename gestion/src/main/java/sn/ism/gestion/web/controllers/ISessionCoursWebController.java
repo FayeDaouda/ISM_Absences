@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/web/sessions")
+@RequestMapping("/api/web/admins/sessions")
 public interface ISessionCoursWebController {
 
     @GetMapping("/duJour")

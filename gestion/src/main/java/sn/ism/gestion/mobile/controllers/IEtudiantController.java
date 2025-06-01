@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Etudiant;
+import sn.ism.gestion.mobile.dto.Request.JustificationRequest;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 
 import java.util.Map;

@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;

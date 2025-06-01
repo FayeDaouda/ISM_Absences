@@ -13,6 +13,7 @@ import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.data.services.IEtudiantService;
 import sn.ism.gestion.mobile.controllers.IEtudiantController;
+import sn.ism.gestion.mobile.dto.Request.JustificationRequest;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;

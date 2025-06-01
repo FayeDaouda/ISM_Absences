@@ -8,7 +8,6 @@ import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.enums.Situation;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class AbsenceRequest {
 

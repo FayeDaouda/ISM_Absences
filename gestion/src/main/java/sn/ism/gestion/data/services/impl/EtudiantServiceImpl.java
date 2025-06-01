@@ -14,6 +14,7 @@ import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.enums.Situation;
 import sn.ism.gestion.data.repositories.*;
 import sn.ism.gestion.data.services.IEtudiantService;
+import sn.ism.gestion.mobile.dto.Request.JustificationRequest;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
 import sn.ism.gestion.utils.mapper.EtudiantMapper;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
@@ -104,6 +105,20 @@ public class EtudiantServiceImpl implements IEtudiantService {
     public Etudiant getByMatricule(String matricule) {
         return etudiantRepository.findByMatricule(matricule)
                 .orElseThrow(() -> new EntityNotFoundExecption("Étudiant avec ce matricule non trouvé"));
+    }
+
+    @Override
+    public Absence justifierAbsence(String absenceId, JustificationRequest justification) {
+        Absence absence = absenceRepository.findById(absenceId)
+                .orElseThrow(() -> new EntityNotFoundExecption("Pointage non trouvée"));
+        if (absence.getType()!=Situation.ABSENCE){
+            throw new EntityNotFoundExecption("Pas une Absence");
+        }
+        Justification justificationCreate = justification.toJustification();
+        justificationCreate.setAbsenceId(absence.getId());
+        absence.setJustifiee(true);
+        justificationServiceImpl.createJustication(justification);
+        return absenceRepository.save(absence);
     }
 
     @Override

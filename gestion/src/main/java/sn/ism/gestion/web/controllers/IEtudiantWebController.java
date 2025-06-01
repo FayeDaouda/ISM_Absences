@@ -19,7 +19,7 @@ import sn.ism.gestion.data.entities.Etudiant;
 import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 
 @RestController
-@RequestMapping("/api/web/etudiants")
+@RequestMapping("/api/web/admins/etudiants")
 public interface IEtudiantWebController extends Controller<Etudiant> {
 
     @PostMapping("")

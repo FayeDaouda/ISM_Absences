@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.data.services.IJustificationService;
 import sn.ism.gestion.mobile.controllers.IJustificationController;
+import sn.ism.gestion.mobile.dto.Request.JustificationRequest;
 import sn.ism.gestion.utils.mapper.JustificationMapper;
 import sn.ism.gestion.web.dto.Response.JustificationSimpleResponse;
 import sn.ism.gestion.web.dto.RestResponse;
