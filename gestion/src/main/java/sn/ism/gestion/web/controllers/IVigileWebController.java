@@ -11,7 +11,7 @@ import sn.ism.gestion.data.entities.Vigile;
 import sn.ism.gestion.web.dto.Request.VigileSimpleRequest;
 
 @RestController
-@RequestMapping("/api/vigiles")
+@RequestMapping("/api/web/vigiles")
 public interface IVigileController extends Controller<Vigile> {
 
     @PostMapping("")

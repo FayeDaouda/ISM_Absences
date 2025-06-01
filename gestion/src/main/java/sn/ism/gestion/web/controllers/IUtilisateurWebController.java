@@ -13,7 +13,7 @@ import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/utilisateurs")
+@RequestMapping("/api/web/utilisateurs")
 public interface IUtilisateurController extends Controller<Utilisateur> {
 
     @PostMapping("/login")

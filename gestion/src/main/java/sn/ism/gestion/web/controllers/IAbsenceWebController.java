@@ -13,7 +13,7 @@ import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/pointages")
+@RequestMapping("/api/web/pointages")
 public interface IAbsenceController extends Controller<Absence> {
 
     @PostMapping("")

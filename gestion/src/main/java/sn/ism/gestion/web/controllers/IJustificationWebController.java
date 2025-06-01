@@ -16,7 +16,7 @@ import sn.ism.gestion.data.entities.Justification;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
 
 @RestController
-@RequestMapping("/api/justifications")
+@RequestMapping("/api/web/justifications")
 public interface IJustificationController extends Controller<Justification> {
 
     

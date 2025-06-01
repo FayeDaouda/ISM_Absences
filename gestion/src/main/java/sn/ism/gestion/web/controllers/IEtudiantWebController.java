@@ -20,7 +20,7 @@ import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationRequest;
 
 @RestController
-@RequestMapping("/api/etudiants")
+@RequestMapping("/api/web/etudiants")
 public interface IEtudiantController extends Controller<Etudiant> {
 
     @PostMapping("")

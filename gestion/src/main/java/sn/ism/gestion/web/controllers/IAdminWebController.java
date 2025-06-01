@@ -10,6 +10,8 @@ import sn.ism.gestion.web.dto.Request.AdminSimpleRequest;
 import sn.ism.gestion.web.dto.Request.JustificationValidationRequest;
 
 import java.util.Map;
+@RestController
+@RequestMapping("/api/web/admins")
 public interface IAdminController extends Controller<Admin> {
 
     @PostMapping("")
