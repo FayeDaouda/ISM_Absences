@@ -23,6 +23,9 @@ export interface Justification {
   providedIn: 'root'
 })
 export class JustificationService {
+  rejectJustification(id: number) {
+    throw new Error('Method not implemented.');
+  }
   
   private apiUrl = 'http://localhost:8000/api'; // Remplacer par votre URL d'API
   

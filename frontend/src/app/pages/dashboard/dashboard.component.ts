@@ -1,8 +1,8 @@
-// dashboard.component.ts - Version corrigée
+// dashboard.component.ts - Version corrigée avec navigation appropriée
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService, User } from '../../services/auth.service';
+import { AuthService, User } from '../../shared/services/auth.service';
 import { Subscription } from 'rxjs';
 
 interface Absence {
@@ -45,13 +45,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     justificationsJour: 124
   };
 
-  // Liste des absences
+  // Liste des absences avec IDs
   absences: Absence[] = [
     {
       id: 1,
       nom: 'Sarr',
       prenom: 'Awa',
-      classe: 'M2IT2510',
+      classe: 'IAGE',
       statut: 'absent',
       heures: 90
     },
@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       id: 2,
       nom: 'Mbaye',
       prenom: 'Fatou',
-      classe: 'M1RH2408',
+      classe: 'ETSE',
       statut: 'absent',
       heures: 85
     },
@@ -67,19 +67,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       id: 3,
       nom: 'Dieng',
       prenom: 'Abdou',
-      classe: 'L3GLOG',
+      classe: 'L3GLRS',
       statut: 'absent',
       heures: 78
     }
   ];
 
-  // Liste des justifications
+  // Liste des justifications en attente avec IDs et données complètes
   justifications: Justification[] = [
     {
       id: 1,
       nom: 'Gueye',
       prenom: 'Adja',
-      classe: 'L3GLAS',
+      classe: 'L3GLRS',
       motif: 'Maladie',
       dateAbsence: 'Samedi pour 3',
       statut: 'en_attente',
@@ -92,7 +92,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       id: 2,
       nom: 'Sall',
       prenom: 'Aaly Mohamed',
-      classe: 'M2IT2510',
+      classe: 'MOSIEF',
       motif: 'En retard par faute de transport',
       dateAbsence: 'Lundi 14 Janvier',
       statut: 'en_attente',
@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       id: 3,
       nom: 'Ba',
       prenom: 'Ana',
-      classe: 'L2TREK',
+      classe: 'L2TTL',
       motif: 'Absence pour Rendez-vous à l\'hôpital',
       dateAbsence: 'Vendredi 12 Janvier',
       statut: 'en_attente',
@@ -125,6 +125,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // S'abonner aux changements de l'utilisateur connecté
     this.subscription.add(
       this.authService.currentUser$.subscribe({
         next: (user) => {
@@ -150,10 +151,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.justifications.filter(j => j.statut === 'en_attente').slice(0, limit);
   }
 
-  // CORRECTION: Méthode pour voir les détails d'une justification
+  // CORRECTION: Méthode pour voir les détails d'une justification spécifique
   voirDetails(index: number): void {
     console.log('voirDetails appelé avec index:', index);
     
+    // Filtrer les justifications en attente et prendre celle à l'index donné
     const justificationsEnAttente = this.justifications.filter(j => j.statut === 'en_attente');
     
     if (index >= 0 && index < justificationsEnAttente.length) {
@@ -162,18 +164,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       
       if (justification && justification.id) {
         console.log('Navigation vers justification ID:', justification.id);
-        // CORRECTION: Utiliser la bonne route
-        this.router.navigate(['/justification-detail', justification.id])
-          .then(success => {
-            if (success) {
-              console.log('Navigation réussie');
-            } else {
-              console.error('Échec de la navigation');
-            }
-          })
-          .catch(error => {
-            console.error('Erreur de navigation:', error);
-          });
+        this.router.navigate(['/justification-detail', justification.id]);
       } else {
         console.error('Justification ou ID manquant');
       }
@@ -182,24 +173,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  // CORRECTION: Actions pour les justifications
+  // CORRECTION: Actions pour les justifications - version rapide depuis le dashboard
   validerJustification(index: number): void {
     console.log('validerJustification appelé avec index:', index);
     
+    // Filtrer les justifications en attente et prendre celle à l'index donné
     const justificationsEnAttente = this.justifications.filter(j => j.statut === 'en_attente');
     
     if (index >= 0 && index < justificationsEnAttente.length) {
       const justificationToValidate = justificationsEnAttente[index];
+      
+      // Trouver l'index réel dans le tableau principal
       const realIndex = this.justifications.findIndex(j => j.id === justificationToValidate.id);
       
       if (realIndex !== -1) {
         this.justifications[realIndex].statut = 'valide';
         console.log('Justification validée:', this.justifications[realIndex]);
         
-        // Mise à jour des statistiques
-        this.updateStats();
-        
+        // Afficher un message de succès
         alert(`Justification de ${justificationToValidate.prenom} ${justificationToValidate.nom} validée avec succès !`);
+        
+        // Optionnel: Appeler un service pour sauvegarder
+        // this.justificationService.updateStatus(this.justifications[realIndex].id, 'valide');
       }
     } else {
       console.error('Index invalide pour validation:', index);
@@ -209,48 +204,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
   invaliderJustification(index: number): void {
     console.log('invaliderJustification appelé avec index:', index);
     
+    // Filtrer les justifications en attente et prendre celle à l'index donné
     const justificationsEnAttente = this.justifications.filter(j => j.statut === 'en_attente');
     
     if (index >= 0 && index < justificationsEnAttente.length) {
       const justificationToInvalidate = justificationsEnAttente[index];
+      
+      // Trouver l'index réel dans le tableau principal
       const realIndex = this.justifications.findIndex(j => j.id === justificationToInvalidate.id);
       
       if (realIndex !== -1) {
         this.justifications[realIndex].statut = 'invalide';
         console.log('Justification invalidée:', this.justifications[realIndex]);
         
-        // Mise à jour des statistiques
-        this.updateStats();
-        
+        // Afficher un message de succès
         alert(`Justification de ${justificationToInvalidate.prenom} ${justificationToInvalidate.nom} rejetée !`);
+        
+        // Optionnel: Appeler un service pour sauvegarder
+        // this.justificationService.updateStatus(this.justifications[realIndex].id, 'invalide');
       }
     } else {
       console.error('Index invalide pour invalidation:', index);
     }
   }
 
-  // Méthode pour mettre à jour les statistiques
-  private updateStats(): void {
-    const justificationsEnAttente = this.justifications.filter(j => j.statut === 'en_attente').length;
-    this.stats.justificationsJour = justificationsEnAttente;
+  // CORRECTION: Nouvelle méthode pour "Voir tout" - Navigation vers la liste complète des justifications
+  navigateToJustifications(): void {
+    console.log('Navigation vers toutes les justifications');
+    this.router.navigate(['/justifications-list']);
   }
 
   // Navigation vers les différentes pages
-  navigateToJustifications(): void {
-    console.log('Navigation vers toutes les justifications');
-    this.router.navigate(['/justifications-list'])
-      .then(success => {
-        if (success) {
-          console.log('Navigation vers justifications réussie');
-        } else {
-          console.error('Échec de la navigation vers justifications');
-        }
-      })
-      .catch(error => {
-        console.error('Erreur de navigation vers justifications:', error);
-      });
-  }
-
   navigateToAbsences(): void {
     console.log('Navigation vers absences');
     this.router.navigate(['/absences']);
@@ -265,8 +249,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   deconnexion(): void {
     try {
       console.log('Déconnexion en cours...');
+      // Supprimer le token du localStorage
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      
+      // Rediriger vers la page de login
       this.router.navigate(['/login']);
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);

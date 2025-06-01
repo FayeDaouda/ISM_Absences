@@ -1,50 +1,97 @@
-// absences.component.ts - Version corrigée
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// Interface pour les données venant du backend
+interface AbsenceBackend {
+  nonEtudiant: string;
+  prenomEtudiant: string;
+  classeEtudiant: string;
+  sessionId: string;
+  type: 'ABSENCE' | 'PRESENT' | 'RETARD';
+  justifiee: boolean;
+}
+
+// Interface pour l'affichage frontend
 interface Absence {
-  id: number;
+  id?: string;
   nom: string;
   prenom: string;
   classe: string;
-  date: string;
+  sessionId: string;
+  type: string;
   etat: 'Justifié(e)' | 'En attente' | 'Non justifié(e)';
-  motif?: string;
   dateAbsence?: string;
-  justificationId?: number;
+  justificationId?: string;
 }
 
-interface AbsenceUpdateData {
-  matricule: string;
-  dateAbsence?: string;
-  nouveauStatut: 'Justifiée' | 'Rejetée' | 'Non justifiée';
-  justificationId?: number;
+// Interface pour la réponse paginée du backend
+interface BackendResponse {
+  status: number;
+  results: AbsenceBackend[];
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  first: boolean;
+  last: boolean;
+  type: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AbsenceService {
-  private apiUrl = 'http://votre-api-url/api';
+  private apiUrl = 'http://localhost:8080/api/pointages'; // URL de votre backend
 
   constructor(private http: HttpClient) {}
 
-  updateAbsenceStatus(data: AbsenceUpdateData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/absences/update-status`, data);
+  // Récupérer toutes les absences avec pagination
+  getAllAbsences(page: number = 0, size: number = 10): Observable<BackendResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<BackendResponse>(`${this.apiUrl}/absences`, { params });
   }
 
-  getAbsenceByMatriculeAndDate(matricule: string, dateAbsence: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/absences/search`, {
-      params: { matricule, dateAbsence }
-    });
+  // Récupérer tous les pointages avec pagination
+  getAllPointages(page: number = 0, size: number = 10): Observable<BackendResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<BackendResponse>(`${this.apiUrl}`, { params });
   }
 
-  getAbsencesByMatricule(matricule: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/absences/etudiant/${matricule}`);
+  // Récupérer une absence spécifique
+  getAbsenceById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  // Créer une nouvelle absence
+  createAbsence(absenceData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, absenceData);
+  }
+
+  // Pointer un étudiant
+  pointerEtudiant(sessionId: string, etudiantId: string): Observable<any> {
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('etudiantId', etudiantId);
+
+    return this.http.post(`${this.apiUrl}/pointer`, null, { params });
+  }
+
+  // Pointer un étudiant par matricule
+  pointerEtudiantByMatricule(sessionId: string, matricule: string): Observable<any> {
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('matricule', matricule);
+
+    return this.http.post(`${this.apiUrl}/pointerByMatricule`, null, { params });
   }
 }
 
@@ -60,215 +107,234 @@ export class AbsenceService {
 })
 export class AbsencesComponent implements OnInit {
 
+  // Infos utilisateur
   userDisplayName = 'Lucien da Souza';
   userRole = 'Administrateur';
   userInitials = 'LS';
 
+  // Recherche et pagination
   searchTerm = '';
-  currentPage = 1;
-  itemsPerPage = 4;
+  currentPage = 0; // Backend utilise une pagination basée sur 0
+  itemsPerPage = 5;
   totalPages = 1;
+  totalItems = 0;
 
-  absences: Absence[] = [
-    {
-      id: 1,
-      nom: 'Ndiaye',
-      prenom: 'Abdoulaye',
-      classe: 'L3 INFO',
-      date: '25/03/2025',
-      etat: 'Justifié(e)',
-      motif: 'Maladie',
-      dateAbsence: '25/03/2025',
-      justificationId: 1
-    },
-    {
-      id: 2,
-      nom: 'Faye',
-      prenom: 'Daouda',
-      classe: 'L2 GESTION',
-      date: '22/03/2025',
-      etat: 'En attente',
-      motif: 'Rendez-vous médical',
-      dateAbsence: '22/03/2025',
-      justificationId: 2
-    },
-    {
-      id: 3,
-      nom: 'Mbow',
-      prenom: 'Fallou',
-      classe: 'L1 COMMERCE',
-      date: '18/04/2025',
-      etat: 'Non justifié(e)',
-      dateAbsence: '18/04/2025'
-    },
-    {
-      id: 4,
-      nom: 'Diop',
-      prenom: 'Pape Mbaye',
-      classe: 'M1 FINANCE',
-      date: '02/02/2025',
-      etat: 'En attente',
-      motif: 'Problème familial',
-      dateAbsence: '02/02/2025',
-      justificationId: 3
-    },
-    {
-      id: 5,
-      nom: 'Sarr',
-      prenom: 'Aminata',
-      classe: 'L3 MARKETING',
-      date: '15/04/2025',
-      etat: 'Justifié(e)',
-      motif: 'Certificat médical',
-      dateAbsence: '15/04/2025',
-      justificationId: 1
-    },
-    {
-      id: 6,
-      nom: 'Ba',
-      prenom: 'Moussa',
-      classe: 'L2 INFO',
-      date: '10/04/2025',
-      etat: 'Non justifié(e)',
-      dateAbsence: '10/04/2025'
-    }
-  ];
+  // Données
+  absences: Absence[] = [];
+  filteredAbsences: Absence[] = [];
+  isLoading = false;
+  errorMessage = '';
 
-  constructor(private router: Router) {}
+  // Filtres
+  showOnlyAbsences = true; // true = absences seulement, false = tous les pointages
+
+  constructor(
+    private router: Router,
+    private absenceService: AbsenceService
+  ) {}
 
   ngOnInit(): void {
-    this.calculatePagination();
+    this.loadAbsences();
   }
 
-  // Navigation
-  navigateToHome(): void {
-    console.log('Navigation vers dashboard');
-    this.router.navigate(['/dashboard']);
+  // Charger les absences depuis le backend
+  loadAbsences(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const serviceCall = this.showOnlyAbsences 
+      ? this.absenceService.getAllAbsences(this.currentPage, this.itemsPerPage)
+      : this.absenceService.getAllPointages(this.currentPage, this.itemsPerPage);
+
+    serviceCall.subscribe({
+      next: (response: BackendResponse) => {
+        console.log('Réponse du backend:', response);
+        
+        if (response.status === 200) {
+          this.absences = this.mapBackendToFrontend(response.results);
+          this.applyClientSideFilter();
+          this.totalPages = response.totalPages;
+          this.totalItems = response.totalItems;
+          this.currentPage = response.currentPage;
+        } else {
+          this.errorMessage = 'Erreur lors du chargement des données';
+        }
+        
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement:', error);
+        this.errorMessage = 'Impossible de charger les absences. Vérifiez la connexion au serveur.';
+        this.isLoading = false;
+        
+        // En cas d'erreur, afficher des données de test
+        this.loadMockData();
+      }
+    });
   }
 
-  navigateToAbsences(): void {
-    console.log('Déjà sur la page absences');
+  // Mapper les données du backend vers le format frontend
+  private mapBackendToFrontend(backendData: AbsenceBackend[]): Absence[] {
+    return backendData.map(item => ({
+      nom: item.nonEtudiant || 'N/A',
+      prenom: item.prenomEtudiant || 'N/A',
+      classe: item.classeEtudiant || 'N/A',
+      sessionId: item.sessionId,
+      type: item.type,
+      etat: this.getEtatFromTypeAndJustification(item.type, item.justifiee),
+      dateAbsence: new Date().toLocaleDateString('fr-FR'), // À adapter selon vos besoins
+      justificationId: item.justifiee ? 'justified' : undefined
+    }));
   }
 
-  navigateToEtudiants(): void {
-    console.log('Navigation vers étudiants');
-    this.router.navigate(['/etudiants']);
+  // Déterminer l'état d'affichage basé sur le type et la justification
+  private getEtatFromTypeAndJustification(type: string, justifiee: boolean): 'Justifié(e)' | 'En attente' | 'Non justifié(e)' {
+    if (type === 'ABSENCE') {
+      return justifiee ? 'Justifié(e)' : 'Non justifié(e)';
+    } else if (type === 'RETARD') {
+      return justifiee ? 'Justifié(e)' : 'En attente';
+    }
+    return 'Non justifié(e)';
   }
 
-  deconnexion(): void {
-    console.log('Déconnexion en cours...');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.router.navigate(['/login']);
+  // Données de test en cas d'erreur de connexion
+  private loadMockData(): void {
+    this.absences = [
+      {
+        nom: 'Bathily',
+        prenom: 'Aboubacar',
+        classe: 'L3 GLRS',
+        sessionId: 'session-1',
+        type: 'ABSENCE',
+        etat: 'Justifié(e)',
+        dateAbsence: '25/03/2025',
+        justificationId: '1'
+      },
+      {
+        nom: 'Faye',
+        prenom: 'Daouda',
+        classe: 'L2 GESTION',
+        sessionId: 'session-2',
+        type: 'ABSENCE',
+        etat: 'En attente',
+        dateAbsence: '22/03/2025',
+        justificationId: '2'
+      }
+    ];
+    this.applyClientSideFilter();
+    this.totalPages = 1;
+    this.totalItems = this.absences.length;
   }
 
-  // Filtrage des absences
-  get filteredAbsences(): Absence[] {
+  // Appliquer le filtre côté client (pour la recherche)
+  private applyClientSideFilter(): void {
     const search = this.searchTerm.trim().toLowerCase();
-
-    let result = this.absences;
+    
     if (search) {
-      result = this.absences.filter(abs =>
+      this.filteredAbsences = this.absences.filter(abs =>
         abs.nom.toLowerCase().includes(search) ||
         abs.prenom.toLowerCase().includes(search) ||
         abs.classe.toLowerCase().includes(search) ||
         abs.etat.toLowerCase().includes(search)
       );
+    } else {
+      this.filteredAbsences = [...this.absences];
     }
-
-    this.totalPages = Math.max(1, Math.ceil(result.length / this.itemsPerPage));
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return result.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
-  calculatePagination(): void {
-    const search = this.searchTerm.trim().toLowerCase();
-    const list = search ? this.absences.filter(abs =>
-      abs.nom.toLowerCase().includes(search) ||
-      abs.prenom.toLowerCase().includes(search) ||
-      abs.classe.toLowerCase().includes(search) ||
-      abs.etat.toLowerCase().includes(search)
-    ) : this.absences;
-
-    this.totalPages = Math.max(1, Math.ceil(list.length / this.itemsPerPage));
+  // Changer le type d'affichage (absences seulement vs tous les pointages)
+  toggleViewType(): void {
+    this.showOnlyAbsences = !this.showOnlyAbsences;
+    this.currentPage = 0;
+    this.loadAbsences();
   }
 
-  getPageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
+  // Navigation entre les pages
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
+    if (page >= 0 && page < this.totalPages) {
       this.currentPage = page;
+      this.loadAbsences();
     }
   }
 
   previousPage(): void {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 0) {
       this.currentPage--;
+      this.loadAbsences();
     }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
+      this.loadAbsences();
     }
   }
 
-  // CORRECTION: Méthode pour voir les détails d'une absence
+  // Recherche
+  onSearchChange(): void {
+    this.applyClientSideFilter();
+  }
+
+  // Navigation dans l'app
+  navigateToHome(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  navigateToAbsences(): void {
+    // Déjà sur cette page
+  }
+
+  navigateToEtudiants(): void {
+    this.router.navigate(['/etudiants']);
+  }
+
+  deconnexion(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
+  }
+
+  // Voir les détails d'une absence
   voirDetails(absence: Absence): void {
     console.log('Voir détails absence:', absence);
     
-    // CORRECTION: Si l'absence a une justification associée, naviguer vers celle-ci
     if (absence.justificationId) {
       console.log('Navigation vers justification ID:', absence.justificationId);
-      this.router.navigate(['/justification-detail', absence.justificationId])
-        .then(success => {
-          if (success) {
-            console.log('Navigation réussie vers justification');
-          } else {
-            console.error('Échec de la navigation vers justification');
-            // Fallback: afficher les détails disponibles
-            this.showAbsenceDetails(absence);
-          }
-        })
-        .catch(error => {
-          console.error('Erreur de navigation vers justification:', error);
-          // Fallback: afficher les détails disponibles
-          this.showAbsenceDetails(absence);
-        });
-    }
-    // Si pas de justification, afficher les détails de l'absence
-    else {
-      console.log('Aucune justification disponible pour cette absence');
+      this.router.navigate(['/justification-detail', absence.justificationId]);
+    } else {
       this.showAbsenceDetails(absence);
     }
   }
 
-  // Méthode pour afficher les détails d'une absence sans justification
   showAbsenceDetails(absence: Absence): void {
     const message = `Détails de l'absence:
 
 Nom: ${absence.nom}
 Prénom: ${absence.prenom}
 Classe: ${absence.classe}
-Date: ${absence.date}
+Session: ${absence.sessionId}
+Type: ${absence.type}
 État: ${absence.etat}
-Motif: ${absence.motif || 'Non spécifié'}
 
-${absence.etat === 'Non justifié(e)' ? 'Cette absence n\'a pas été justifiée.' : ''}
-${absence.etat === 'En attente' ? 'Une justification a été soumise et est en attente de validation.' : ''}`;
+${absence.etat === 'Non justifié(e)' ? 'Cette absence n\'a pas été justifiée.' : ''}`;
 
     alert(message);
   }
 
-  onSearchChange(): void {
-    this.currentPage = 1;
-    this.calculatePagination();
+  // Getter pour les numéros de page
+  getPageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i);
   }
 
-  trackByAbsenceId(index: number, absence: Absence): number {
-    return absence.id;
+  // Rafraîchir les données
+  refresh(): void {
+    this.loadAbsences();
+  }
+
+  // Méthodes de tracking pour les performances Angular
+  trackByAbsenceId(index: number, absence: Absence): string {
+    return absence.sessionId + absence.nom + absence.prenom;
   }
 
   trackByPageNumber(index: number, page: number): number {
