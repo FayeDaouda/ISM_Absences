@@ -25,4 +25,16 @@ getById(id: string): Observable<Absence> {
   return this.http.get<Absence>(`${this.apiUrl}/${id}`);
 }
 
+getAbsencesDuJour(): Observable<Absence[]> {
+    return this.http.get<Absence[]>(`${this.apiUrl}/jour`);
+  }
+
+  getJustificationsEnAttente(): Observable<Absence[]> {
+    return this.http.get<Absence[]>(`${this.apiUrl}/justifications/en-attente`);
+  }
+
+  getStats(): Observable<{ absences: number; justifications: number; presences: number }> {
+    return this.http.get<{ absences: number; justifications: number; presences: number }>(`${this.apiUrl}/stats`);
+  }
+
 }

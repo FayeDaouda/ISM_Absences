@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Absence } from '../../../../shared/models/absence.model';
+import { AbsenceService } from '../../../../shared/services/absence.service';
 
 @Component({
   selector: 'app-liste-absence-du-jour',
@@ -8,9 +10,16 @@ import { Component } from '@angular/core';
   styleUrl: './liste-absence-du-jour.component.css'
 })
 export class ListeAbsenceDuJourComponent {
-absences = [
-  { nom: 'Awa', prenom: 'Seyni', matricule: 'Mat09130', classe: 'L3 CSDD', heure: '8h / 12h' },
-  { nom: 'Fatou', prenom: 'Mbaye', matricule: 'Mat04630', classe: 'L3 IAGE', heure: '8h / 12h' },
-  { nom: 'Aissatou', prenom: 'Dione', matricule: 'Mat12345', classe: 'L3 GLRS', heure: '13h / 17h' }
-];
+absences: Absence[] = [];
+
+  constructor(private absenceService: AbsenceService) {}
+
+  ngOnInit() {
+    this.absenceService.getAbsencesDuJour().subscribe(data => {
+      this.absences = data.map(abs => ({
+        ...abs,
+        heure: '8h / 12h' // valeur temporaire
+      }));
+    });
+  }
 }

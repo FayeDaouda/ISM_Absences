@@ -7,4 +7,8 @@ date: any;
   etat: 'justifiee' | 'en_attente' | 'non_justifiee';
   description: string;
   justificatifUrl: string;
+  motif: string;
+  matricule: string;
+  classe: string;
+  heure: string;
 }

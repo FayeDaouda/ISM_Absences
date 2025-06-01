@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Absence } from '../../../../shared/models/absence.model';
+import { AbsenceService } from '../../../../shared/services/absence.service';
 
 @Component({
   selector: 'app-liste-justifications-en-attente',
@@ -8,9 +10,16 @@ import { Component } from '@angular/core';
   styleUrl: './liste-justifications-en-attente.component.css'
 })
 export class ListeJustificationsEnAttenteComponent {
-justifications = [
-  { nom: 'Adja', prenom: 'Ndour', matricule: 'Mat09134', classe: 'L3GLRS', motif: 'Maladie' },
-  { nom: 'Sidy', prenom: 'Saizonou', matricule: 'Mat09450', classe: 'L3GLRS', motif: 'Faute de transport' },
-  { nom: 'Awa Ba', prenom: 'Diarra', matricule: 'Mat16003', classe: 'L3ETSE', motif: 'Rendez-vous à l’hôpital' }
-];
+ justifications: Absence[] = [];
+
+  constructor(private absenceService: AbsenceService) {}
+
+  ngOnInit() {
+    this.absenceService.getJustificationsEnAttente().subscribe(data => {
+      this.justifications = data.map(a => ({
+        ...a,
+        motif: a.motif || 'Motif inconnu'
+      }));
+    });
+  }
 }
