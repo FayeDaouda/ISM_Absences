@@ -137,58 +137,87 @@ export class JustificationsComponent implements OnInit {
   }
 
   validerJustification(): void {
-    if (this.isProcessing || !this.justification) return;
+  if (this.isProcessing || !this.justification) return;
 
-    console.log('Validation de la justification:', this.justification.id);
-    this.isProcessing = true;
+  console.log('Validation de la justification:', this.justification.id);
+  this.isProcessing = true;
 
-    // Simuler un appel API
-    setTimeout(() => {
-      if (this.justification) {
-        this.justification.statut = 'Validé';
-        
-        // Ici, vous devriez appeler votre service pour mettre à jour en base
-        this.updateJustificationStatus(this.justification.id, 'Validé');
-        
-        // Afficher un message de succès
-        this.showSuccessMessage('Justification validée avec succès !');
-        
-        // Optionnel : rediriger après validation
-        setTimeout(() => {
-          this.navigateToAbsences();
-        }, 2000);
-      }
+  // Simuler un appel API
+  setTimeout(() => {
+    if (this.justification) {
+      this.justification.statut = 'Validé';
       
-      this.isProcessing = false;
-    }, 1500);
-  }
+      // Mettre à jour le statut de l'absence correspondante
+      this.updateAbsenceStatus(this.justification, 'Justifiée');
+      
+      // Mettre à jour la justification en base
+      this.updateJustificationStatus(this.justification.id, 'Validé');
+      
+      // Afficher un message de succès
+      this.showSuccessMessage(`Justification validée avec succès ! L'absence de ${this.justification.prenom} ${this.justification.nom} est maintenant justifiée.`);
+      
+      // Optionnel : rediriger après validation
+      setTimeout(() => {
+        this.navigateToAbsences();
+      }, 2000);
+    }
+    
+    this.isProcessing = false;
+  }, 1500);
+}
+
 
   invaliderJustification(): void {
-    if (this.isProcessing || !this.justification) return;
+  if (this.isProcessing || !this.justification) return;
 
-    console.log('Invalidation de la justification:', this.justification.id);
-    this.isProcessing = true;
+  console.log('Invalidation de la justification:', this.justification.id);
+  this.isProcessing = true;
 
-    // Simuler un appel API
-    setTimeout(() => {
-      if (this.justification) {
-        this.justification.statut = 'Rejeté';
-        
-        // Ici, vous devriez appeler votre service pour mettre à jour en base
-        this.updateJustificationStatus(this.justification.id, 'Rejeté');
-        
-        // Afficher un message de succès
-        this.showSuccessMessage('Justification rejetée !');
-        
-        // Optionnel : rediriger après invalidation
-        setTimeout(() => {
-          this.navigateToAbsences();
-        }, 2000);
-      }
+  // Simuler un appel API
+  setTimeout(() => {
+    if (this.justification) {
+      this.justification.statut = 'Rejeté';
       
-      this.isProcessing = false;
-    }, 1500);
-  }
+      // Mettre à jour le statut de l'absence correspondante
+      this.updateAbsenceStatus(this.justification, 'Rejetée');
+      
+      // Mettre à jour la justification en base
+      this.updateJustificationStatus(this.justification.id, 'Rejeté');
+      
+      // Afficher un message de succès
+      this.showSuccessMessage(`Justification rejetée ! L'absence de ${this.justification.prenom} ${this.justification.nom} reste non justifiée.`);
+      
+      // Optionnel : rediriger après invalidation
+      setTimeout(() => {
+        this.navigateToAbsences();
+      }, 2000);
+    }
+    
+    this.isProcessing = false;
+  }, 1500);
+}
+  updateAbsenceStatus(justification: Justification, nouveauStatut: 'Justifiée' | 'Rejetée'): void {
+  console.log(`Mise à jour de l'absence pour ${justification.prenom} ${justification.nom} - Statut: ${nouveauStatut}`);
+  
+  // Ici, vous devriez appeler votre service pour mettre à jour l'absence
+  const absenceData = {
+    matricule: justification.matricule,
+    dateAbsence: justification.dateAbsence,
+    nouveauStatut: nouveauStatut,
+    justificationId: justification.id
+  };
+
+  // Exemple d'appel de service :
+  // this.absenceService.updateAbsence(absenceData).subscribe({
+  //   next: (response) => {
+  //     console.log('Absence updated successfully', response);
+  //   },
+  //   error: (error) => {
+  //     console.error('Error updating absence', error);
+  //     this.showErrorMessage('Erreur lors de la mise à jour');
+  //   }
+  // });
+}
 
   updateJustificationStatus(id: number, statut: string): void {
     // Ici, implémentez l'appel à votre service

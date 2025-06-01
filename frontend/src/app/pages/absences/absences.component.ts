@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+// absences.component.ts - Version corrigée
+import { Component, Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Pour ngClass, ngFor, ngIf
-import { FormsModule } from '@angular/forms';   // Pour ngModel
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 interface Absence {
   id: number;
@@ -12,7 +15,37 @@ interface Absence {
   etat: 'Justifié(e)' | 'En attente' | 'Non justifié(e)';
   motif?: string;
   dateAbsence?: string;
-  justificationId?: number; // AJOUT: ID de la justification associée
+  justificationId?: number;
+}
+
+interface AbsenceUpdateData {
+  matricule: string;
+  dateAbsence?: string;
+  nouveauStatut: 'Justifiée' | 'Rejetée' | 'Non justifiée';
+  justificationId?: number;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AbsenceService {
+  private apiUrl = 'http://votre-api-url/api';
+
+  constructor(private http: HttpClient) {}
+
+  updateAbsenceStatus(data: AbsenceUpdateData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/absences/update-status`, data);
+  }
+
+  getAbsenceByMatriculeAndDate(matricule: string, dateAbsence: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/absences/search`, {
+      params: { matricule, dateAbsence }
+    });
+  }
+
+  getAbsencesByMatricule(matricule: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/absences/etudiant/${matricule}`);
+  }
 }
 
 @Component({
@@ -27,12 +60,10 @@ interface Absence {
 })
 export class AbsencesComponent implements OnInit {
 
-  // Infos utilisateur
   userDisplayName = 'Lucien da Souza';
   userRole = 'Administrateur';
   userInitials = 'LS';
 
-  // Recherche et pagination
   searchTerm = '';
   currentPage = 1;
   itemsPerPage = 4;
@@ -47,7 +78,8 @@ export class AbsencesComponent implements OnInit {
       date: '25/03/2025',
       etat: 'Justifié(e)',
       motif: 'Maladie',
-      dateAbsence: '25/03/2025'
+      dateAbsence: '25/03/2025',
+      justificationId: 1
     },
     {
       id: 2,
@@ -58,7 +90,7 @@ export class AbsencesComponent implements OnInit {
       etat: 'En attente',
       motif: 'Rendez-vous médical',
       dateAbsence: '22/03/2025',
-      justificationId: 2 // AJOUT: Lien vers la justification correspondante
+      justificationId: 2
     },
     {
       id: 3,
@@ -78,7 +110,7 @@ export class AbsencesComponent implements OnInit {
       etat: 'En attente',
       motif: 'Problème familial',
       dateAbsence: '02/02/2025',
-      justificationId: 4 // AJOUT: Lien vers la justification correspondante
+      justificationId: 3
     },
     {
       id: 5,
@@ -88,7 +120,8 @@ export class AbsencesComponent implements OnInit {
       date: '15/04/2025',
       etat: 'Justifié(e)',
       motif: 'Certificat médical',
-      dateAbsence: '15/04/2025'
+      dateAbsence: '15/04/2025',
+      justificationId: 1
     },
     {
       id: 6,
@@ -115,7 +148,6 @@ export class AbsencesComponent implements OnInit {
 
   navigateToAbsences(): void {
     console.log('Déjà sur la page absences');
-    // Déjà sur cette page, ne rien faire ou rafraîchir
   }
 
   navigateToEtudiants(): void {
@@ -183,28 +215,37 @@ export class AbsencesComponent implements OnInit {
     }
   }
 
-  // CORRECTION: Méthode pour voir les détails d'une absence - navigation vers justification
+  // CORRECTION: Méthode pour voir les détails d'une absence
   voirDetails(absence: Absence): void {
     console.log('Voir détails absence:', absence);
     
-    // CORRECTION: Si l'absence a un statut "En attente" ET un justificationId, naviguer vers la justification
-    if (absence.etat === 'En attente' && absence.justificationId) {
+    // CORRECTION: Si l'absence a une justification associée, naviguer vers celle-ci
+    if (absence.justificationId) {
       console.log('Navigation vers justification ID:', absence.justificationId);
-      this.router.navigate(['/justification-detail', absence.justificationId]);
+      this.router.navigate(['/justification-detail', absence.justificationId])
+        .then(success => {
+          if (success) {
+            console.log('Navigation réussie vers justification');
+          } else {
+            console.error('Échec de la navigation vers justification');
+            // Fallback: afficher les détails disponibles
+            this.showAbsenceDetails(absence);
+          }
+        })
+        .catch(error => {
+          console.error('Erreur de navigation vers justification:', error);
+          // Fallback: afficher les détails disponibles
+          this.showAbsenceDetails(absence);
+        });
     }
-    // Si l'absence est "Justifiée", on peut aussi naviguer vers sa justification si elle existe
-    else if (absence.etat === 'Justifié(e)' && absence.justificationId) {
-      console.log('Navigation vers justification validée ID:', absence.justificationId);
-      this.router.navigate(['/justification-detail', absence.justificationId]);
-    }
-    // Pour les absences non justifiées, afficher les informations disponibles
+    // Si pas de justification, afficher les détails de l'absence
     else {
       console.log('Aucune justification disponible pour cette absence');
       this.showAbsenceDetails(absence);
     }
   }
 
-  // CORRECTION: Méthode pour afficher les détails d'une absence sans justification
+  // Méthode pour afficher les détails d'une absence sans justification
   showAbsenceDetails(absence: Absence): void {
     const message = `Détails de l'absence:
 
@@ -215,7 +256,8 @@ Date: ${absence.date}
 État: ${absence.etat}
 Motif: ${absence.motif || 'Non spécifié'}
 
-${absence.etat === 'Non justifié(e)' ? 'Cette absence n\'a pas été justifiée.' : ''}`;
+${absence.etat === 'Non justifié(e)' ? 'Cette absence n\'a pas été justifiée.' : ''}
+${absence.etat === 'En attente' ? 'Une justification a été soumise et est en attente de validation.' : ''}`;
 
     alert(message);
   }

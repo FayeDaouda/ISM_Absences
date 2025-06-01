@@ -1,0 +1,330 @@
+/* filieres.component.css */
+
+/* Import des styles du dashboard */
+@import '../dashboard/dashboard.component.css';
+
+/* Breadcrumb */
+.breadcrumb {
+  margin-bottom: 32px;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item:not(.current)::after {
+  content: '/';
+  margin-left: 8px;
+  color: #9ca3af;
+}
+
+.breadcrumb-link {
+  color: #6b7280;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.breadcrumb-link:hover {
+  color: #f97316;
+}
+
+.breadcrumb-item.current {
+  color: #f97316;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Section Header */
+.section-header {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.section-icon {
+  padding: 12px;
+  background-color: #fed7aa;
+  border-radius: 12px;
+}
+
+.section-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #ea580c;
+}
+
+.section-title h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #111827;
+  margin: 0;
+}
+
+.section-description {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Filières Container */
+.filieres-container {
+  max-width: 1200px;
+}
+
+/* Filières Grid */
+.filieres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+/* Filière Card */
+.filiere-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.filiere-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  border-color: #f97316;
+}
+
+/* Filière Header */
+.filiere-header {
+  padding: 24px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.filiere-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(30px, -30px);
+}
+
+.filiere-icon {
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.filiere-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.filiere-nom {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  z-index: 1;
+}
+
+/* Couleurs des filières */
+.bg-blue-500 {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.bg-green-500 {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.bg-purple-500 {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.bg-pink-500 {
+  background: linear-gradient(135deg, #ec4899, #db2777);
+}
+
+.bg-yellow-500 {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+}
+
+.bg-red-500 {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* Filière Content */
+.filiere-content {
+  padding: 24px;
+}
+
+.filiere-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+/* Filière Stats */
+.filiere-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.stat-icon {
+  padding: 8px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.stat-icon.etudiants {
+  background-color: #dbeafe;
+}
+
+.stat-icon.etudiants svg {
+  width: 20px;
+  height: 20px;
+  color: #2563eb;
+}
+
+.stat-icon.modules {
+  background-color: #d1fae5;
+}
+
+.stat-icon.modules svg {
+  width: 20px;
+  height: 20px;
+  color: #059669;
+}
+
+.stat-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 18px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Filière Footer */
+.filiere-footer {
+  padding: 20px 24px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.arrow-icon {
+  padding: 8px;
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.arrow-icon svg {
+  width: 16px;
+  height: 16px;
+  color: #6b7280;
+}
+
+.filiere-card:hover .arrow-icon {
+  background-color: #f97316;
+}
+
+.filiere-card:hover .arrow-icon svg {
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filieres-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .filiere-card {
+    margin: 0 16px;
+  }
+  
+  .section-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .section-title h2 {
+    font-size: 24px;
+  }
+  
+  .filiere-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .dashboard-main {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filiere-header {
+    padding: 20px;
+  }
+  
+  .filiere-content {
+    padding: 20px;
+  }
+  
+  .filiere-footer {
+    padding: 16px 20px;
+  }
+  
+  .filiere-nom {
+    font-size: 18px;
+  }
+}

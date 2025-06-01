@@ -1,4 +1,4 @@
-// app.routes.ts
+// app.routes.ts - Version corrigée
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
@@ -18,7 +18,7 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () =>
       import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
-    canActivate: [authGuard], // Protection par le guard
+    canActivate: [authGuard],
     data: { preload: true }
   },
   {
@@ -35,13 +35,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { preload: true }
   },
-  {
-    path: 'justifications',
-    loadComponent: () =>
-      import('./pages/justifications/justifications.component').then(m => m.JustificationsComponent),
-    canActivate: [authGuard],
-    data: { preload: true }
-  },
+  // Route pour la liste de toutes les justifications
   {
     path: 'justifications-list',
     loadComponent: () =>
@@ -49,11 +43,19 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { preload: true }
   },
-  // Route pour les détails d'une justification avec paramètre ID
+  // Route pour les détails d'une justification spécifique
   {
     path: 'justification-detail/:id',
     loadComponent: () =>
       import('./pages/justifications/justifications.component').then(m => m.JustificationsComponent),
+    canActivate: [authGuard],
+    data: { preload: true }
+  },
+  // Route générale pour les justifications (si nécessaire)
+  {
+    path: 'justifications',
+    loadComponent: () =>
+      import('./pages/justifications/justifications-list.component').then(m => m.JustificationsListComponent),
     canActivate: [authGuard],
     data: { preload: true }
   },
