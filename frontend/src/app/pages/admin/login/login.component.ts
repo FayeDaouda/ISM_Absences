@@ -17,10 +17,13 @@ export class LoginComponent {
    constructor(private auth: AuthService, private router: Router) {}
 
   login() {
-    if (this.auth.login(this.username, this.password)) {
-      this.router.navigate(['/accueil']);
-    } else {
-      alert('Identifiants invalides');
-    }
+  const success = this.auth.login(this.username, this.password);
+
+  if (success) {
+    this.router.navigate(['/accueil']);
+  } else {
+    alert("Accès refusé. Seul l'administrateur peut se connecter.");
   }
+}
+
 }

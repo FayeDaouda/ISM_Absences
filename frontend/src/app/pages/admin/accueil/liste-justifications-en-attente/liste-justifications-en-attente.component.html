@@ -6,7 +6,7 @@
     <h2 class="text-[#3B1E00] font-bold text-xl">Justification en attente</h2>
   </div>
 
-  <div *ngFor="let j of justifications" class="bg-[#F9FAFB] p-4 rounded shadow mb-4 space-y-1">
+  <div *ngFor="let j of paginatedJustifications" class="bg-[#F9FAFB] p-4 rounded shadow mb-4 space-y-1">
     <p class="font-semibold text-sm">{{ j.nom }} {{ j.prenom }} – {{ j.matricule }}</p>
     <p class="text-sm text-gray-600">Classe : {{ j.classe }}</p>
     <p class="text-sm text-red-600">Absent(e) pour {{ j.motif }}</p>
@@ -16,5 +16,20 @@
       <button class="bg-green-500 text-white text-xs px-3 py-1 rounded">Valider</button>
       <button class="bg-red-600 text-white text-xs px-3 py-1 rounded">Invalider</button>
     </div>
+  </div>
+
+  <div class="flex justify-center gap-2 mt-4">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+            class="px-3 py-1 text-white bg-[#78350F] rounded disabled:opacity-50">Précédent</button>
+
+    <button *ngFor="let page of pagesArray"
+            (click)="changePage(page)"
+            [ngClass]="currentPage === page ? 'bg-[#78350F] text-white' : 'bg-white text-black border border-[#78350F]'"
+            class="px-3 py-1 rounded text-sm font-semibold">
+      {{ page }}
+    </button>
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+            class="px-3 py-1 text-white bg-[#78350F] rounded disabled:opacity-50">Suivant</button>
   </div>
 </div>

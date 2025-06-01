@@ -1,0 +1,130 @@
+{
+  "stats": {
+    "absences": 3,
+    "presences": 5,
+    "justifications": 2
+  },
+  "utilisateurs": [
+    {
+      "id": "u1",
+      "login": "admin@ism.edu.sn",
+      "motDePasse": "admin123",
+      "role": "ADMIN",
+      "nom": "Admin",
+      "prenom": "Principal"
+    },
+    {
+      "id": "u2",
+      "login": "vigile1@ism.edu.sn",
+      "motDePasse": "vigile123",
+      "role": "VIGILE",
+      "nom": "Sow",
+      "prenom": "Vigile"
+    },
+    {
+      "id": "u3",
+      "login": "awa.seyni@ism.edu.sn",
+      "motDePasse": "etudiant123",
+      "role": "ETUDIANT",
+      "nom": "Seyni",
+      "prenom": "Awa"
+    }
+  ],
+  "etudiants": [
+    {
+      "id": "etu-1",
+      "nom": "Seyni",
+      "prenom": "Awa",
+      "matricule": "Mat09130",
+      "classe": "L3 CSDD",
+      "telephone": "770000001",
+      "utilisateurId": "u3"
+    },
+    {
+      "id": "etu-2",
+      "nom": "Mbaye",
+      "prenom": "Fatou",
+      "matricule": "Mat04630",
+      "classe": "L3 IAGE",
+      "telephone": "770000002"
+    },
+    {
+      "id": "etu-3",
+      "nom": "Dione",
+      "prenom": "Aissatou",
+      "matricule": "Mat12345",
+      "classe": "L3 GLRS",
+      "telephone": "770000003"
+    }
+  ],
+  "absences": [
+    {
+      "id": "1",
+      "nom": "Awa",
+      "prenom": "Seyni",
+      "matricule": "MAT0962",
+      "classe": "L3CSDD",
+      "dateAbsence": "2025-06-01",
+      "description": "J’étais malade",
+      "motif": "Maladie",
+      "heure": "8h / 12h",
+      "etat": "justifiee",
+      "justifie": true
+    },
+    {
+      "id": "2",
+      "nom": "Fatou",
+      "prenom": "Mbaye",
+      "matricule": "MAT0034",
+      "classe": "L3IAGE",
+      "dateAbsence": "2025-06-01",
+      "description": "Problème de transport",
+      "motif": "Transport",
+      "heure": "8h / 12h",
+      "etat": "justifiee",
+      "justifie": true
+    },
+    {
+      "id": "3",
+      "nom": "Sidy",
+      "prenom": "Saizonou",
+      "matricule": "MAT1567",
+      "classe": "L3GLRS",
+      "dateAbsence": "2025-06-01",
+      "description": "Je n’ai pas entendu mon alarme",
+      "motif": "Sommeil",
+      "heure": "8h / 12h",
+      "etat": "non_justifiee",
+      "justifie": false
+    }
+  ],
+  "justifications": [
+    {
+      "id": "just-1",
+      "nom": "Ndour",
+      "prenom": "Adja",
+      "matricule": "Mat09134",
+      "classe": "L3GLRS",
+      "motif": "Maladie",
+      "statut": "EN_ATTENTE"
+    },
+    {
+      "id": "just-2",
+      "nom": "Saizonou",
+      "prenom": "Sidy",
+      "matricule": "Mat09450",
+      "classe": "L3GLRS",
+      "motif": "Faute de transport",
+      "statut": "EN_ATTENTE"
+    },
+    {
+      "id": "just-3",
+      "nom": "Ba Diarra",
+      "prenom": "Awa",
+      "matricule": "Mat16003",
+      "classe": "L3ETSE",
+      "motif": "Rendez-vous à l’hôpital",
+      "statut": "VALIDEE"
+    }
+  ]
+}

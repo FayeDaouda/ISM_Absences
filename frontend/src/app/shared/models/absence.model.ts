@@ -1,14 +1,13 @@
 export interface Absence {
-date: any;
   id: string;
   nom: string;
   prenom: string;
-  dateAbsence: string;
-  etat: 'justifiee' | 'en_attente' | 'non_justifiee';
-  description: string;
-  justificatifUrl: string;
-  motif: string;
   matricule: string;
   classe: string;
-  heure: string;
+  dateAbsence: string;
+  description?: string;
+  motif?: string;
+  etat: 'justifiee' | 'non_justifiee' | 'en_attente';
+  justifie: boolean;
+  heure: string
 }

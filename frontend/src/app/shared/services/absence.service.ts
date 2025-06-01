@@ -9,32 +9,35 @@ export class AbsenceService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Absence[]> {
-  return this.http.get<Absence[]>('http://localhost:8081/api/absences/details');
+getAbsencesDuJour(): Observable<Absence[]> {
+  return this.http.get<Absence[]>('http://localhost:3000/absences');
 }
 
+getJustificationsEnAttente(): Observable<Absence[]> {
+  return this.http.get<Absence[]>('http://localhost:3000/justifications?statut=EN_ATTENTE');
+}
 
-  updateEtat(id: string, newEtat: 'justifiee' | 'non_justifiee') {
-  const url = newEtat === 'justifiee'
-    ? `${this.apiUrl}/justifier/${id}`
-    : `${this.apiUrl}/refuser/${id}`;
-  return this.http.put<Absence>(url, {});
+getAll(): Observable<Absence[]> {
+  return this.http.get<Absence[]>('http://localhost:3000/absences');
 }
 
 getById(id: string): Observable<Absence> {
-  return this.http.get<Absence>(`${this.apiUrl}/${id}`);
+  return this.http.get<Absence>(`http://localhost:3000/absences/${id}`);
 }
 
-getAbsencesDuJour(): Observable<Absence[]> {
-    return this.http.get<Absence[]>(`${this.apiUrl}/jour`);
-  }
+updateEtat(id: string, etat: 'justifiee' | 'non_justifiee'): Observable<any> {
+  return this.http.patch(`http://localhost:3000/absences/${id}`, {
+    etat,
+    justifie: etat === 'justifiee'
+  });
+}
 
-  getJustificationsEnAttente(): Observable<Absence[]> {
-    return this.http.get<Absence[]>(`${this.apiUrl}/justifications/en-attente`);
-  }
 
-  getStats(): Observable<{ absences: number; justifications: number; presences: number }> {
-    return this.http.get<{ absences: number; justifications: number; presences: number }>(`${this.apiUrl}/stats`);
-  }
+
+getStats(): Observable<{ absences: number, presences: number, justifications: number }> {
+  return this.http.get<{ absences: number, presences: number, justifications: number }>(
+    'http://localhost:3000/stats'
+  );
+}
 
 }

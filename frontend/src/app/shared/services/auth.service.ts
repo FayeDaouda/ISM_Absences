@@ -1,25 +1,39 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import utilisateurs from '../../../../db.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  utilisateurConnecte: any = null;
 
-isAuthenticated = false;
+  login(login: string, motDePasse: string): boolean {
+    const utilisateur = utilisateurs.utilisateurs.find(
+      (u: { login: string; motDePasse: string; }) => u.login === login && u.motDePasse === motDePasse
+    );
 
-  login(username: string, password: string): boolean {
-    if (username === 'admin' && password === 'admin') {
-      this.isAuthenticated = true;
+    if (utilisateur && utilisateur.role === 'ADMIN') {
+      this.utilisateurConnecte = utilisateur;
       return true;
     }
+
     return false;
   }
 
   logout() {
-    this.isAuthenticated = false;
+    this.utilisateurConnecte = null;
   }
 
-  isLoggedIn() {
-    return this.isAuthenticated;
+  getUtilisateurConnecte() {
+    return this.utilisateurConnecte;
+  }
+
+  estConnecte(): boolean {
+    return !!this.utilisateurConnecte;
+  }
+
+  estAdmin(): boolean {
+    return this.utilisateurConnecte?.role === 'ADMIN';
   }
 }

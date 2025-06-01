@@ -1,18 +1,46 @@
 <div class="bg-white border border-[#FED7AA] p-6 rounded-lg shadow w-[400px]">
   <div class="flex items-center gap-2 mb-4">
-    <div class="w-6 h-6 bg-[#F59E0B] flex items-center justify-center rounded text-white text-sm">
+    <div
+      class="w-6 h-6 bg-[#F59E0B] flex items-center justify-center rounded text-white text-sm">
       <i class="fas fa-hourglass-half"></i>
     </div>
     <h2 class="text-[#3B1E00] font-bold text-xl">Absences</h2>
   </div>
+
   <div class="space-y-4">
-    <div *ngFor="let a of absences" class="bg-[#F9FAFB] p-3 rounded shadow flex flex-col gap-1">
+    <div *ngFor="let a of absencesPagines"
+         class="bg-[#F9FAFB] p-3 rounded shadow flex flex-col gap-1">
       <p class="font-semibold text-sm">{{ a.nom }} {{ a.prenom }} – {{ a.matricule }}</p>
       <p class="text-sm text-gray-600">{{ a.classe }} — {{ a.heure }}</p>
       <div class="flex gap-2 mt-1">
         <span class="text-xs px-2 py-1 bg-red-600 text-white rounded-full">Absent(e)</span>
-        <span class="text-xs px-2 py-1 bg-gray-200 text-gray-600 rounded-full">Non justifiée</span>
+        <span class="text-xs px-2 py-1 rounded-full"
+              [ngClass]="a.justifie ? 'bg-green-200 text-green-700' : 'bg-gray-200 text-gray-600'">
+          {{ getJustificationLabel(a) }}
+        </span>
       </div>
     </div>
+  </div>
+
+  <!-- Pagination style numéroté -->
+  <div class="flex justify-center gap-2 mt-4">
+    <button (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+            class="px-3 py-1 text-white bg-[#78350F] rounded disabled:opacity-50">
+      Précédent
+    </button>
+
+    <button *ngFor="let page of pagesArray"
+            (click)="changePage(page)"
+            [ngClass]="currentPage === page ? 'bg-[#78350F] text-white' : 'bg-white text-black border border-[#78350F]'"
+            class="px-3 py-1 rounded text-sm font-semibold">
+      {{ page }}
+    </button>
+
+    <button (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+            class="px-3 py-1 text-white bg-[#78350F] rounded disabled:opacity-50">
+      Suivant
+    </button>
   </div>
 </div>
