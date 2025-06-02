@@ -14,7 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import sn.ism.gestion.data.services.IUtilisateurService;
+
+import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -27,19 +32,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/web/admins/utilisateurs/login").permitAll()
-                        .requestMatchers("/api/mobile/utilisateurs/login").permitAll()
-                        .requestMatchers("/api/web/admins/**").hasRole("ADMIN")
-                        .requestMatchers("/api/mobile/etudiants/**").hasRole("ETUDIANT")
-                        .requestMatchers("/api/mobile/vigiles/**").hasRole("VIGILE")
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Activer CORS avec config personnalisée
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/web/admins/utilisateurs/login").permitAll()
+                .requestMatchers("/api/mobile/utilisateurs/login").permitAll()
+                .requestMatchers("/api/web/admins/**").hasRole("ADMIN")
+                .requestMatchers("/api/mobile/etudiants/**").hasRole("ETUDIANT")
+                .requestMatchers("/api/mobile/vigiles/**").hasRole("VIGILE")
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://ton-frontend.com")); // Mets ici les URLs de ton front
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
