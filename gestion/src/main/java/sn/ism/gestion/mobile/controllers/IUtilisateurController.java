@@ -8,6 +8,7 @@ import sn.ism.gestion.Config.Controller;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.web.dto.Request.LoginRequest;
 import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
+import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 public interface IUtilisateurController extends Controller<Utilisateur> {
 
     @PostMapping("/login")
-    ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest request);
+    ResponseEntity<Map<String,Object>> login(@RequestBody LoginRequest request);
 
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody UtilisateurCreateRequest objet,

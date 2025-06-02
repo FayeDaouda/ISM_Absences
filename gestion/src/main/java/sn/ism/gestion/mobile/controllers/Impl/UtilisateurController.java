@@ -1,5 +1,7 @@
 package sn.ism.gestion.mobile.controllers.Impl;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,10 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import sn.ism.gestion.Config.Security.JwtService;
 import sn.ism.gestion.data.entities.Utilisateur;
 import sn.ism.gestion.data.repositories.UtilisateurRepository;
@@ -22,15 +22,12 @@ import sn.ism.gestion.mobile.controllers.IUtilisateurController;
 import sn.ism.gestion.utils.mapper.UtilisateurMapper;
 import sn.ism.gestion.web.dto.Request.LoginRequest;
 import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
-import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 import sn.ism.gestion.web.dto.RestResponse;
-
-import java.util.HashMap;
-import java.util.Map;
+import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/mobile/utilisateurs")
+@RequestMapping("/api/mobile/utilisateurs")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UtilisateurController implements IUtilisateurController {
 
@@ -52,7 +49,7 @@ public class UtilisateurController implements IUtilisateurController {
                         .orElse(null);
 
                 if (utilisateur != null) {
-                    String token = jwtService.generateToken(utilisateur.getLogin(),utilisateur.getRole());
+                    String token = jwtService.generateToken(utilisateur.getLogin());
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("token", token);
@@ -86,22 +83,13 @@ public class UtilisateurController implements IUtilisateurController {
 
     public ResponseEntity<Map<String, Object>> Create(
             UtilisateurCreateRequest request, BindingResult bindingResult) {
-//
-//       if (bindingResult.hasErrors()) {
-//            Map<String, Object> errors = new HashMap<>();
-//            for (FieldError error : bindingResult.getFieldErrors()) {
-//                errors.put(error.getField(), error.getDefaultMessage());
-//            }
-//            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-//        }
-//        Utilisateur utilisateur = utilisateurService.create(request);
-//        Utilisateur entityUtilisateur = utilisateurMapper.toEntity(utilisateur);
-//        return new ResponseEntity<>(RestResponse.response(
-//            HttpStatus.CREATED,
-//                entityUtilisateur,
-//            "utilisateurCreate"), HttpStatus.CREATED);
         return  null;
 
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> findByLogin(String login) {
+        return null;
     }
 
 
@@ -129,10 +117,7 @@ public class UtilisateurController implements IUtilisateurController {
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
         var utilisateur = utilisateurService.findById(id);
         var utilisateurDto = utilisateurMapper.toDto(utilisateur);
-        return new ResponseEntity<>(
-                new RestResponse().response(
-                        HttpStatus.OK,utilisateurDto,
-                        "utilisateurSimpleResponse"),
+        return new ResponseEntity<>( RestResponse.response(HttpStatus.OK,utilisateurDto, "utilisateurSimpleResponse"),
                 HttpStatus.OK);
     }
 
@@ -148,13 +133,17 @@ public class UtilisateurController implements IUtilisateurController {
         throw new UnsupportedOperationException("Unimplemented method 'Delete'");
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> findByLogin(String login) {
-        Utilisateur utilisateur = utilisateurService.findByLogin(login);
-        UtilisateurSimpleResponse dto = utilisateurMapper.toDto(utilisateur);
-        return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.OK, dto, "UtilisateurSimpleResponse"),
-                HttpStatus.OK);
-    }
-    
+//    @Override
+//    public ResponseEntity<Map<String, Object>> findByLogin(String login) {
+//        Utilisateur utilisateur = utilisateurService.findByLogin(login);
+//        UtilisateurSimpleResponse dto = utilisateurMapper.toDto(utilisateur);
+//        if(dto != null)
+//            return new ResponseEntity<>(
+//                    RestResponse.response(HttpStatus.OK, dto, "UtilisateurSimpleResponse"),
+//                    HttpStatus.OK);
+//        return new ResponseEntity<>(
+//                RestResponse.response(HttpStatus.NOT_FOUND, null, "UtilisateurSimpleResponse"),
+//                HttpStatus.NOT_FOUND);
+//    }
+//
 }

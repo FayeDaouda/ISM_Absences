@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -130,10 +131,11 @@ public class AdminServiceImpl implements IAdminService {
     @Override
     public AdminAllResponse getOne(String id) {
         Admin admin = adminRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aucun admin trouvé"));
+                .orElseThrow(() -> new RuntimeException("Admin avec id " + id + " introuvable"));
 
         Utilisateur utilisateur = utilisateurRepository.findById(admin.getUtilisateurId())
-                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+                .orElseThrow(() -> new RuntimeException("Utilisateur avec id " + admin.getUtilisateurId() + " introuvable"));
+
 
         AdminAllResponse dto = new AdminAllResponse();
         dto.setId(admin.getId());

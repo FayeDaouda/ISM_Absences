@@ -27,7 +27,7 @@ import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/web/admins/utilisateurs")
+@RequestMapping("/api/web/admins/utilisateurs")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UtilisateurWebController implements IUtilisateurWebController {
 
@@ -49,7 +49,7 @@ public class UtilisateurWebController implements IUtilisateurWebController {
                         .orElse(null);
 
                 if (utilisateur != null) {
-                    String token = jwtService.generateToken(utilisateur.getLogin(),utilisateur.getRole());
+                    String token = jwtService.generateToken(utilisateur.getLogin());
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("token", token);
@@ -83,22 +83,13 @@ public class UtilisateurWebController implements IUtilisateurWebController {
 
     public ResponseEntity<Map<String, Object>> Create(
             UtilisateurCreateRequest request, BindingResult bindingResult) {
-//
-//       if (bindingResult.hasErrors()) {
-//            Map<String, Object> errors = new HashMap<>();
-//            for (FieldError error : bindingResult.getFieldErrors()) {
-//                errors.put(error.getField(), error.getDefaultMessage());
-//            }
-//            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-//        }
-//        Utilisateur utilisateur = utilisateurService.create(request);
-//        Utilisateur entityUtilisateur = utilisateurMapper.toEntity(utilisateur);
-//        return new ResponseEntity<>(RestResponse.response(
-//            HttpStatus.CREATED,
-//                entityUtilisateur,
-//            "utilisateurCreate"), HttpStatus.CREATED);
         return  null;
 
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> findByLogin(String login) {
+        return null;
     }
 
 
@@ -126,10 +117,7 @@ public class UtilisateurWebController implements IUtilisateurWebController {
     public ResponseEntity<Map<String, Object>> SelectdById(String id) {
         var utilisateur = utilisateurService.findById(id);
         var utilisateurDto = utilisateurMapper.toDto(utilisateur);
-        return new ResponseEntity<>(
-                new RestResponse().response(
-                        HttpStatus.OK,utilisateurDto,
-                        "utilisateurSimpleResponse"),
+        return new ResponseEntity<>( RestResponse.response(HttpStatus.OK,utilisateurDto, "utilisateurSimpleResponse"),
                 HttpStatus.OK);
     }
 
@@ -145,13 +133,17 @@ public class UtilisateurWebController implements IUtilisateurWebController {
         throw new UnsupportedOperationException("Unimplemented method 'Delete'");
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> findByLogin(String login) {
-        Utilisateur utilisateur = utilisateurService.findByLogin(login);
-        UtilisateurSimpleResponse dto = utilisateurMapper.toDto(utilisateur);
-        return new ResponseEntity<>(
-                RestResponse.response(HttpStatus.OK, dto, "UtilisateurSimpleResponse"),
-                HttpStatus.OK);
-    }
-    
+//    @Override
+//    public ResponseEntity<Map<String, Object>> findByLogin(String login) {
+//        Utilisateur utilisateur = utilisateurService.findByLogin(login);
+//        UtilisateurSimpleResponse dto = utilisateurMapper.toDto(utilisateur);
+//        if(dto != null)
+//            return new ResponseEntity<>(
+//                    RestResponse.response(HttpStatus.OK, dto, "UtilisateurSimpleResponse"),
+//                    HttpStatus.OK);
+//        return new ResponseEntity<>(
+//                RestResponse.response(HttpStatus.NOT_FOUND, null, "UtilisateurSimpleResponse"),
+//                HttpStatus.NOT_FOUND);
+//    }
+//
 }
