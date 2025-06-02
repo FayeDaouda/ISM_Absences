@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../models/user.model';
+import { User } from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,6 @@ export class AuthService {
   constructor(private router: Router) {}
 
   login(user: User): boolean {
-    // Simulation
     if (user.email === 'admin@ism.edu.sn' && user.password === 'admin123') {
       this.loggedIn = true;
       this.currentUser = {

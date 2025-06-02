@@ -6,54 +6,48 @@
     Liste de toutes les absences enregistrées dans le système
   </p>
 
+  <!-- En-têtes -->
   <div class="grid grid-cols-5 gap-4 px-4 py-2 border rounded shadow text-orange-600 font-semibold text-sm text-center">
     <div>Nom</div>
     <div>Prénom</div>
-    <div>Date</div>
+    <div>Type</div>
     <div>État</div>
     <div>Action</div>
   </div>
 
-  @for (abs of paginatedAbsences; track abs.id) {
+  <!-- Liste des absences -->
+  @for (abs of absences(); track abs.id) {
     <div class="mb-4 p-4 border rounded shadow text-center mt-5">
       <div class="grid grid-cols-5 gap-4 text-sm">
-        <div>{{ abs.nom }}</div>
-        <div>{{ abs.prenom }}</div>
-        <div>{{ abs.date }}</div>
+        <div>{{ abs.nomEtudiant || '' }}</div>
+        <div>{{ abs.prenomEtudiant || '' }}</div>
+        <div>{{ abs.type }}</div>
         <div>
-            <span
-                class="px-2 py-1 rounded text-xs font-semibold"
-                [style.color]="abs.etat === 'justifiée' ? '#16a34a' : abs.etat === 'non justifiée' ? '#dc2626' : '#6b7280'">
-                {{ abs.etat }}
-            </span>
-            </div>
-            <div>
-                <button
-                    [routerLink]="['/admin/justification', abs.id]"
-                    class="px-3 py-1 bg-[#573826] text-white rounded text-xs disabled:opacity-50 disabled:cursor-not-allowed"
-                    [disabled]="abs.etat === 'justifiée'"
-                >
-                    Voir détails
-                </button>
-            </div>
+          <span
+            class="px-2 py-1 rounded text-xs font-semibold 
+              {{ abs.etat === 'JUSTIFIEE' ? 'text-green-600' : 
+                abs.etat === 'NON_JUSTIFIEE' ? 'text-red-600' : 
+                'text-gray-500' }}"
+          >
+            {{ abs.etat === 'JUSTIFIEE' ? 'justifiée' : abs.etat === 'NON_JUSTIFIEE' ? 'non justifiée' : 'en attente' }}
+          </span>
         </div>
+        <div>
+          <a
+            [routerLink]="['/justification', abs.id]"
+            class="px-3 py-1 bg-[#573826] text-white rounded text-xs"
+            [class.opacity-50]="abs.etat === 'JUSTIFIEE'"
+            [class.cursor-not-allowed]="abs.etat === 'JUSTIFIEE'"
+            [class.pointer-events-none]="abs.etat === 'JUSTIFIEE'"
+          >
+            Voir détails
+          </a>
+        </div>
+      </div>
     </div>
-    }
+  }
 
-
-
-  <!-- Pagination -->
-  <div class="flex justify-center items-center space-x-4 mt-6">
-    <button (click)="previousPage()" [disabled]="currentPage === 1"
-      class="px-4 py-2 btn-marron rounded disabled:opacity-50 disabled:cursor-not-allowed"
-    >Précédent</button>
-
-    <span class="text-sm text-gray-700 font-medium">
-      Page {{ currentPage }} / {{ totalPages() }}
-    </span>
-
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages()"
-      class="px-4 py-2 btn-marron rounded disabled:opacity-50 disabled:cursor-not-allowed"
-    >Suivant</button>
-  </div>
+  @if (absences().length === 0) {
+    <p class="text-center text-gray-500 mt-4">Aucune absence trouvée.</p>
+  }
 </div>

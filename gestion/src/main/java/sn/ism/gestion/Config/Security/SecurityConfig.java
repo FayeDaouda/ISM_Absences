@@ -14,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import sn.ism.gestion.data.services.IUtilisateurService;
 
 @Configuration
@@ -27,16 +30,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/utilisateurs/login").permitAll()
-                        .requestMatchers("/api/admins/**").hasAnyRole("ETUDIANT","ADMIN","VIGILE")
-                        .requestMatchers("/api/etudiants/**").hasAnyRole("ETUDIANT","ADMIN","VIGILE")
-                        .requestMatchers("/api/vigiles/**").hasAnyRole("ETUDIANT","ADMIN","VIGILE")
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            .cors()
+            .and()
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/api/utilisateurs/login",              // accès sans auth
+                    "/api/pointages/absences",             // accès sans auth (public)
+                    "/v3/api-docs/**",                     // Swagger
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/docs/**"
+                ).permitAll()
+                .requestMatchers("/api/admins/**").hasAnyRole("ETUDIANT", "ADMIN", "VIGILE")
+                .requestMatchers("/api/etudiants/**").hasAnyRole("ETUDIANT", "ADMIN", "VIGILE")
+                .requestMatchers("/api/vigiles/**").hasAnyRole("ETUDIANT", "ADMIN", "VIGILE")
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -57,5 +69,19 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }

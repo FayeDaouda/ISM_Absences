@@ -12,6 +12,5 @@ export class JustificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.absenceId = this.route.snapshot.paramMap.get('id')!;
-    // Tu peux ici appeler un service pour charger les détails de l'absence
   }
 }

@@ -1,0 +1,122 @@
+{
+  "etudiants": [
+    {
+      "id": "683aee2a2b8d516e63d03213",
+      "matricule": "ETU2025-001",
+      "telephone": "774799479",
+      "utilisateurcreate": {
+        "nom": "Sow",
+        "prenom": "Aliou",
+        "login": "aliou.sow@ism.edu.sn",
+        "motDePasse": "monMot2Passe",
+        "role": "ETUDIANT"
+      }
+    },
+    {
+      "id": "683aee2a2b8d516e63d03214",
+      "matricule": "ETU2025-002",
+      "telephone": "776655443",
+      "utilisateurcreate": {
+        "nom": "Diop",
+        "prenom": "Aminata",
+        "login": "aminata.diop@ism.edu.sn",
+        "motDePasse": "motDePasseAminata",
+        "role": "ETUDIANT"
+      }
+    },
+    {
+      "id": "683aee2a2b8d516e63d03215",
+      "matricule": "ETU2025-003",
+      "telephone": "778899112",
+      "utilisateurcreate": {
+        "nom": "Ngom",
+        "prenom": "Mamadou",
+        "login": "mamadou.ngom@ism.edu.sn",
+        "motDePasse": "motDePasseMamadou",
+        "role": "ETUDIANT"
+      }
+    }
+  ],
+  "absences": [
+    {
+      "id": "abs1",
+      "etudiantId": "193aee2r3b8d517e73d03213",
+      "date": "2025-05-30",
+      "heureDebut": "08:00",
+      "heureFin": "10:00",
+      "type": "RETARD",
+      "nomEtudiant": "Niass",
+      "prenomEtudiant": "Awa Seyni",
+      "etat": "JUSTIFIEE",
+      "justification": {
+        "id": "just1",
+        "commentaire": "Problème de transport",
+        "fichierUrl": "fgjyjhlbhj"
+      }
+    },
+    {
+      "id": "abs2",
+      "etudiantId": "683aee2a2b8d516e63d03213",
+      "date": "2025-05-28",
+      "heureDebut": "10:00",
+      "heureFin": "12:00",
+      "type": "RETARD",
+      "nomEtudiant": "Sow",
+      "prenomEtudiant": "Aliou",
+      "etat": "NON_JUSTIFIEE"
+    },
+    {
+      "id": "abs3",
+      "etudiantId": "683aee2a2b8d516e63d03214",
+      "date": "2025-05-29",
+      "heureDebut": "14:00",
+      "heureFin": "16:00",
+      "type": "ABSENT",
+      "nomEtudiant": "Diop",
+      "prenomEtudiant": "Aminata",
+      "etat": "NON_JUSTIFIEE"
+    },
+    {
+      "id": "abs4",
+      "etudiantId": "683aee2a2b8d516e63d03215",
+      "date": "2025-05-27",
+      "heureDebut": "08:00",
+      "heureFin": "09:30",
+      "type": "ABSENT",
+      "nomEtudiant": "Ngom",
+      "prenomEtudiant": "Mamadou",
+      "etat": "EN_ATTENTE",
+      "justification": {
+        "id": "just2",
+        "commentaire": "Je me suis cassé la jambe",
+        "fichierUrl": "fgjyjhlbhj"
+      }
+    }
+  ],
+  "justifications": [
+    {
+      "id": "just1",
+      "absenceId": "abs1",
+      "commentaire": "pardon",
+      "fichierUrl": "fgjyjhlbhj",
+      "statut": "EN_ATTENTE",
+      "etudiantId": "683aee2a2b8d516e63d03213"
+    },
+    {
+      "id": "just2",
+      "absenceId": "abs4",
+      "commentaire": "Certificat médical fourni",
+      "fichierUrl": "certificat_medical_2025.pdf",
+      "statut": "ACCEPTEE",
+      "etudiantId": "683aee2a2b8d516e63d03215"
+    },
+    {
+      "id": "just3",
+      "absenceId": "abs2",
+      "commentaire": "Retard justifié par transport",
+      "fichierUrl": "justif_transport.pdf",
+      "statut": "REFUSEE",
+      "etudiantId": "683aee2a2b8d516e63d03213"
+    }
+  ]
+}

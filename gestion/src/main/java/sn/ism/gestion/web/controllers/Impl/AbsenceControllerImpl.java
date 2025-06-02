@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sn.ism.gestion.data.entities.Absence;
 import sn.ism.gestion.data.services.IAbsenceService;
+import sn.ism.gestion.data.services.IPaiementService;
 import sn.ism.gestion.utils.mapper.AbsenceMapper;
 import sn.ism.gestion.web.controllers.IAbsenceController;
 import sn.ism.gestion.web.dto.Request.AbsenceRequest;
@@ -30,6 +31,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
 
     private final IAbsenceService absenceService;
     private final AbsenceMapper absenceMapper;
+    private final IPaiementService paiementService;
 
     @Override
     public ResponseEntity<Map<String, Object>> Create(AbsenceRequest request, BindingResult bindingResult) {
@@ -93,9 +95,21 @@ public class AbsenceControllerImpl implements IAbsenceController {
 
     @Override
     public ResponseEntity<?> pointerEtudiantByQRcode(@RequestParam String sessionId, @RequestParam String etudiantId) {
+        if (!paiementService.estAjourDansPaiement(etudiantId)) {
+            return new ResponseEntity<>(
+                    RestResponse.response(
+                            HttpStatus.OK,
+                            null,
+                            "Pointage refusé : l'étudiant n'est pas à jour dans ses paiements."
+                    ),
+                    HttpStatus.OK
+            );
+        }
         Absence absence = absenceService.pointerEtudiant(sessionId, etudiantId);
         return ResponseEntity.ok().body(absence);
+
     }
+
 
     @Override
     public ResponseEntity<?> pointerEtudiantByMatricule(@RequestParam String sessionId, @RequestParam String matricule) {
