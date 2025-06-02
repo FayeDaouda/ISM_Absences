@@ -1,35 +1,40 @@
-package sn.ism.gestion.Config.Security;
+package sn.dev.suiviabsence.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sn.ism.gestion.data.enums.Role;
+import sn.ism.gestion.data.repositories.UtilisateurRepository;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final JwtUtils jwtUtils;
+    private final UtilisateurRepository utilisateurRepository;
+
+//    public JwtAuthentificationFilter(JwtUtils jwtUtils, UserRepository utilisateurRepository) {
+//        this.jwtUtils = jwtUtils;
+//        this.utilisateurRepository = utilisateurRepository;
+//    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String jwt;
-        final String username;
+        final String userLogin;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -37,24 +42,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        username = jwtService.extractUsername(jwt);
+        userLogin = jwtUtils.extractUsername(jwt);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtService.isTokenValid(jwt, username)) {
-                String roleName = jwtService.extractRole(jwt); // "ADMIN", "ETUDIANT", etc.
-                var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
+        if (userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = utilisateurRepository.findByLogin(userLogin).orElse(null);
 
+            if (user != null && jwtUtils.isTokenValid(jwt, user)) {
+                UserDetailsImpl userDetails = new UserDetailsImpl(user);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        username, null, authorities
+                        userDetails, null, userDetails.getAuthorities()
                 );
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
-
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }
