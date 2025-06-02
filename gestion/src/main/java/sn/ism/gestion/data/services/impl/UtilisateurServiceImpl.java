@@ -68,7 +68,7 @@ public class UtilisateurServiceImpl implements IUtilisateurService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Utilisateur utilisateur = utilisateurRepo.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec login: " + login));
-
+        System.out.println("ROLE CHARGÉ : " + utilisateur.getRole());
         return org.springframework.security.core.userdetails.User
                 .withUsername(utilisateur.getLogin())
                 .password(utilisateur.getMotDePasse())

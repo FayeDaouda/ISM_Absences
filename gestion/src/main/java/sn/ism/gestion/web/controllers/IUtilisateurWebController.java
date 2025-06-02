@@ -17,7 +17,7 @@ import java.util.Map;
 public interface IUtilisateurWebController extends Controller<Utilisateur> {
 
     @PostMapping("/login")
-    ResponseEntity<Map<String, Object>> login(LoginRequest request);
+    ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest request);
 
     @PostMapping("")
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody UtilisateurCreateRequest objet,

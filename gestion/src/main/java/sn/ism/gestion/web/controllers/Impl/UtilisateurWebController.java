@@ -39,6 +39,8 @@ public class UtilisateurWebController implements IUtilisateurWebController {
 
     @Override
     public ResponseEntity<Map<String, Object>> login(LoginRequest request) {
+        System.out.println("Reçu login: " + request.getLogin());
+        System.out.println("Reçu motDePasse: " + request.getMotDePasse());
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getLogin(), request.getMotDePasse())
@@ -53,7 +55,7 @@ public class UtilisateurWebController implements IUtilisateurWebController {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("token", token);
-                    data.put("utilisateur", utilisateur); // tu peux remplacer par un DTO si tu veux masquer le mot de passe
+                    data.put("utilisateur", utilisateur);
 
                     return new ResponseEntity<>(
                             RestResponse.response(HttpStatus.OK, data, "Connexion réussie"),

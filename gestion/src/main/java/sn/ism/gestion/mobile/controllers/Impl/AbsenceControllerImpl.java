@@ -106,17 +106,7 @@ public class AbsenceControllerImpl implements IAbsenceController {
         Absence absence = absenceService.pointerEtudiant(sessionId, etudiantId);
         return ResponseEntity.ok().body(absence);
 
-//        AbsenceAllResponse absenceDto = absenceMapper.toDtoAll(absence);
-//        return new ResponseEntity<>(
-//                RestResponse.response(
-//                        HttpStatus.OK,
-//                        absenceDto,
-//                        "Pointage effectué avec succès."
-//                ),
-//                HttpStatus.OK
-//        );
     }
-
 
     @Override
     public ResponseEntity<?> pointerEtudiantByMatricule(@RequestParam String sessionId, @RequestParam String matricule) {
