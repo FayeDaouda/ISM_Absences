@@ -27,7 +27,7 @@ import sn.ism.gestion.web.dto.Response.UtilisateurSimpleResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/web/utilisateurs")
+@RequestMapping("api/web/admins/utilisateurs")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UtilisateurWebController implements IUtilisateurWebController {
 
@@ -49,7 +49,7 @@ public class UtilisateurWebController implements IUtilisateurWebController {
                         .orElse(null);
 
                 if (utilisateur != null) {
-                    String token = jwtService.generateToken(utilisateur.getLogin());
+                    String token = jwtService.generateToken(utilisateur.getLogin(),utilisateur.getRole());
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("token", token);

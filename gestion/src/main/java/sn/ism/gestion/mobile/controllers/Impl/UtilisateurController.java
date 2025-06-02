@@ -52,7 +52,7 @@ public class UtilisateurController implements IUtilisateurController {
                         .orElse(null);
 
                 if (utilisateur != null) {
-                    String token = jwtService.generateToken(utilisateur.getLogin());
+                    String token = jwtService.generateToken(utilisateur.getLogin(),utilisateur.getRole());
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("token", token);

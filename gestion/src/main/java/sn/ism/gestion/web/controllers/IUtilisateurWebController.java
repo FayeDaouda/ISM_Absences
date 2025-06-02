@@ -13,7 +13,7 @@ import sn.ism.gestion.web.dto.Request.UtilisateurCreateRequest;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/utilisateurs")
+@RequestMapping("/api/web/admins/utilisateurs")
 public interface IUtilisateurWebController extends Controller<Utilisateur> {
 
     @PostMapping("/login")
@@ -23,7 +23,7 @@ public interface IUtilisateurWebController extends Controller<Utilisateur> {
     ResponseEntity<Map<String, Object>> Create(@Valid @RequestBody UtilisateurCreateRequest objet,
                                                BindingResult bindingResult);
 
-    @GetMapping("/login")
+    @GetMapping("/login/{login}")
     ResponseEntity<Map<String,Object>> findByLogin(@PathVariable String login);
 
 

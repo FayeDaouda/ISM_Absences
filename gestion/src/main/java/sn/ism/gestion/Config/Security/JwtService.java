@@ -4,9 +4,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
+import sn.ism.gestion.data.enums.Role;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -15,9 +17,10 @@ public class JwtService {
     private static final long EXPIRATION_TIME = 86400000; // 24 heures
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Role role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role.name()) // 👈 inclure le rôle
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SECRET_KEY)
@@ -25,7 +28,11 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token, claims -> claims.getSubject()); // ✅ Lambda corrigée ici
+        return extractClaim(token, claims -> claims.getSubject());
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     public boolean isTokenValid(String token, String username) {
