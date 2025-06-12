@@ -55,7 +55,7 @@ class EtudiantController extends GetxController {
         presences.value = jsonDecode(responsePresences.body);
       } else {
         Get.snackbar(
-          'Erreur,impossible de voir ses absences et presences','mpossible de récupérer les absences et présences',
+          'Erreur,impossible de voir ses absences et presences','impossible de récupérer les absences et présences',
         );
       }
     } catch (e) {
@@ -65,3 +65,18 @@ class EtudiantController extends GetxController {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

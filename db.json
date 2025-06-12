@@ -1,0 +1,108 @@
+{
+  "statistics": {
+    "matricule": "MAT0962",
+    "absences": 3,
+    "retards": 1,
+    "justifiees": 1,
+    "emplois": [
+      {
+        "jour": "Lundi",
+        "matiere": "Physique",
+        "heure": "08h - 12h",
+        "salle": "Salle 504"
+      },
+      {
+        "jour": "Mardi",
+        "matiere": "Aucun cours"
+      },
+      {
+        "jour": "Mercredi",
+        "matiere": "Flutter",
+        "heure": "08h - 12h",
+        "salle": "Salle 303"
+      },
+      {
+        "jour": "Jeudi",
+        "matiere": "Aucun cours"
+      },
+      {
+        "jour": "Vendredi",
+        "matiere": "Python",
+        "heure": "08h - 12h",
+        "salle": "Salle 204"
+      },
+      {
+        "jour": "Samedi",
+        "matiere": "Flutter",
+        "heure": "08h - 12h",
+        "salle": "Salle 101"
+      }
+    ]
+  },
+  "utilisateurs": [
+    {
+      "id": "u3",
+      "login": "awa.seyni@ism.edu.sn",
+      "motDePasse": "etudiant123",
+      "role": "ETUDIANT",
+      "nom": "Seyni",
+      "prenom": "Awa"
+    }
+  ],
+  "etudiants": [
+    {
+      "id": "etu-1",
+      "nom": "Seyni",
+      "prenom": "Awa",
+      "matricule": "MAT0962",
+      "classe": "L3 CSDD",
+      "telephone": "770000001",
+      "utilisateurId": "u3"
+    }
+  ],
+  "absences": [
+    {
+      "id": "1",
+      "nom": "Seyni",
+      "prenom": "Awa",
+      "matricule": "MAT0962",
+      "classe": "L3CSDD",
+      "dateAbsence": "2025-06-01",
+      "description": "J’étais malade",
+      "motif": "Maladie",
+      "heure": "8h / 12h",
+      "matiere": "Physique",
+      "etat": "justifiee",
+      "justifie": true
+    },
+    {
+      "id": "2",
+      "nom": "Seyni",
+      "prenom": "Awa",
+      "matricule": "MAT0962",
+      "classe": "L3CSDD",
+      "dateAbsence": "2025-06-03",
+      "description": "Problème de transport",
+      "motif": "Transport",
+      "heure": "10h / 12h",
+      "matiere": "Flutter",
+      "etat": "non_justifiee",
+      "justifie": false
+    },
+    {
+      "id": "3",
+      "nom": "Seyni",
+      "prenom": "Awa",
+      "matricule": "MAT0962",
+      "classe": "L3CSDD",
+      "dateAbsence": "2025-06-05",
+      "description": "Absent sans raison",
+      "motif": "Inconnue",
+      "heure": "8h / 12h",
+      "matiere": "Python",
+      "etat": "non_justifiee",
+      "justifie": false
+    }
+  ],
+  "justifications": []
+}

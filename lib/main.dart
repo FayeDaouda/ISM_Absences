@@ -38,12 +38,17 @@ class MyApp extends StatelessWidget {
           binding: AuthBinding(),
         ),
         GetPage(
-          name: AppRoutes.dashboardAbsences,
-          page: () => DashboardAbsences(),
+          name: AppRoutes.dashboardjustification,
+          page: () => DashboardJustification(etudiantData: {}, dashboardData: {}, absences: [], utilisateurs: [], etudiantId: '',),
           binding: AuthBinding(),
         ),
 
 
+  GetPage(
+          name: AppRoutes.dashboardAbsences,
+          page: () => DashboardAbsences(),
+          binding: AuthBinding(),
+        ),
 
         
         
@@ -51,4 +56,5 @@ class MyApp extends StatelessWidget {
       ],
     );
   }
+  
 }

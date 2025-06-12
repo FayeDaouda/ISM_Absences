@@ -1,235 +1,231 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_application_1/app/pages/etudiant/dashboardjustification.dart';
+import 'package:flutter_application_1/app/pages/etudiant/dashboardabsences.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'dashboardabsences.dart';
-import 'dashboardjustification.dart';
 
 class DashboardEtudiant extends StatefulWidget {
-  const DashboardEtudiant({Key? key}) : super(key: key);
-
   @override
-  State<DashboardEtudiant> createState() => _DashboardEtudiantState();
+  _DashboardEtudiantState createState() => _DashboardEtudiantState();
 }
 
 class _DashboardEtudiantState extends State<DashboardEtudiant> {
-  final RxInt absents = 5.obs;
-  final RxInt retards = 1.obs;
-  final RxInt justifies = 2.obs;
-
-  final Map<String, List<Map<String, String>>> emploiDuTemps = {
-    "Lundi": [{'heure': '08h - 12h', 'cours': 'Physique', 'salle': 'Salle 504'}],
-    "Mardi": [],
-    "Mercredi": [{'heure': '08h - 12h', 'cours': 'Flutter', 'salle': 'Salle 303'}],
-    "Jeudi": [],
-    "Vendredi": [{'heure': '08h - 12h', 'cours': 'Python', 'salle': 'Salle 204'}],
-    "Samedi": [{'heure': '08h - 12h', 'cours': 'Flutter', 'salle': 'Salle 101'}],
-  };
-
-  final String Nom = "DAOUDA FALL";
-  final String matricule = "ISM20222025";
-  final String niveau = "L3 CDSD";
-  final String email = "daouda.fall@ism.edu.sn";
-
   int _selectedIndex = 0;
+
+  int absences = 0;
+  int retards = 0;
+  int justifiees = 0;
+  List emplois = [];
+  String qrData = "Etudiant_12345";
+  String etudiantId = '';
+
+  final List<String> joursSemaine = [
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
+    "Samedi",
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDashboardData();
+  }
+
+  Future<void> fetchDashboardData() async {
+    try {
+      final dashboardResponse = await http.get(
+        Uri.parse('http://192.168.1.182:3000/api/etudiants'),
+      );
+
+      if (dashboardResponse.statusCode == 200) {
+        final dashboardData = json.decode(dashboardResponse.body);
+
+        final id = dashboardData['etudiantId'] ?? dashboardData['matricule'] ?? '';
+
+        final emploisResponse = await http.get(
+          Uri.parse('http://192.168.1.182:3000/emplois/$id'),
+        );
+
+        if (emploisResponse.statusCode == 200) {
+          final emploisData = json.decode(emploisResponse.body);
+
+          setState(() {
+            absences = dashboardData['absences'] ?? 0;
+            retards = dashboardData['retards'] ?? 0;
+            justifiees = dashboardData['justifiees'] ?? 0;
+            qrData = dashboardData['matricule'] ?? "ISM2222";
+            etudiantId = id;
+
+            emplois = List.from(emploisData);
+          });
+        } else {
+          throw Exception('Erreur lors du chargement de l\'emploi du temps');
+        }
+      } else {
+        throw Exception('Erreur lors du chargement des données du dashboard');
+      }
+    } catch (e) {
+      print('Erreur fetchDashboardData: $e');
+    }
+  }
+
+  Widget _buildPlanningPage() {
+    final List<Widget> emploiCards = joursSemaine.map((jour) {
+      final emploiDuJour = emplois.firstWhere(
+        (e) => e['jour'] == jour,
+        orElse: () => {'jour': jour, 'matiere': 'Aucun cours'},
+      );
+      return _buildEmploiCard(emploiDuJour);
+    }).toList();
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Center(
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.orangeAccent),
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              child: QrImageView(
+                data: qrData,
+                version: QrVersions.auto,
+                size: 150.0,
+              ),
+            ),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildStatCard("Absences", absences.toString(), Colors.red[100], Colors.red),
+              _buildStatCard("Retards", retards.toString(), Colors.yellow[100], Colors.orange),
+              _buildStatCard("Justifiées", justifiees.toString(), Colors.green[100], Colors.green),
+            ],
+          ),
+          SizedBox(height: 24),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Row(
+              children: [
+                Icon(Icons.calendar_month, color: Colors.red),
+                SizedBox(width: 8),
+                Text("Emploi du temps", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+          SizedBox(height: 8),
+          Text("Votre planning de cours de la semaine"),
+          SizedBox(height: 16),
+          Wrap(spacing: 12, runSpacing: 12, children: emploiCards),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildJustificationPage() {
+    if (etudiantId.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    return DashboardJustification(
+      etudiantId: etudiantId,
+      etudiantData: {},
+      dashboardData: {},
+      absences: [],
+      utilisateurs: [],
+    );
+  }
+
+  Widget _buildAbsencesPage() {
+    return DashboardAbsences();
+  }
+
+  Widget _buildPage() {
+    switch (_selectedIndex) {
+      case 0:
+        return _buildPlanningPage();
+      case 1:
+        return _buildJustificationPage();
+      case 2:
+        return _buildAbsencesPage();
+      default:
+        return _buildPlanningPage();
+    }
+  }
+
+  Widget _buildStatCard(String label, String value, Color? bgColor, Color? textColor) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textColor)),
+          SizedBox(height: 4),
+          Text(label, style: TextStyle(color: textColor)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmploiCard(Map emploi) {
+    return Container(
+      width: 120,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.orange[50],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.orange),
+      ),
+      child: Column(
+        children: [
+          Text(emploi['jour'] ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(height: 4),
+          Text(emploi['matiere'] ?? 'Aucun cours', textAlign: TextAlign.center),
+          if (emploi['heure'] != null)
+            Text(emploi['heure'], textAlign: TextAlign.center),
+          if (emploi['salle'] != null)
+            Text(emploi['salle'], textAlign: TextAlign.center),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F6F4),
       appBar: AppBar(
+        title: Text("Dashboard Étudiant"),
         backgroundColor: Colors.orange,
-        title: const Text('Dashboard Étudiant'),
-        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
+      body: _buildPage(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        backgroundColor: Colors.orange[100],
-        selectedItemColor: Colors.orange[800],
-        unselectedItemColor: Colors.grey[700],
+        selectedItemColor: Colors.orange,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Planning',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fact_check),
-            label: 'Justification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.error_outline),
-            label: 'Absences',
-          ),
-        ],
-      ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          _buildPlanning(),
-          const DashboardJustification(
-            date: "2024-05-10",
-            matiere: "Programmation mobile",
-          ),
-          DashboardAbsences(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlanning() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.orange[100],
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.orange.withOpacity(0.3),
-                    blurRadius: 6,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: QrImageView(
-                data: '''
-                    Nom: $Nom
-                    Matricule: $matricule
-                    Classe: $niveau
-                    Email: $email
-                    ''',
-                version: QrVersions.auto,
-                size: 150.0,
-                backgroundColor: Colors.white,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Obx(() {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _StatBox(
-                    label: "Absences",
-                    count: absents.value,
-                    color: Colors.red,
-                    bgColor: Colors.red.shade50),
-                _StatBox(
-                    label: "Retards",
-                    count: retards.value,
-                    color: Colors.orange,
-                    bgColor: Colors.orange.shade50),
-                _StatBox(
-                    label: "Justifiées",
-                    count: justifies.value,
-                    color: Colors.green,
-                    bgColor: Colors.green.shade50),
-              ],
-            );
-          }),
-          const SizedBox(height: 24),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text("📅 Emploi du temps",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown)),
-          ),
-          const SizedBox(height: 6),
-          const Text("Votre planning de cours de la semaine"),
-          const SizedBox(height: 12),
-          GridView.count(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            children: emploiDuTemps.keys.map((jour) {
-              final coursList = emploiDuTemps[jour]!;
-              return Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.orange[100],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(jour,
-                        style:
-                            const TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    if (coursList.isEmpty)
-                      const Text("Aucun cours", textAlign: TextAlign.center),
-                    for (var cours in coursList)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(cours['cours']!,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600)),
-                            Text(cours['heure']!),
-                            Text(cours['salle']!),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatBox extends StatelessWidget {
-  final String label;
-  final int count;
-  final Color color;
-  final Color bgColor;
-
-  const _StatBox({
-    required this.label,
-    required this.count,
-    required this.color,
-    required this.bgColor,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 90,
-      height: 90,
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            count.toString().padLeft(2, '0'),
-            style: TextStyle(
-                fontSize: 25, fontWeight: FontWeight.bold, color: color),
-          ),
-          const SizedBox(height: 4),
-          Text(label, style: TextStyle(color: color)),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Planning'),
+          BottomNavigationBarItem(icon: Icon(Icons.fact_check), label: 'Justification'),
+          BottomNavigationBarItem(icon: Icon(Icons.warning), label: 'Absences'),
         ],
       ),
     );

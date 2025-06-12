@@ -44,7 +44,6 @@ class JustificationController extends GetxController {
           'motif': motif,
         }),
       );
-
       if (response.statusCode == 200) {
         Get.snackbar('Succès', 'Justification envoyée avec succès');
         fetchAbsencesNonJustifiees( absenceId, absencesNonJustifiees); 

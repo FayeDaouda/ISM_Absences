@@ -6,6 +6,8 @@ class AppRoutes {
   static const justificationEtudiant = '/justification-etudiant';
   static const dashboardAbsences = '/dashboardabsences';
 
+  static var dashboardjustification;
+
   
 
 }
