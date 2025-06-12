@@ -8,61 +8,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import sn.ism.gestion.data.entities.Absence;
+import sn.ism.gestion.data.entities.*;
 import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.entities.Justification;
-import sn.ism.gestion.data.entities.Utilisateur;
-import sn.ism.gestion.data.entities.Etudiant;
-import sn.ism.gestion.data.enums.Role;
 import sn.ism.gestion.data.enums.Situation;
-import sn.ism.gestion.data.repositories.AbsenceRepository;
-import sn.ism.gestion.data.repositories.EtudiantRepository;
-import sn.ism.gestion.data.repositories.JustificationRepository;
-import sn.ism.gestion.data.repositories.UtilisateurRepository;
+import sn.ism.gestion.data.repositories.*;
 import sn.ism.gestion.data.services.IEtudiantService;
+import sn.ism.gestion.mobile.dto.Request.JustificationRequest;
 import sn.ism.gestion.utils.exceptions.EntityNotFoundExecption;
-import sn.ism.gestion.utils.mapper.EtudiantMapper;
-import sn.ism.gestion.utils.mapper.UtilisateurMapper;
-import sn.ism.gestion.web.dto.Request.EtudiantSimpleRequest;
-import sn.ism.gestion.web.dto.Request.JustificationRequest;
-import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
-import sn.ism.gestion.web.dto.Response.EtudiantAllResponse;
-import sn.ism.gestion.web.dto.Response.EtudiantSimpleResponse;
-
 
 @Service
 @RequiredArgsConstructor
 public class EtudiantServiceImpl implements IEtudiantService {
-
-    @Autowired
-    private UtilisateurRepository utilisateurRepository;
     @Autowired
     private EtudiantRepository etudiantRepository;
+
     @Autowired
     private AbsenceRepository absenceRepository;
-    @Autowired
-    private UtilisateurMapper utilisateurMapper;
-    @Autowired
-    private EtudiantMapper etudiantMapper;
-    @Autowired
-    private JustificationRepository justificationRepository;
+    
     @Autowired
     private JustificationServiceImpl justificationServiceImpl;
-
-
-    public Etudiant createEtudiant(EtudiantSimpleRequest etudiantSimpleRequest) {
-        var existingEtudiant = etudiantRepository.findByMatricule(etudiantSimpleRequest.getMatricule());
-        if (existingEtudiant.isPresent()) {
-            throw new EntityNotFoundExecption("Un étudiant avec ce matricule existe déjà");
-        }
-        Utilisateur utilisateur = utilisateurMapper.toEntity(etudiantSimpleRequest.getUtilisateurcreate());
-        utilisateur.setRole(Role.ETUDIANT);
-        utilisateur = utilisateurRepository.save(utilisateur);
-
-        Etudiant etudiantCreate = etudiantMapper.toEntityR(etudiantSimpleRequest);
-        etudiantCreate.setUtilisateurId(utilisateur.getId());
-        return etudiantRepository.save(etudiantCreate);
-       }
 
     @Override
     public Etudiant create(Etudiant object) {
@@ -122,64 +86,6 @@ public class EtudiantServiceImpl implements IEtudiantService {
         absence.setJustifiee(true);
         justificationServiceImpl.createJustication(justification);
         return absenceRepository.save(absence);
-    }
-
-    @Override
-    public Page<EtudiantAllResponse> getAllEtudiants(Pageable pageable) {
-        Page<Etudiant> etudiants = etudiantRepository.findAll(pageable);
-
-        return etudiants.map(e -> {
-            EtudiantAllResponse dto = new EtudiantAllResponse();
-            dto.setId(e.getId());
-            dto.setMatricule(e.getMatricule());
-            dto.setTelephone(e.getTelephone());
-            dto.setClasseId(e.getClasseId());
-            utilisateurRepository.findById(e.getUtilisateurId()).ifPresent(u -> {
-                dto.setNom(u.getNom());
-                dto.setPrenom(u.getPrenom());
-            });
-
-            return dto;
-        });
-    }
-
-     @Override
-     public EtudiantSimpleResponse getOne(String id) {
-         Etudiant etudiant = etudiantRepository.findById(id)
-                 .orElseThrow(() -> new RuntimeException("Aucun Étudiant trouvé"));
-
-         Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
-                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
-
-         EtudiantSimpleResponse dto = new EtudiantSimpleResponse();
-         dto.setId(etudiant.getId());
-         dto.setMatricule(etudiant.getMatricule());
-         dto.setTelephone(etudiant.getTelephone());
-         dto.setNom(utilisateur.getNom());
-         dto.setPrenom(utilisateur.getPrenom());
-
-         return dto;
-     }
-
-
-    @Override
-    public EtudiantSimpleResponse findByMat(String matricule) {
-        Etudiant etudiant = etudiantRepository.findByMatricule(matricule)
-                .orElseThrow(() -> new RuntimeException("Aucun Etudiant trouvé"));
-
-        Utilisateur utilisateur = utilisateurRepository.findById(etudiant.getUtilisateurId())
-                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
-
-        EtudiantSimpleResponse dto = new EtudiantSimpleResponse();
-        dto.setId(etudiant.getId());
-        dto.setMatricule(etudiant.getMatricule());
-        dto.setTelephone(etudiant.getTelephone());
-        // dto.setUtilisateurId(utilisateur.getId());
-        // dto.setLogin(utilisateur.getLogin());
-        dto.setNom(utilisateur.getNom());
-        dto.setPrenom(utilisateur.getPrenom());
-
-        return dto;
     }
 
     @Override

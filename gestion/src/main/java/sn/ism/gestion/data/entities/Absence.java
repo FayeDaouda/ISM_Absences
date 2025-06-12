@@ -6,6 +6,7 @@ import sn.ism.gestion.data.enums.Situation;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
@@ -20,6 +21,6 @@ public class Absence extends AbstractEntity {
     private boolean justifiee;
     private String justificationId;
     private LocalTime heurePointage;
-
+    private LocalDate date;
     
 }

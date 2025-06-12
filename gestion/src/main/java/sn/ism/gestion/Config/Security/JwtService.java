@@ -15,9 +15,9 @@ public class JwtService {
     private static final long EXPIRATION_TIME = 86400000; // 24 heures
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String generateToken(String username) {
+    public String generateToken(String login) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(login)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SECRET_KEY)
@@ -28,9 +28,9 @@ public class JwtService {
         return extractClaim(token, claims -> claims.getSubject()); // ✅ Lambda corrigée ici
     }
 
-    public boolean isTokenValid(String token, String username) {
+    public boolean isTokenValid(String token, String login) {
         final String extractedUsername = extractUsername(token);
-        return extractedUsername.equals(username) && !isTokenExpired(token);
+        return extractedUsername.equals(login) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

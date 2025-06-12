@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -68,7 +67,7 @@ public class UtilisateurServiceImpl implements IUtilisateurService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Utilisateur utilisateur = utilisateurRepo.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec login: " + login));
-
+        System.out.println("ROLE CHARGÉ : " + utilisateur.getRole());
         return org.springframework.security.core.userdetails.User
                 .withUsername(utilisateur.getLogin())
                 .password(utilisateur.getMotDePasse())

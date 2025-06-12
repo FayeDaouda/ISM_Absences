@@ -8,19 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sn.ism.gestion.data.entities.SessionCours;
 import sn.ism.gestion.data.repositories.SessionsCoursRepository;
-import sn.ism.gestion.data.entities.SessionCours;
 import sn.ism.gestion.data.services.ISessionCoursService;
-import sn.ism.gestion.web.dto.Response.SessionAllResponse;
-import sn.ism.gestion.web.dto.Response.SessionSimpleResponse;
 
 @Service
 public class SessionCoursServiceImpl implements ISessionCoursService {
 
     @Autowired
     private SessionsCoursRepository sessionCoursRepository;
-
-    @Autowired
-    private SessionsCoursRepository sessionRepository;
 
     @Override
     public SessionCours create(SessionCours object) {
@@ -61,21 +55,6 @@ public class SessionCoursServiceImpl implements ISessionCoursService {
     @Override
     public Page<SessionCours> getSessionsDuJour(LocalDate date, Pageable pageable) {
         return sessionCoursRepository.findByDate(LocalDate.now(), pageable);
-    }
-
-    @Override
-    public Page<SessionAllResponse> getAllSessionCours(LocalDate date , Pageable pageable) {
-        Page<SessionCours> sessions = sessionRepository.findByDate(date ,pageable);
-
-        return sessions.map(e -> {
-            SessionAllResponse dto = new SessionAllResponse();
-            dto.setId(e.getId());
-            dto.setDate(e.getDate());
-            dto.setHeureDebut(e.getHeureDebut());
-            dto.setHeureFin(e.getHeureFin());
-            dto.setMode(e.getMode());
-            return dto;
-        });
     }
 
 }
