@@ -67,7 +67,7 @@ class _DashboardEtudiantState extends State<DashboardEtudiant> {
           throw Exception('Erreur lors du chargement de l\'emploi du temps');
         }
       } else {
-        throw Exception('Erreur lors du chargement des données du dashboard');
+        throw Exception('Erreur lors du chargement des données ');
       }
     } catch (e) {
       print('Erreur fetchDashboardData: $e');

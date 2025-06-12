@@ -40,7 +40,7 @@ class _DashboardJustificationState extends State<DashboardJustification> {
       isLoading = true;
     });
 
-    final uri = Uri.parse('http://192.168.1.182:3000/etudiants/${widget.etudiantId}/dashboard');
+    final uri = Uri.parse('http://192.168.1.182:3000/api/etudiants/${widget.etudiantId}/dashboard');
 
     try {
       final response = await http.get(uri);
@@ -214,7 +214,7 @@ class _DashboardJustificationState extends State<DashboardJustification> {
                 return;
               }
 
-              final uri = Uri.parse("http://192.168.1.182:3000/justifications");
+              final uri = Uri.parse("http://192.168.1.182:3000///api/mobile/etudiants/{id}/justifications");
               var request = http.MultipartRequest('POST', uri);
 
               request.fields.addAll({
