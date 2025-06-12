@@ -85,38 +85,29 @@
       "type": "ABSENT",
       "nomEtudiant": "Ngom",
       "prenomEtudiant": "Mamadou",
-      "etat": "EN_ATTENTE",
+      "etat": "JUSTIFIEE",
       "justification": {
         "id": "just2",
         "commentaire": "Je me suis cassé la jambe",
         "fichierUrl": "fgjyjhlbhj"
       }
-    }
-  ],
-  "justifications": [
-    {
-      "id": "just1",
-      "absenceId": "abs1",
-      "commentaire": "pardon",
-      "fichierUrl": "fgjyjhlbhj",
-      "statut": "EN_ATTENTE",
-      "etudiantId": "683aee2a2b8d516e63d03213"
     },
     {
-      "id": "just2",
-      "absenceId": "abs4",
-      "commentaire": "Certificat médical fourni",
-      "fichierUrl": "certificat_medical_2025.pdf",
-      "statut": "ACCEPTEE",
-      "etudiantId": "683aee2a2b8d516e63d03215"
-    },
-    {
-      "id": "just3",
-      "absenceId": "abs2",
-      "commentaire": "Retard justifié par transport",
-      "fichierUrl": "justif_transport.pdf",
-      "statut": "REFUSEE",
-      "etudiantId": "683aee2a2b8d516e63d03213"
+      "id": "abs5",
+      "etudiantId": "083aee8a8b8v516e63d04215",
+      "date": "2025-06-06",
+      "heureDebut": "08:00",
+      "heureFin": "10:00",
+      "type": "ABSENT",
+      "nomEtudiant": "Diop",
+      "prenomEtudiant": "Alassane",
+      "etat": "EN_ATTENTE",
+      "justification": {
+        "id": "just3",
+        "commentaire": "J'ai oublié de mettre mon réveil à jour",
+        "fichierUrl": "fgjyjhlbhj"
+      }
     }
   ]
+
 }

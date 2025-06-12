@@ -1,0 +1,27 @@
+<div class="flex justify-center items-center gap-2 mt-6">
+  <button 
+    class="bg-[#5b3413] text-white px-3 py-1 rounded-md text-sm font-semibold disabled:opacity-50"
+    (click)="goToPage(currentPage - 1)" 
+    [disabled]="currentPage === 0">
+    Précédent
+  </button>
+
+  <ng-container *ngFor="let page of pages; let i = index">
+    <button 
+      class="px-3 py-1 rounded-md text-sm font-semibold border border-[#5b3413]"
+      [ngClass]="{
+        'bg-[#5b3413] text-white': i === currentPage,
+        'bg-white text-black': i !== currentPage
+      }"
+      (click)="goToPage(i)">
+      {{ i + 1 }}
+    </button>
+  </ng-container>
+
+  <button 
+    class="bg-[#5b3413] text-white px-3 py-1 rounded-md text-sm font-semibold disabled:opacity-50"
+    (click)="goToPage(currentPage + 1)" 
+    [disabled]="currentPage === pages.length - 1">
+    Suivant
+  </button>
+</div>

@@ -7,7 +7,9 @@
   </p>
 
   <!-- En-têtes -->
-  <div class="grid grid-cols-5 gap-4 px-4 py-2 border rounded shadow text-orange-600 font-semibold text-sm text-center">
+  <div
+    class="grid grid-cols-5 gap-4 px-4 py-2 border rounded shadow text-orange-600 font-semibold text-sm text-center"
+  >
     <div>Nom</div>
     <div>Prénom</div>
     <div>Type</div>
@@ -16,7 +18,7 @@
   </div>
 
   <!-- Liste des absences -->
-  @for (abs of absences(); track abs.id) {
+  @for (abs of paginatedAbsences(); track abs.id) {
     <div class="mb-4 p-4 border rounded shadow text-center mt-5">
       <div class="grid grid-cols-5 gap-4 text-sm">
         <div>{{ abs.nomEtudiant || '' }}</div>
@@ -29,7 +31,13 @@
                 abs.etat === 'NON_JUSTIFIEE' ? 'text-red-600' : 
                 'text-gray-500' }}"
           >
-            {{ abs.etat === 'JUSTIFIEE' ? 'justifiée' : abs.etat === 'NON_JUSTIFIEE' ? 'non justifiée' : 'en attente' }}
+            {{
+              abs.etat === 'JUSTIFIEE'
+                ? 'justifiée'
+                : abs.etat === 'NON_JUSTIFIEE'
+                ? 'non justifiée'
+                : 'en attente'
+            }}
           </span>
         </div>
         <div>
@@ -47,7 +55,37 @@
     </div>
   }
 
-  @if (absences().length === 0) {
+  @if (paginatedAbsences().length === 0) {
     <p class="text-center text-gray-500 mt-4">Aucune absence trouvée.</p>
   }
+
+  <!-- Pagination -->
+  <div class="flex justify-center mt-6 gap-2 text-sm text-[#573826]">
+    <button
+      (click)="goToPage(currentPage() - 1)"
+      [disabled]="currentPage() === 1"
+      class="px-3 py-1 border rounded disabled:opacity-50"
+    >
+      Précédent
+    </button>
+
+    @for (page of pages(); track page) {
+      <button
+        (click)="goToPage(page)"
+        [class.bg-[#573826]]="currentPage() === page"
+        [class.text-white]="currentPage() === page"
+        class="px-3 py-1 border rounded"
+      >
+        {{ page }}
+      </button>
+    }
+
+    <button
+      (click)="goToPage(currentPage() + 1)"
+      [disabled]="currentPage() === totalPages()"
+      class="px-3 py-1 border rounded disabled:opacity-50"
+    >
+      Suivant
+    </button>
+  </div>
 </div>

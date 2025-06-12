@@ -34,4 +34,9 @@ export class AbsenceService {
   getAbsencesByEtudiant(etudiantId: string): Observable<Absence[]> {
     return this.http.get<Absence[]>(`${this.apiUrl}?etudiantId=${etudiantId}`);
   }
+
+  updateAbsence(id: string, updatedData: Partial<Absence>): Observable<Absence> {
+    return this.http.patch<Absence>(`${this.apiUrl}/${id}`, updatedData);
+  }
+
 }
