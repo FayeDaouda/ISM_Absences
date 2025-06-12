@@ -11,4 +11,5 @@ import lombok.Setter;
 public class Vigile extends AbstractEntity{
 
     private String utilisateurId ;
+    
 }

@@ -55,25 +55,6 @@ public class AbsenceServiceImpl implements IAbsenceService {
         absenceCreate.setEtudiantId(existingEtudiant.getId());
         return absenceRepository.save(absenceCreate);
     }
-//
-//    @Override
-//    public Absence pointerEtudiant(String sessionId, String etudiantId) {
-//        Absence absence = absenceRepository.findOneBySessionIdAndEtudiantId(sessionId, etudiantId)
-//            .orElseThrow(() -> new EntityNotFoundExecption("Absence non initialisée"));
-//
-//        LocalDateTime heureActuelle = LocalDateTime.now();
-//        LocalDateTime heureDebut = sessionCoursRepository.findById(sessionId)
-//            .orElseThrow().getHeureDebut();
-//
-//        if (heureActuelle.isBefore(heureDebut.plusMinutes(5))) {
-//            absence.setType(Situation.PRESENT);
-//        } else {
-//            absence.setType(Situation.RETARD);
-//        }
-//            absence.setHeurePointage(LocalTime.now());
-//            absenceRepository.save(absence);
-//        return absence;
-//    }
 
     public Absence pointerEtudiantByMatricule(String sessionId, String matricule) {
         Absence absence = absenceRepository.findOneBySessionIdAndEtudiantId(sessionId, matricule)
