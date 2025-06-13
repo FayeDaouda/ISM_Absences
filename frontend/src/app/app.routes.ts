@@ -6,6 +6,7 @@ import { JustificationComponent } from './pages/admin/justifications/justificati
 import { SecurityComponent } from './pages/security/security.component';
 import { LoginComponent } from './pages/security/login/login.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
+import { SessionsComponent } from './pages/admin/sessions/sessions.component';
 
 export const routes: Routes = [
     {
@@ -23,6 +24,10 @@ export const routes: Routes = [
             {
                 path: 'justification/:id',
                 component: JustificationComponent
+            },
+            {
+                path: 'sessions',
+                component: SessionsComponent
             },
             {
                 path: '',

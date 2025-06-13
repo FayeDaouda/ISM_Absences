@@ -6,7 +6,6 @@
     Liste de tous les étudiants inscrits dans le système
   </p>
 
-  <!-- En-tête -->
   <div class="grid grid-cols-4 gap-4 px-4 py-2 border rounded shadow text-orange-600 font-semibold text-sm text-center">
     <div>Nom</div>
     <div>Prénom</div>
@@ -14,7 +13,6 @@
     <div>Classe</div>
   </div>
 
-  <!-- Liste des étudiants paginée -->
   @for (etu of etudiantsPerPage; track etu.matricule) {
     <div class="mb-4 p-4 border rounded shadow text-center mt-5">
       <div class="grid grid-cols-4 gap-4 text-sm">
@@ -26,7 +24,6 @@
     </div>
   }
 
-  <!-- Pagination -->
   <div class="flex justify-center items-center gap-2 mt-6 text-sm text-[#573826]">
     <button
       (click)="goToPage(currentPage - 1)"
