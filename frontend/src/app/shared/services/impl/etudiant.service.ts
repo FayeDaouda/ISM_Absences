@@ -3,24 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Etudiant } from '../../models/etudiant.model';
 
-// export interface Etudiant {
-//   id: string;
-//   matricule: string;
-//   telephone: string;
-//   utilisateurcreate: {
-//     nom: string;
-//     prenom: string;
-//     login: string;
-//     motDePasse: string;
-//     role: string;
-//   };
-// }
-
 @Injectable({
   providedIn: 'root',
 })
 export class EtudiantService {
-  private apiUrl = 'https://gestion-absence-ism-dev.onrender.com/api/etudiants';
+  private apiUrl = 'https://gestion-absence-ism-dev.onrender.com/api/web/etudiants';
 
   constructor(private http: HttpClient) {}
 

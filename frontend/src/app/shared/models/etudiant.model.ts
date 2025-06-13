@@ -2,7 +2,7 @@ export interface Etudiant {
   id: string,
   nom: string,
   prenom: string,
-  classeId: string,
+  classeLibelle: string,
   matricule: string,
   telephone: string
 }
