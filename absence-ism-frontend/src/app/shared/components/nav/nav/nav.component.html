@@ -1,0 +1,40 @@
+<div class="fixed top-0 left-0 h-screen w-64 bg-orange-400 text-white flex flex-col justify-between bg-jaune z-50">
+  <div class="flex flex-col items-center p-4 border-orange-600">
+<img src="https://edukiya.com/wp-content/uploads/2020/05/ISM-Dakar-Senegal.jpg" alt="Logo ISM" class="w-20 h-20" />
+  </div>
+  <nav class="flex-1 mt-4">
+    <ul class="space-y-2">
+      <li>
+        <a 
+          routerLink="/admin" 
+          routerLinkActive="active-link"
+          class="flex items-center gap-2 px-6 py-2 rounded-l-full font-semibold hover:bg-orange-300 transition">
+          <span class="material-icons">home</span> Accueil
+        </a>
+      </li>
+      <li>
+        <a 
+          routerLink="/admin/sessions" 
+          routerLinkActive="active-link"
+          class="flex items-center gap-2 px-6 py-2 rounded-l-full font-semibold hover:bg-orange-300 transition">
+          <span class="material-icons">event_busy</span> Sessions du jour
+        </a>
+      </li>
+      <li>
+        <a 
+          routerLink="/admin/etudiants" 
+          routerLinkActive="active-link"
+          class="flex items-center gap-2 px-6 py-2 rounded-l-full font-semibold hover:bg-orange-300 transition">
+          <span class="material-icons">groups</span> Étudiants
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="mb-4 px-6">
+    <button 
+      class="flex items-center gap-2 text-white hover:text-orange-900 hover:bg-white px-3 py-2 rounded transition">
+      <span class="material-icons">logout</span> Déconnexion
+    </button>
+  </div>
+</div>

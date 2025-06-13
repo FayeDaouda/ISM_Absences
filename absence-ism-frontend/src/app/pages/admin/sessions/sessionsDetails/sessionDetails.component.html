@@ -1,0 +1,40 @@
+<h2>Liste des pointages</h2>
+
+<label for="filtre">Filtrer par :</label>
+<select id="filtre" [(ngModel)]="filtre">
+  <option value="TOUS">Tous</option>
+  <option value="ABSENCE">Absents</option>
+  <option value="RETARD">Retards</option>
+  <option value="PRESENT">Présents</option>
+</select>
+
+<table class="table-auto mt-4 w-full border border-gray-300 shadow">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="px-4 py-2">Nom</th>
+      <th class="px-4 py-2">Prénom</th>
+      <th class="px-4 py-2">Classe</th>
+      <th class="px-4 py-2">État</th>
+      <th class="px-4 py-2">Justifié</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="text-center" >
+      <td class="px-4 py-2">non</td>
+      <td class="px-4 py-2">prenom</td>
+      <td class="px-4 py-2">classe</td>
+      <td class="px-4 py-2">type</td>
+      <td class="px-4 py-2">oui/non</td>
+    </tr>
+
+      <!-- <tr *ngFor="let p of getFilteredPointages()"
+        class="text-center"
+        [ngClass]="p.justifiee ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+      <td class="px-4 py-2">{{ p.nonEtudiant }}</td>
+      <td class="px-4 py-2">{{ p.prenomEtudiant }}</td>
+      <td class="px-4 py-2">{{ p.classeEtudiant }}</td>
+      <td class="px-4 py-2">{{ p.type }}</td>
+      <td class="px-4 py-2">{{ p.justifiee ? 'Oui' : 'Non' }}</td>
+    </tr> -->
+  </tbody>
+</table>

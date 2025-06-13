@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="584e4b71-fbf9-42af-82b2-3edd8b5c1da9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/pages/filieres/filiere.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/pages/filieres/filiere.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/pages/filieres/filiere.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/pages/modules/modules.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/pages/modules/modules.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/pages/modules/modules.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/Config/Controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/Config/Impl/IService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/Config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/Config/Service.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/Config/SwaggerConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/DataInitializer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/GestionApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Absence.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/AbstractEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Admin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/AnneeScolaire.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Classe.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Cours.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Etudiant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Filiere.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Inscription.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Justification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/ListeEmargement.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Module.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Notification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Pointage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Professeur.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Salle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/SessionCours.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Utilisateur.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/entities/Vigile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/enums/ModeCours.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/enums/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/enums/Situation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/enums/StatutJustification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/AbsenceRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/AdminRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/ClasseRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/EtudiantRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/FiliereRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/JustificationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/PointageRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/SessionsCoursRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/UtilisateurRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/repositories/VigileRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/IAbsenceService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/IAdminService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/IEtudiantService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/IJustificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/IPointageService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/ISessionCoursService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/IUtilisateurService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/IVigileService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/AbsenceServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/AdminServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/EtudiantServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/JustificationServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/PointageServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/SessionCoursServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/UtilisateurServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/data/services/impl/VigileServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/gestion.http" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/Validator/ListNotEmpty.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/Validator/ListNotEmptyValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/exceptions/EntityNotFoundExecption.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/exceptions/InterceptorExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/mapper/AbsenceMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/mapper/AdminMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/mapper/EtudiantMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/mapper/JustificationMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/mapper/UtilisateurMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/utils/mapper/VigileMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/FrontendController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/IAbsenceController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/IAdminController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/IEtudiantController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/IJustificationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/IPointageController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/ISessionCoursController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/IUtilisateurController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/IVigileController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/AbsenceControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/AdminController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/EtudiantControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/JustificationControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/PointageContoller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/SessionCoursController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/UtilisateurController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/controllers/Impl/VigileController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/AbsenceRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/AdminSimpleRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/ConnexionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/EtudiantSimpleRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/JustificationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/JustificationValidationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/UtilisateurCreateRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Request/VigileSimpleRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/AbsenceAllResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/AbsenceSimpleResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/AdminAllResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/AdminSimpleResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/EtudiantAllResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/EtudiantSimpleResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/EtudiantWithListeAbsenceResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/JustificationSimpleResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/RestResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/UtilisateurSimpleResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/VigileAllResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/java/sn/ism/gestion/web/dto/Response/VigileSimpleResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/gestion/src/test/java/sn/ism/gestion/GestionApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/assets/Logo_Ism.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/navbar/navbar.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/navbar/navbar.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/navbar/navbar.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/navbar/navbar.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/sidebar/sidebar.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/sidebar/sidebar.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/sidebar/sidebar.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/sidebar/sidebar.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/guards/auth.guard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/guards/auth.guard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/absence.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/api-response.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/classe.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/etudiant.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/justification.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/search-filters.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/absences/absences.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/absences/absences.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/dashboard/dashboard.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/dashboard/dashboard.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/etudiants/etudiant.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/etudiants/etudiant.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications-list.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications-list.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications-list.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications-list.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/justifications/justifications.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/login/login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/login/login.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/login/login.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/login/login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/absence.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/absence.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/auth.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/auth.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/etudiant.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/etudiant.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/justification.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vercel.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/vercel.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2xsheXUACbGQiMGlz2y4SDRR62a" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "dev/Issa__Diagne",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/majag/ISM_Absences/Backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="584e4b71-fbf9-42af-82b2-3edd8b5c1da9" name="Changes" comment="" />
+      <created>1748732783642</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748732783642</updated>
+      <workItem from="1748732785458" duration="1014000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
