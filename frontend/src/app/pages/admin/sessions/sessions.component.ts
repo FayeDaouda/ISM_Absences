@@ -16,25 +16,22 @@ export class SessionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.sessionService.getSessionsDuJour().subscribe({
-      next: (data: unknown) => {
+      next: (data: any) => {
         console.log('API response:', data);
 
         if (Array.isArray(data)) {
-          this.sessions.set(data as Session[]);
-        } else if (
-          typeof data === 'object' &&
-          data !== null &&
-          'results' in data &&
-          Array.isArray((data as any).results)
-        ) {
-          this.sessions.set((data as any).results as Session[]);
+          this.sessions.set(data); // ✅ Cas 1
+        } else if ('results' in data && Array.isArray(data.results)) {
+          this.sessions.set(data.results); // ✅ Cas 2
+        } else if ('data' in data && Array.isArray(data.data)) {
+          this.sessions.set(data.data); // ✅ Cas 3
         } else {
-          console.warn('Format inattendu de la réponse API');
+          console.warn('Format de réponse API non reconnu.');
           this.sessions.set([]);
         }
       },
       error: (err) => {
-        console.error('Erreur API:', err);
+        console.error('Erreur lors du chargement des sessions :', err);
         this.sessions.set([]);
       },
     });

@@ -1,29 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
-export interface Justification {
-  id: string;
-  absenceId: string;
-  commentaire: string;
-  fichierUrl: string;
-  statut: string;
-  etudiantId: string;
-}
-
+import {Observable} from 'rxjs';
+import { IJustificationService } from '../IJustificationService';
+import { Justification } from '../../models/justification.model';
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root' 
 })
-export class JustificationService {
-  private apiUrl = 'http://localhost:3000/justifications';
+export class JustificationService implements IJustificationService{
+  private apiUrl = 'https://gestion-absence-ism-dev.onrender.com/api/web/justifications';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getJustifications(): Observable<Justification[]> {
-    return this.http.get<Justification[]>(this.apiUrl);
+  getAllJustifications(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+  
+  getById(absenceId: string): Observable<Justification> {
+    return this.http.get<any>(`${this.apiUrl}/${absenceId}/justification`);
+  }
+  getByAbsenceId(absenceId: string): Observable<Justification> {
+    return this.http.get<any>(`${this.apiUrl}/${absenceId}`);
   }
 
-  createJustification(justification: Justification): Observable<Justification> {
-    return this.http.post<Justification>(this.apiUrl, justification);
+  traiterJustification(absenceId: string, statut: 'VALIDEE' | 'REFUSEE'): Observable<any> {
+    return this.http.post(`https://gestion-absence-ism-dev.onrender.com/api/web/admin/${absenceId}/valider`, {
+      statut
+    });
   }
+
 }

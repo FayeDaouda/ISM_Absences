@@ -1,8 +1,10 @@
 export interface Absence {
-  nonEtudiant: string;
-  prenomEtudiant: string;
-  classeEtudiant: string;
-  sessionId: string;
-  type: 'ABSENCE' | 'RETARD' | 'PRESENT';
-  justifiee: boolean;
+  id: string,
+  nonEtudiant: string,
+  prenomEtudiant: string,
+  classeEtudiant: string,
+  sessionCourslibelle: string,
+  date: string,
+  type: string,
+  justifiee: boolean
 }

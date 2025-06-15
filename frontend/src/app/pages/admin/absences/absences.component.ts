@@ -1,7 +1,8 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
-import { Absence, AbsenceService } from '../../../shared/services/impl/absence.service';
+import { ActivatedRoute } from '@angular/router';
 import { RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
+import { PointageService } from '../../../shared/services/impl/pointage.service';
+import { Absence } from '../../../shared/models/absence.model';
 
 @Component({
   selector: 'app-absences',
@@ -13,16 +14,24 @@ export class AbsencesComponent implements OnInit {
   absences = signal<Absence[]>([]);
   currentPage = signal(1);
   pageSize = 3;
-  pages = computed(() => {
-    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
-  });
 
-  constructor(private absenceService: AbsenceService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private pointageService: PointageService
+  ) {}
 
   ngOnInit(): void {
-    this.absenceService.getAbsences().subscribe((data) => {
-      this.absences.set(data);
-    });
+    const sessionId = this.route.snapshot.paramMap.get('id');
+    if (sessionId) {
+      this.pointageService.getAllPointagesDuneSessionDuJour(sessionId).subscribe({
+        next: (data) => {
+          this.absences.set(data);
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement des absences :', err);
+        }
+      });
+    }
   }
 
   paginatedAbsences = computed(() => {
@@ -33,6 +42,10 @@ export class AbsencesComponent implements OnInit {
 
   totalPages = computed(() => {
     return Math.ceil(this.absences().length / this.pageSize);
+  });
+
+  pages = computed(() => {
+    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
   });
 
   goToPage(page: number) {

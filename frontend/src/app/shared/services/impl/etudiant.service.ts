@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Etudiant } from '../../models/etudiant.model';
+import { Pointage } from '../../models/pointage.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,5 +18,13 @@ export class EtudiantService {
 
   getEtudiantById(id: string): Observable<Etudiant> {
     return this.http.get<Etudiant>(`${this.apiUrl}/${id}`);
+  }
+
+  getListeAbsences(etudiantId:string ): Observable<Etudiant> {
+    return this.http.get<any>(`${this.apiUrl}/${etudiantId}`);
+  }
+  
+  getListeAbsencesByEtudiantId(etudiantId: string): Observable<Pointage> {
+    return this.http.get<any>(`${this.apiUrl}/${etudiantId}/absences`);
   }
 }
