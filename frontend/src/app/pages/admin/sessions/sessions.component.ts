@@ -1,8 +1,9 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { SessionService } from '../../../shared/services/impl/session.service';
 import { Session } from '../../../shared/models/session.model';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sessions',
@@ -13,6 +14,8 @@ import { NgIf, NgFor } from '@angular/common';
 export class SessionsComponent implements OnInit {
   private sessionService = inject(SessionService);
   sessions = signal<Session[]>([]);
+  
+  constructor(private router : Router ) { }
 
   ngOnInit(): void {
     this.sessionService.getSessionsDuJour().subscribe({
@@ -35,5 +38,12 @@ export class SessionsComponent implements OnInit {
         this.sessions.set([]);
       },
     });
+  }
+
+  session$:Observable<Session[]> = new Observable();
+  
+
+  onLoadListeAbsences(sessionId: string) {
+    this.router.navigate([`/admin/sessions/${sessionId}/absences`]);
   }
 }

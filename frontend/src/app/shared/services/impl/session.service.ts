@@ -8,7 +8,7 @@ import { ISessionService } from '../ISessionService';
   providedIn: 'root',
 })
 export class SessionService implements ISessionService{
-  private apiUrl = 'https://gestion-absence-ism-dev.onrender.com/api/web/sessions/duJour';
+  private apiUrl = 'https://gestion-absence-ism-dev.onrender.com/api/web/sessions';
 
   constructor(private http: HttpClient) {}
 

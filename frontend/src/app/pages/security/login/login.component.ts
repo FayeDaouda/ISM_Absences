@@ -19,13 +19,13 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  handleLogin(event: Event): void {
-    event.preventDefault();
-    const user = { email: this.email, password: this.password };
-    if (this.authService.login(user)) {
-      this.router.navigate(['/dashboard']);
-    } else {
-      this.errorMessage = 'Identifiants incorrects';
-    }
-  }
+  // handleLogin(event: Event): void {
+  //   event.preventDefault();
+  //   const user = { email: this.email, password: this.password };
+  //   if (this.authService.login(user)) {
+  //     this.router.navigate(['/dashboard']);
+  //   } else {
+  //     this.errorMessage = 'Identifiants incorrects';
+  //   }
+  // }
 }

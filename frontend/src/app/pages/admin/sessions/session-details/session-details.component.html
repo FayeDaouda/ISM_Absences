@@ -1,0 +1,98 @@
+<div class="border border-[#573826] rounded-lg shadow-md p-6 bg-white mt-5">
+  <h1 class="text-2xl font-extrabold text-[#573826] tracking-wide mb-1">
+    📋 Gestion des absences
+  </h1>
+  <p class="text-sm text-gray-600 mb-5">
+    Liste des absences et retards
+  </p>
+
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end mb-6 gap-4">
+    <label for="filtre" class="font-bold text-gray-700">Filtrer par état :</label>
+    <select
+      id="filtre"
+      [(ngModel)]="filtre"
+      (ngModelChange)="filtrerEtPaginer();"
+      class="w-full sm:w-48 px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#573826] focus:border-[#573826]"
+    >
+      <option value="TOUS">Tous</option>
+      <option value="ABSENCE">Absents</option>
+      <option value="RETARD">Retards</option>
+      <option value="PRESENT">Présents</option>
+    </select>
+  </div>
+
+  <div class="grid grid-cols-5 gap-4 px-4 py-2 border rounded shadow text-orange-600 font-semibold text-sm text-center">
+    <div>Nom</div>
+    <div>Prénom</div>
+    <div>État</div>
+    <div>Justifié</div>
+    <div>Action</div>
+  </div>
+
+  @for (pointages of pointagesFiltresParPage; track pointages.id) {
+    <div
+      class="mb-4 p-4 border rounded shadow text-center mt-5"
+      [ngClass]="pointages.justifiee ? 'bg-white' : 'bg-white'"
+    >
+      <div class="grid grid-cols-5 gap-4 text-sm">
+        <div>{{ pointages.nonEtudiant }}</div>
+        <div>{{ pointages.prenomEtudiant }}</div>
+        <div>{{ pointages.type }}</div>
+        <div>
+          <span
+            class="text-xs font-semibold px-2 py-1 rounded 
+              {{ pointages.justifiee ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100' }}"
+          >
+            {{ pointages.justifiee ? 'Oui' : 'Non' }}
+          </span>
+        </div>
+        <div>
+          <button
+            class="px-3 py-1 bg-[#573826] text-white rounded text-xs hover:bg-[#6a452d] transition"
+            (click)="voirDetails(pointages.id, justificationId)"
+          >
+            Voir
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (pointagesFiltresParPage.length === 0) {
+    <p class="text-center text-gray-500 mt-4">Aucun pointage trouvé.</p>
+  }
+
+  <!-- Pagination -->
+  <div class="flex justify-center items-center gap-2 mt-6 text-sm text-[#573826]">
+    <button
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 0"
+      class="px-3 py-1 border rounded disabled:opacity-50"
+    >
+      Précédent
+    </button>
+
+    @for (page of pages; track page) {
+      <button
+        (click)="goToPage(page)"
+        [class.bg-[#573826]]="currentPage === page"
+        [class.text-white]="currentPage === page"
+        class="px-3 py-1 border rounded"
+      >
+        {{ page + 1 }}
+      </button>
+    }
+
+    <button
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === pages.length - 1"
+      class="px-3 py-1 border rounded disabled:opacity-50"
+    >
+      Suivant
+    </button>
+  </div>
+
+  <div class="text-sm text-gray-600 text-center mt-2">
+    Page {{ currentPage + 1 }} sur {{ pages.length }} – {{ getFilteredPointages().length }} pointages au total
+  </div>
+</div>

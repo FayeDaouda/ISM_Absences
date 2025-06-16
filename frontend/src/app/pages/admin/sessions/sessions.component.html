@@ -13,7 +13,7 @@
         <p><span class="text-[#FF8800]">Heure de début :</span> <strong>{{ session.heureDebut }}</strong></p>
         <p><span class="text-[#FF8800]">Heure de fin :</span> <strong>{{ session.heureFin }}</strong></p>
 
-        <a [routerLink]="['/admin/absences', session.id]"
+        <a (click)="onLoadListeAbsences(session.id)"
            class="mt-2 inline-block font-semibold text-[#2d2d2d] hover:underline">
           Voir les absences ➜
         </a>
