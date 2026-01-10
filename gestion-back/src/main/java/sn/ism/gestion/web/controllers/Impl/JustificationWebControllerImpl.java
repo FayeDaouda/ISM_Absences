@@ -1,0 +1,91 @@
+package sn.ism.gestion.web.controllers.Impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+
+import sn.ism.gestion.data.entities.Justification;
+import sn.ism.gestion.data.services.IJustificationService;
+import sn.ism.gestion.utils.mapper.JustificationMapper;
+import sn.ism.gestion.web.controllers.IJustificationWebController;
+import sn.ism.gestion.web.dto.Request.JustificationTraitementRequest;
+import sn.ism.gestion.web.dto.Response.JustificationSimpleResponse;
+import sn.ism.gestion.web.dto.RestResponse;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("api/web/justifications")
+@CrossOrigin(origins = "http://localhost:4200")
+public class JustificationWebControllerImpl implements IJustificationWebController {
+
+    private final IJustificationService justificationService;
+    private final JustificationMapper justificationMapper;
+
+
+    @Override
+    public ResponseEntity<Map<String, Object>> traiterJustification(String id, JustificationTraitementRequest request) {
+        Justification justificationAbsence = justificationService.traiterJustication(id, request);
+        return new ResponseEntity<>(
+                RestResponse.response(HttpStatus.ACCEPTED, justificationAbsence, "traitementJustifiction"),
+                HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> SelectAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Justification> justifications = justificationService.findAll(pageable);
+        Page<JustificationSimpleResponse> response = justifications.map(justificationMapper::toDto);
+        return new ResponseEntity<>(
+                RestResponse.responsePaginate(
+                        HttpStatus.OK,
+                        response.getContent(),
+                        response.getNumber(),
+                        response.getTotalPages(),
+                        response.getTotalElements(),
+                        response.isFirst(),
+                        response.isLast(),
+                        "JustificationAllResponses"),
+                HttpStatus.OK);
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> SelectdById(String id) {
+        var justification = justificationService.findById(id);
+        var justificationDto = justificationMapper.toDto(justification);
+        return new ResponseEntity<>(
+                new RestResponse().response(
+                        HttpStatus.OK,justificationDto,
+                        "justificationSimpleResponse"),
+                HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<Map<String, Object>> Update(String id, Justification request) {
+        return null;
+    }
+
+
+    @Override
+    public ResponseEntity<Map<String, Object>> Delete(String id) {
+        Justification justification = justificationService.findById(id);
+        justificationService.delete(id);
+        return new ResponseEntity<>(
+                RestResponse.response(HttpStatus.ACCEPTED, justification, "JustificationUpdate"),
+                HttpStatus.ACCEPTED);
+    }
+
+}

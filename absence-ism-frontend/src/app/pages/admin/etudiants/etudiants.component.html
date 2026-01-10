@@ -1,0 +1,68 @@
+<div class="bg-[#fef8f3] min-h-screen p-8">
+  <div class="max-w-5xl mx-auto border rounded-md border-[#843c0c] p-6 shadow-md bg-white">
+    <h2 class="text-2xl text-center text-[#5c2b0b] font-bold mb-4">Liste des étudiants inscrits</h2>
+
+    <!-- TABLEAU + IMAGE -->
+    <div class="grid grid-cols-4 gap-4 items-start">
+      <!-- TABLEAU 3/4 -->
+      <div class="col-span-3 overflow-x-auto rounded-lg bg-orange-50">
+        <table class="min-w-full text-center">
+          <thead class="bg-[#5c2b0b] text-white">
+            <tr>
+              <th class="px-4 py-2 font-semibold">Nom</th>
+              <th class="px-4 py-2 font-semibold">Prénom</th>
+              <th class="px-4 py-2 font-semibold">Matricule</th>
+              <th class="px-4 py-2 font-semibold">Classe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let etudiant of etudiantsPerPage" class="shadow-sm my-2 hover:bg-gray-50 rounded-md">
+              <td class="px-4 py-2 text-sm text-gray-800">{{ etudiant.nom }}</td>
+              <td class="px-4 py-2 text-sm text-gray-800">{{ etudiant.prenom }}</td>
+              <td class="px-4 py-2 text-sm text-gray-800">{{ etudiant.matricule }}</td>
+              <td class="px-4 py-2 text-sm text-gray-800">{{ etudiant.classe }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- IMAGE 1/4 -->
+      <div class="col-span-1 flex justify-center items-start">
+        <img src="https://thumbs.dreamstime.com/b/young-man-bag-young-man-bag-student-vector-illustration-graphic-design-140689106.jpg" alt="Étudiant" class="rounded-md shadow-lg w-40" />
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="flex justify-center items-center gap-2 mt-6">
+      <button 
+        class="bg-[#5b3413] text-white px-3 py-1 rounded-md text-sm font-semibold disabled:opacity-50"
+        (click)="goToPage(currentPage - 1)" 
+        [disabled]="currentPage === 0">
+        Précédent
+      </button>
+
+      <ng-container *ngFor="let page of pages; let i = index">
+        <button 
+          class="px-3 py-1 rounded-md text-sm font-semibold border border-[#5b3413]"
+          [ngClass]="{
+            'bg-[#5b3413] text-white': i === currentPage,
+            'bg-white text-black': i !== currentPage
+          }"
+          (click)="goToPage(i)">
+          {{ i + 1 }}
+        </button>
+      </ng-container>
+
+      <button 
+        class="bg-[#5b3413] text-white px-3 py-1 rounded-md text-sm font-semibold disabled:opacity-50"
+        (click)="goToPage(currentPage + 1)" 
+        [disabled]="currentPage === pages.length - 1">
+        Suivant
+      </button>
+    </div>
+
+    <div class="text-sm text-gray-600 text-center mt-2">
+      Page {{ currentPage + 1 }} sur {{ pages.length }} ({{ etudiantsAll.length }} étudiants au total)
+    </div>
+  </div>
+</div>

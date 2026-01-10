@@ -1,0 +1,42 @@
+<div class="container mx-auto p-10">
+  <h1 class="text-2xl font-bold text-[#5c2b0b] mb-2">Sessions du Jour</h1>
+  
+  <div class="flex gap-6">
+    <div *ngFor="let session of sessionsPerPage" class="flex">
+      <app-session [session]="session" class = "w-full"></app-session>
+    </div>
+  </div>
+
+   <!-- PAGINATION -->
+    <div class="flex justify-center items-center gap-2 mt-6">
+      <button 
+        class="bg-[#5b3413] text-white px-3 py-1 rounded-md text-sm font-semibold disabled:opacity-50"
+        (click)="goToPage(currentPage - 1)" 
+        [disabled]="currentPage === 0">
+        Précédent
+      </button>
+
+      <ng-container *ngFor="let page of pages; let i = index">
+        <button 
+          class="px-3 py-1 rounded-md text-sm font-semibold border border-[#5b3413]"
+          [ngClass]="{
+            'bg-[#5b3413] text-white': i === currentPage,
+            'bg-white text-black': i !== currentPage
+          }"
+          (click)="goToPage(i)">
+          {{ i + 1 }}
+        </button>
+      </ng-container>
+
+      <button 
+        class="bg-[#5b3413] text-white px-3 py-1 rounded-md text-sm font-semibold disabled:opacity-50"
+        (click)="goToPage(currentPage + 1)" 
+        [disabled]="currentPage === pages.length - 1">
+        Suivant
+      </button>
+    </div>
+    <div class="text-sm text-gray-600 text-center mt-2">
+      Page {{ currentPage + 1 }} sur {{ pages.length }} ({{ sessionsAll.length }} sessions au total)
+    </div>
+
+</div>

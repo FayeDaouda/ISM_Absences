@@ -1,0 +1,62 @@
+<div class="min-h-screen py-10 px-8">
+  <!-- Statistiques principales -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+ 
+    <div class="bg-[#5c3b28] text-white p-6 text-center rounded-2xl shadow-lg">
+      <h2 class="text-base font-semibold mb-2">👥 Présence du jour</h2>
+      <p class="text-2xl font-extrabold"> 10</p>
+    </div>
+
+    <div class="bg-orange-400 text-black p-6 text-center rounded-2xl shadow-lg">
+      <h2 class="text-base font-semibold mb-2">❌ Absence du jour</h2>
+      <p class="text-2xl font-extrabold">{{ absencesAll.length}}</p>
+    </div>
+
+    <div class="bg-[#5c3b28] text-white p-6 text-center rounded-2xl shadow-lg">
+      <h2 class="text-base font-semibold mb-2">📋 Justifications du jour</h2>
+      <p class="text-2xl font-extrabold">{{ justificationsAll.length}}</p>
+    </div>
+  </div>
+
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+          <!-- Absences -->
+            <div class="bg-white rounded-2xl shadow-md border border-[#ddd] p-6 flex flex-col h-full">
+            <h3 class="text-xl font-bold text-[#5c3b28] mb-4">⏳ Absences</h3>
+
+            <div class="space-y-4 text-sm overflow-y-auto max-h-[300px] pr-2">
+                <div *ngFor="let a of absencesAll" class="bg-orange-50 p-4 rounded-lg shadow-sm flex justify-between items-center">
+                <div>
+                    <p>
+                    <strong>{{ a.nonEtudiant }}</strong> {{ a.prenomEtudiant }} <br>
+                    <strong>{{ a.classeEtudiant }}</strong>
+                    </p>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <p class="text-red-600 font-semibold mr-3">{{ a.type }}</p>
+                    <p class="text-gray-500">{{ a.justifiee ? 'Justifiée' : 'Non justifiée' }}</p>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Justifications -->
+            <div class="bg-white rounded-2xl shadow-md border border-[#ddd] p-6 flex flex-col h-full">
+            <h3 class="text-xl font-bold text-[#5c3b28] mb-4">📄 Justifications en attente</h3>
+
+            <div class="space-y-4 text-sm overflow-y-auto max-h-[300px] pr-2">
+                <div *ngFor="let j of justificationsAll" class="bg-green-50 p-4 rounded-lg shadow-sm flex justify-between items-center">
+                <div>
+                    <strong>prenom</strong> - mat <br>
+                    Classe: <strong>class</strong><br>
+                    <span>Absent(e) pour <strong class="text-pink-600">{{ j.commentaire }}</strong></span>
+                </div>
+                <div class="space-x-2">
+                    <button class="bg-[#5c3b28] text-white px-3 py-1 rounded hover:bg-[#40291c] transition">Détails</button>
+                </div>
+                </div>
+            </div>
+            </div>
+
+    </div>
+</div>
